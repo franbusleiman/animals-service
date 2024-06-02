@@ -38,12 +38,12 @@ public class RecordTypesController {
         return ResponseEntity.ok(recordTypeService.getRecordTypeResponse(recordTypeId));
     }
 
-    @GetMapping(value = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAll", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<RecordTypeResponse>> getAll(Pageable pageable) {
         return ResponseEntity.ok(recordTypeService.findAll(pageable));
     }
 
-    @GetMapping(value = "/getByNameContaining", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllByNameContaining", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<RecordTypeResponse>> getByNameContaining(
         @RequestParam("nameContaining") String nameContaining, Pageable pageable) {
         nameContaining = nameContaining.toLowerCase();

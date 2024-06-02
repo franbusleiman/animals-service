@@ -22,7 +22,7 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/animalTypes")
+@RequestMapping("/types")
 public class AnimalTypesController {
 
     private final AnimalTypeService animalTypeService;
@@ -37,12 +37,12 @@ public class AnimalTypesController {
         return ResponseEntity.ok(animalTypeService.getAnimalTypeResponse(animalTypeId));
     }
 
-    @GetMapping(value = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAll", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalTypeResponse>> getAll(Pageable pageable) {
         return ResponseEntity.ok(animalTypeService.findAll(pageable));
     }
 
-    @GetMapping(value = "/getByNameContaining", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllByNameContaining", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalTypeResponse>> getByNameContaining(
         @RequestParam("nameContaining") String nameContaining, Pageable pageable) {
         return ResponseEntity.ok(animalTypeService.findAllByNameContaining(nameContaining, pageable));
@@ -53,7 +53,7 @@ public class AnimalTypesController {
         AnimalTypeResponse animalTypeResponse = animalTypeService.createAnimalType(animalTypeDto);
 
         URI location = ServletUriComponentsBuilder
-            .fromCurrentContextPath().path("/animalTypes/{animalTypeId}")
+            .fromCurrentContextPath().path("/types/{animalTypeId}")
             .buildAndExpand(animalTypeResponse.getId()).toUri();
 
         return ResponseEntity.created(location).body(

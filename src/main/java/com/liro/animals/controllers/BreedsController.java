@@ -39,25 +39,25 @@ public class BreedsController {
         return ResponseEntity.ok(breedService.getBreedResponse(breedId));
     }
 
-    @GetMapping(value = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAll", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<BreedResponse>> getAll(Pageable pageable) {
         return ResponseEntity.ok(breedService.findAll(pageable));
     }
 
-    @GetMapping(value = "/getByNameContaining", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllByNameContaining", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<BreedResponse>> getByNameContaining(@RequestParam("nameContaining") String nameContaining,
                                                                    Pageable pageable) {
         return ResponseEntity.ok(breedService.findAllByNameContaining(nameContaining, pageable));
     }
 
 
-    @GetMapping(value = "/getAllByAnimalTypeId", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllByAnimalTypeId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<BreedResponse>> getAllByAnimalTypeId(@RequestParam("animalTypeId") Long animalTypeId,
                                                                     Pageable pageable) {
         return ResponseEntity.ok(breedService.findAllByAnimalTypeId(animalTypeId, pageable));
     }
 
-    @GetMapping(value = "/getAllByNameContainingAndAnimalTypeId", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllByNameContainingAndAnimalTypeId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<BreedResponse>> getAllByNameContainingAndAnimalTypeId(@RequestParam("nameContaining") String nameContaining,
                                                                                      @RequestParam("animalTypeId") Long animalTypeId,
                                                                                      Pageable pageable) {

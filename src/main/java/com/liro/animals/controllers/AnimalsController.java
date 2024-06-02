@@ -67,14 +67,14 @@ public class AnimalsController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/getShared", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllShared", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalsSharedClientProfilesWADTO>> getSharedAnimals(Pageable pageable,
                                                                                    @RequestHeader(name = "Authorization") String token) {
 
         return ResponseEntity.ok(animalService.getSharedAnimals(pageable, getUser(token)));
     }
 
-    @GetMapping(value = "/getOwn", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllOwn", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalResponse>> getOwnAnimals(Pageable pageable, @RequestHeader(name = "Authorization") String token) {
 
         return ResponseEntity.ok(animalService.getOwnAnimals(pageable, getUser(token)));

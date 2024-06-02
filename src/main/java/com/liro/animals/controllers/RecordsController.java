@@ -35,21 +35,21 @@ public class RecordsController {
         return ResponseEntity.ok(recordService.getRecordResponse(recordId, getUser(token)));
     }
 
-    @GetMapping(value = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAll", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<RecordResponse>> getAll(@RequestParam("animalId") Long animalId,
                                                        @RequestHeader(name = "Authorization") String token,
                                                        Pageable pageable) {
         return ResponseEntity.ok(recordService.findAllByAnimalId(animalId, getUser(token), pageable));
     }
 
-    @GetMapping(value = "/getAllLast", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllLastByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<RecordResponse>> getAllLast(@RequestParam("animalId") Long animalId,
                                                            @RequestHeader(name = "Authorization") String token,
                                                            Pageable pageable) {
         return ResponseEntity.ok(recordService.findAllLastByAnimalId(animalId, getUser(token), pageable));
     }
 
-    @GetMapping(value = "/getAllByDataType", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllByAnimalIdAndRecordTypeId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<RecordResponse>> getAllByRecordType(@RequestParam("animalId") Long animalId,
                                                                    @RequestParam("recordTypeId") Long recordTypeId,
                                                                    @RequestHeader(name = "Authorization") String token,
@@ -58,7 +58,7 @@ public class RecordsController {
             .findAllByAnimalIdAndRecordTypeId(animalId, recordTypeId, getUser(token), pageable));
     }
 
-    @GetMapping(value = "/getLastByDataType", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findLastByAnimalIdAndRecordTypeId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<RecordResponse> getLastByRecordType(@RequestParam("animalId") Long animalId,
                                                               @RequestParam("recordTypeId") Long recordTypeId,
                                                               @RequestHeader(name = "Authorization") String token) {

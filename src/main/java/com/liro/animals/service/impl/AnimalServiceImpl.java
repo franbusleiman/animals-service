@@ -77,6 +77,15 @@ public class AnimalServiceImpl implements AnimalService {
         if (breed.getAnimals() == null) breed.setAnimals(new HashSet<>());
         breed.getAnimals().add(animal);
 
+        AnimalColor animalColor = animalColorRepository
+                .findByHex(animalRequest.getMainColorHex()).orElseThrow(
+                        () -> new ResourceNotFoundException("Animal Color not found with hex: "
+                                + animalRequest.getMainColorHex()));
+
+        animal.setMainColor(animalColor);
+        if (animalColor.getMainColorOf() == null) animalColor.setMainColorOf(new HashSet<>());
+        animalColor.getMainColorOf().add(animal);
+
         return animalMapper.animalToAnimalResponse(
             animalRepository.save(animal));
     }
@@ -117,6 +126,15 @@ public class AnimalServiceImpl implements AnimalService {
             animal.setBreed(breed);
             animal.setValidBreed(true);
         }
+
+        AnimalColor animalColor = animalColorRepository
+                .findByHex(animalRequest.getMainColorHex()).orElseThrow(
+                        () -> new ResourceNotFoundException("Animal Color not found with hex: "
+                                + animalRequest.getMainColorHex()));
+
+        animal.setMainColor(animalColor);
+        if (animalColor.getMainColorOf() == null) animalColor.setMainColorOf(new HashSet<>());
+        animalColor.getMainColorOf().add(animal);
 
         // Only update the birthdate if validBirthdate is false or if the one setting it is a veterinary
         // If validBirthdate is false and the one setting it is a veterinary, the boolean will be set to true,

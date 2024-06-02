@@ -39,24 +39,24 @@ public class AnimalColorsController {
         return ResponseEntity.ok(animalColorService.getAnimalColorResponse(animalColorId));
     }
 
-    @GetMapping(value = "/getAll", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAll", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalColorResponse>> getAll(Pageable pageable) {
         return ResponseEntity.ok(animalColorService.findAll(pageable));
     }
 
-    @GetMapping(value = "/getByNameContaining", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllByNameContaining", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalColorResponse>> getByNameContaining(
         @RequestParam("nameContaining") String nameContaining, Pageable pageable) {
         return ResponseEntity.ok(animalColorService.findAllByNameContaining(nameContaining, pageable));
     }
 
-    @GetMapping(value = "/getAllByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findAllByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<AnimalColorResponse>> getAllByAnimalId(@RequestParam("animalId") Long animalId,
              @RequestHeader(name = "Authorization") String token) {
         return ResponseEntity.ok(animalColorService.findAllByAnimalId(animalId, getUser(token)));
     }
 
-    @GetMapping(value = "/getMainColorByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/findMainColorByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<AnimalColorResponse> getMainColorByAnimalId(@RequestParam("animalId") Long animalId,
                                                                       @RequestHeader(name = "Authorization") String token) {
 

@@ -45,6 +45,7 @@ public class AnimalDTO {
     private Long bornLong;
     private Long bornHeight;
     private Sex sex;
+    private String mainColorHex;
     private Long breedId;
     private int numberOfPhotos;
 }
