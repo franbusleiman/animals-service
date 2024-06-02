@@ -33,13 +33,13 @@ public class AnimalsController {
 
     @GetMapping(value = "/{animalId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<AnimalResponse> getAnimal(@PathVariable("animalId") Long animalId,
-                                                    @RequestHeader(name = "Authorization") String token) {
+                                                    @RequestHeader(name = "Authorization",  required = false) String token) {
         return ResponseEntity.ok(animalService.getAnimalResponse(animalId, getUser(token)));
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ApiResponse> createAnimal(@Valid @RequestBody AnimalDTO animalRequest,
-                                                    @RequestHeader(name = "Authorization") String token) {
+                                                    @RequestHeader(name = "Authorization",  required = false) String token) {
         AnimalResponse animalResponse = animalService.createAnimal(animalRequest, getUser(token));
 
         URI location = ServletUriComponentsBuilder
@@ -53,7 +53,7 @@ public class AnimalsController {
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> updateAnimal(@Valid @RequestBody AnimalDTO animalRequest,
                                              @RequestParam("animalId") Long animalId,
-                                             @RequestHeader(name = "Authorization") String token) {
+                                             @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.updateAnimal(animalRequest, animalId, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -61,7 +61,7 @@ public class AnimalsController {
 
     @DeleteMapping(value = "/{animalId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> deleteAnimal(@PathVariable("animalId") Long animalId,
-                                             @RequestHeader(name = "Authorization") String token) {
+                                             @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.deleteAnimal(animalId, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -69,13 +69,13 @@ public class AnimalsController {
 
     @GetMapping(value = "/findAllShared", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalsSharedClientProfilesWADTO>> getSharedAnimals(Pageable pageable,
-                                                                                   @RequestHeader(name = "Authorization") String token) {
+                                                                                   @RequestHeader(name = "Authorization",  required = false) String token) {
 
         return ResponseEntity.ok(animalService.getSharedAnimals(pageable, getUser(token)));
     }
 
     @GetMapping(value = "/findAllOwn", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Page<AnimalResponse>> getOwnAnimals(Pageable pageable, @RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<Page<AnimalResponse>> getOwnAnimals(Pageable pageable, @RequestHeader(name = "Authorization",  required = false) String token) {
 
         return ResponseEntity.ok(animalService.getOwnAnimals(pageable, getUser(token)));
     }
@@ -84,7 +84,7 @@ public class AnimalsController {
     public ResponseEntity<Void> changeShareStateAnimal(@RequestParam("animalId") Long animalId,
                                                        @RequestParam("shareToEmail") String shareToEmail,
                                                        @RequestParam("readOnly") boolean readOnly,
-                                                       @RequestHeader(name = "Authorization") String token) {
+                                                       @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.changeShareStateAnimal(animalId, shareToEmail, readOnly, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -96,7 +96,7 @@ public class AnimalsController {
                                                @RequestParam("onlyOwner") Boolean onlyOwner,
                                                @RequestParam("vetEnabled") Boolean vetEnabled,
                                                @RequestParam("onlyVet") Boolean onlyVet,
-                                               @RequestHeader(name = "Authorization") String token) {
+                                               @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.hasPermissions(animalId, getUser(token), needWritePermissions,
             onlyOwner, vetEnabled, onlyVet);
 
@@ -106,7 +106,7 @@ public class AnimalsController {
     @PutMapping(value = "/changeOwner", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> changeOwner(@RequestParam("animalId") Long animalId,
                                             @RequestParam("emailToTransfer") String emailToTransfer,
-                                            @RequestHeader(name = "Authorization") String token) {
+                                            @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.changeOwner(animalId, emailToTransfer, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -115,7 +115,7 @@ public class AnimalsController {
     @PostMapping(value = "/unshare", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> unshareAnimal(@RequestParam("animalId") Long animalId,
                                               @RequestParam("shareToEmail") String shareToEmail,
-                                              @RequestHeader(name = "Authorization") String token) {
+                                              @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.removeShareAnimal(animalId, shareToEmail, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -123,7 +123,7 @@ public class AnimalsController {
 
     @PutMapping(value = "/increaseNumberOfPhotos", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> increaseNumberOfPhotos(@RequestParam("animalId") Long animalId,
-                                                       @RequestHeader(name = "Authorization") String token) {
+                                                       @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.increaseNumberOfPhotos(animalId, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -131,7 +131,7 @@ public class AnimalsController {
 
     @PutMapping(value = "/decreaseNumberOfPhotos", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> decreaseNumberOfPhotos(@RequestParam("animalId") Long animalId,
-                                                       @RequestHeader(name = "Authorization") String token) {
+                                                       @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.decreaseNumberOfPhotos(animalId, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -140,7 +140,7 @@ public class AnimalsController {
     @PutMapping(value = "/addColor", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> addColor(@RequestParam("animalId") Long animalId,
                                          @RequestParam("animalColorId") Long animalColorId,
-                                         @RequestHeader(name = "Authorization") String token) {
+                                         @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.addColor(animalId, animalColorId, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -149,7 +149,7 @@ public class AnimalsController {
     @PutMapping(value = "/removeColor", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> removeColor(@RequestParam("animalId") Long animalId,
                                             @RequestParam("animalColorId") Long animalColorId,
-                                            @RequestHeader(name = "Authorization") String token) {
+                                            @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.removeColor(animalId, animalColorId, getUser(token));
 
         return ResponseEntity.ok().build();
@@ -158,7 +158,7 @@ public class AnimalsController {
     @PutMapping(value = "/changeMainColor", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> changeMainColor(@RequestParam("animalId") Long animalId,
                                                 @RequestParam("animalColorId") Long animalColorId,
-                                                @RequestHeader(name = "Authorization") String token) {
+                                                @RequestHeader(name = "Authorization",  required = false) String token) {
         animalService.changeMainColor(animalId, animalColorId, getUser(token));
 
         return ResponseEntity.ok().build();
