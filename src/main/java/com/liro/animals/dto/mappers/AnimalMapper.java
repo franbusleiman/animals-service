@@ -14,6 +14,8 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AnimalMapper {
 
+    @Mapping(target = "breedId", source = "breed.id")
+    @Mapping(target = "mainColorHex", source = "mainColor.hex")
     AnimalResponse animalToAnimalResponse(Animal animal);
 
     @Mapping(target = "validCastrated", ignore = true)

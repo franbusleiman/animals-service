@@ -44,7 +44,7 @@ public class Animal {
     private String deathCause;
     private Boolean validBreed;
     private Boolean validCastrated;
-    private Boolean validBirthDate;
+    private Boolean validBirthDate = false;
     private String bornLocation;
     private Long bornLat;
     private Long bornLong;
