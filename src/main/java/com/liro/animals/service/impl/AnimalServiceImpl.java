@@ -67,7 +67,17 @@ public class AnimalServiceImpl implements AnimalService {
     public AnimalResponse createAnimal(AnimalDTO animalRequest, UserDTO userDTO) {
 
         Animal animal = animalMapper.animalDtoToAnimal(animalRequest);
-        animal.setOwnerUserId(userDTO.getId());
+
+
+        if (animalRequest.getOwnerUserId()!=null){
+
+            if(userDTO.getRoles().contains("ROLE_VET")){
+                animal.setMainVetUserId(userDTO.getId());
+                animal.setOwnerUserId(animalRequest.getOwnerUserId());
+            }
+        }else{
+            animal.setOwnerUserId(userDTO.getId());
+        }
 
         Breed breed = breedService.getRepository().
             findById(animalRequest.getBreedId()).orElseThrow(

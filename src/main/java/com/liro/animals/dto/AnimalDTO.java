@@ -48,4 +48,5 @@ public class AnimalDTO {
     private String mainColorHex;
     private Long breedId;
     private int numberOfPhotos;
+    private Long ownerUserId;
 }
