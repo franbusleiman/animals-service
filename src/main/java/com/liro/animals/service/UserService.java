@@ -7,4 +7,6 @@ import org.apache.catalina.User;
 public interface UserService {
 
     UserDTO getUserByEmail(String email);
+    UserDTO getUserByIdentificationNr(Long identificationNr);
+
 }

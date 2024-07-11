@@ -17,4 +17,10 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserByEmail(String email) {
         return feignUserClient.getUserByEmail(email).getBody();
     }
+
+    @Override
+    public UserDTO getUserByIdentificationNr(Long identificationNr) {
+        return feignUserClient.getUserByIdentificationNr(String.valueOf(identificationNr)).getBody();
+
+    }
 }

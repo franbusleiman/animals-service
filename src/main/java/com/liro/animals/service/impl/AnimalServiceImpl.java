@@ -322,4 +322,19 @@ public class AnimalServiceImpl implements AnimalService {
         return animalRepository.findAllByOwnerUserId(userDTO.getId(), pageable)
             .map(animalMapper::animalToAnimalResponse);
     }
+
+    @Override
+    public Page<AnimalResponse> getAnimalsByNameAndVetId(Pageable pageable, String name, UserDTO userDTO) {
+
+        return animalRepository.findAllByNameContainingAndMainVetUserId(name, userDTO.getId(), pageable)
+                .map(animalMapper::animalToAnimalResponse);
+    }
+
+    @Override
+    public Page<AnimalResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni) {
+
+        UserDTO userDTO1 = userService.getUserByIdentificationNr(dni);
+
+        return getOwnAnimals(pageable, userDTO1);
+    }
 }

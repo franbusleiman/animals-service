@@ -15,5 +15,8 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     Page<Animal> findAllByOwnerUserId(Long ownerUserId, Pageable pageable);
 
+    Page<Animal> findAllByNameContainingAndMainVetUserId(String nameContaining, Long mainVetUserId, Pageable pageable);
+
+
     Page<Animal> findAllByOwnerUserIdAndDisabled(Long ownerUserId, Boolean disabled, Pageable pageable);
 }

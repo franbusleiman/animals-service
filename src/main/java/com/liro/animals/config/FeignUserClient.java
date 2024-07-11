@@ -11,4 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface FeignUserClient {
     @RequestMapping(method = RequestMethod.GET, value = "/email/{email}")
     ResponseEntity<UserDTO> getUserByEmail(@PathVariable("email") String email);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/identificationNr/{id}")
+    ResponseEntity<UserDTO> getUserByIdentificationNr(@PathVariable("id") String id);
 }
