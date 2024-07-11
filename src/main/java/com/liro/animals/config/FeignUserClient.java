@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @FeignClient(name = "users-service")
 public interface FeignUserClient {
-    @RequestMapping(method = RequestMethod.GET, value = "/email/{email}")
+    @RequestMapping(method = RequestMethod.GET, value = "/users/email/{email}")
     ResponseEntity<UserDTO> getUserByEmail(@PathVariable("email") String email);
 
-    @RequestMapping(method = RequestMethod.GET, value = "/identificationNr/{id}")
+    @RequestMapping(method = RequestMethod.GET, value = "/users/identificationNr/{id}")
     ResponseEntity<UserDTO> getUserByIdentificationNr(@PathVariable("id") String id);
 }
