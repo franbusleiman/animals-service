@@ -2,6 +2,7 @@ package com.liro.animals.service.impl;
 
 import com.liro.animals.config.FeignUserClient;
 import com.liro.animals.dto.UserDTO;
+import com.liro.animals.dto.UserResponseDTO;
 import com.liro.animals.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,12 +15,12 @@ public class UserServiceImpl implements UserService {
     FeignUserClient feignUserClient;
 
     @Override
-    public UserDTO getUserByEmail(String email) {
+    public UserResponseDTO getUserByEmail(String email) {
         return feignUserClient.getUserByEmail(email).getBody();
     }
 
     @Override
-    public UserDTO getUserByIdentificationNr(Long identificationNr) {
+    public UserResponseDTO getUserByIdentificationNr(Long identificationNr) {
         return feignUserClient.getUserByIdentificationNr(String.valueOf(identificationNr)).getBody();
 
     }

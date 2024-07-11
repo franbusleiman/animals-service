@@ -2,11 +2,12 @@ package com.liro.animals.service;
 
 
 import com.liro.animals.dto.UserDTO;
+import com.liro.animals.dto.UserResponseDTO;
 import org.apache.catalina.User;
 
 public interface UserService {
 
-    UserDTO getUserByEmail(String email);
-    UserDTO getUserByIdentificationNr(Long identificationNr);
+    UserResponseDTO getUserByEmail(String email);
+    UserResponseDTO getUserByIdentificationNr(Long identificationNr);
 
 }

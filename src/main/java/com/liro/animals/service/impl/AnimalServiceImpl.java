@@ -4,6 +4,7 @@ package com.liro.animals.service.impl;
 import com.liro.animals.dto.AnimalDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.UserDTO;
+import com.liro.animals.dto.UserResponseDTO;
 import com.liro.animals.dto.mappers.AnimalMapper;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.exceptions.ResourceNotFoundException;
@@ -177,7 +178,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void changeShareStateAnimal(Long animalId, String shareToEmail,
                                        boolean readOnly, UserDTO userDTO) {
-        UserDTO userToShare = userService.getUserByEmail(shareToEmail);
+        UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
 
 
         Animal animal = util.validatePermissions(animalId, userDTO,
@@ -205,7 +206,7 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public void removeShareAnimal(Long animalId, String shareToEmail, UserDTO userDTO) {
-        UserDTO userToShare = userService.getUserByEmail(shareToEmail);
+        UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
 
         Animal animal = util.validatePermissions(animalId, userDTO,
             true, true, false, false);
@@ -297,7 +298,7 @@ public class AnimalServiceImpl implements AnimalService {
         Animal animal = util.validatePermissions(animalId, userDTO,
             true, true, false, false);
 
-        UserDTO userDTO1 = userService.getUserByEmail(emailToTransfer);
+        UserResponseDTO userDTO1 = userService.getUserByEmail(emailToTransfer);
         animal.setOwnerUserId(userDTO.getId());
 
         animalRepository.save(animal);
@@ -333,8 +334,9 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public Page<AnimalResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni) {
 
-        UserDTO userDTO1 = userService.getUserByIdentificationNr(dni);
+        UserResponseDTO userDTO1 = userService.getUserByIdentificationNr(dni);
 
-        return getOwnAnimals(pageable, userDTO1);
+        return animalRepository.findAllByOwnerUserId(userDTO1.getId(), pageable)
+                .map(animalMapper::animalToAnimalResponse);
     }
 }
