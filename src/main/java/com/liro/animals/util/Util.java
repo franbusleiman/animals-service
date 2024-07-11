@@ -94,7 +94,7 @@ public class Util {
         //  If invalid, change the enabled boolean to false and return false
         //  If valid, change the enabled boolean to true and return true
         //  Create an endpoint to do this validation in the userService
-        return user.getRoles().contains("VET");
+        return user.getRoles().contains("ROLE_VET");
     }
 
     public static <T> void updateIfNotNull(Consumer<T> setterMethod, T value) {
