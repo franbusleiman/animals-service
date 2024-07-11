@@ -71,13 +71,23 @@ public class AnimalServiceImpl implements AnimalService {
 
         if (animalRequest.getOwnerUserId()!=null){
 
+            System.out.println(userDTO.getRoles());
+
             if(userDTO.getRoles().contains("ROLE_VET")){
+
+                System.out.println("paso");
+                System.out.println(animalRequest.getOwnerUserId());
+
                 animal.setMainVetUserId(userDTO.getId());
                 animal.setOwnerUserId(animalRequest.getOwnerUserId());
             }
         }else{
+
+            System.out.println("paso2");
+
             animal.setOwnerUserId(userDTO.getId());
         }
+        System.out.println("paso3");
 
         Breed breed = breedService.getRepository().
             findById(animalRequest.getBreedId()).orElseThrow(
