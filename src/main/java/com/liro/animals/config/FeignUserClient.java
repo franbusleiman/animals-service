@@ -15,4 +15,7 @@ public interface FeignUserClient {
 
     @RequestMapping(method = RequestMethod.GET, value = "/users/identificationNr/{id}")
     ResponseEntity<UserResponseDTO> getUserByIdentificationNr(@PathVariable("id") String id);
+
+    @RequestMapping(method = RequestMethod.GET, value = "/users/{id}")
+    ResponseEntity<UserResponseDTO> getUserById(@PathVariable("id") String id);
 }

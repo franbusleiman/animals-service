@@ -9,5 +9,7 @@ public interface UserService {
 
     UserResponseDTO getUserByEmail(String email);
     UserResponseDTO getUserByIdentificationNr(Long identificationNr);
+    UserResponseDTO getUserById(Long id);
+
 
 }

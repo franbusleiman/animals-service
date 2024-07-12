@@ -6,6 +6,7 @@ import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.UserResponseDTO;
 import com.liro.animals.dto.mappers.AnimalMapper;
+import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.exceptions.ResourceNotFoundException;
 import com.liro.animals.model.dbentities.Animal;
@@ -345,18 +346,30 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Page<AnimalResponse> getAnimalsByNameAndVetId(Pageable pageable, String name, UserDTO userDTO) {
+    public Page<AnimalCompleteResponse> getAnimalsByNameAndVetId(Pageable pageable, String name, UserDTO userDTO) {
 
         return animalRepository.findAllByNameContainingAndMainVetUserId(name, userDTO.getId(), pageable)
-                .map(animalMapper::animalToAnimalResponse);
+                .map(animal -> {
+
+                    UserResponseDTO userDTO1 = userService.getUserById(animal.getOwnerUserId());
+
+                    AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);
+                    animalResponse.setOwner(userDTO1);
+                    return  animalResponse;
+                });
     }
 
     @Override
-    public Page<AnimalResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni) {
+    public Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni) {
 
         UserResponseDTO userDTO1 = userService.getUserByIdentificationNr(dni);
 
         return animalRepository.findAllByOwnerUserId(userDTO1.getId(), pageable)
-                .map(animalMapper::animalToAnimalResponse);
+                .map(animal -> {
+
+                            AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);
+                            animalResponse.setOwner(userDTO1);
+                            return  animalResponse;
+                });
     }
 }

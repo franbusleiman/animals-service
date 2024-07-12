@@ -24,4 +24,10 @@ public class UserServiceImpl implements UserService {
         return feignUserClient.getUserByIdentificationNr(String.valueOf(identificationNr)).getBody();
 
     }
+
+    @Override
+    public UserResponseDTO getUserById(Long id) {
+        return feignUserClient.getUserById(String.valueOf(id)).getBody();
+
+    }
 }

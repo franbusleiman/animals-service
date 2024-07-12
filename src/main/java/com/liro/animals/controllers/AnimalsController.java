@@ -4,6 +4,7 @@ package com.liro.animals.controllers;
 import com.liro.animals.dto.AnimalDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.ApiResponse;
+import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.service.AnimalService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +39,9 @@ public class AnimalsController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Page<AnimalResponse>> getAnimalsBySearchCriteria(Pageable pageable,
-                                                                           @RequestParam("param") String param,
-                                                                           @RequestHeader(name = "Authorization", required = false) String token) {
+    public ResponseEntity<Page<AnimalCompleteResponse>> getAnimalsBySearchCriteria(Pageable pageable,
+                                                                                   @RequestParam("param") String param,
+                                                                                   @RequestHeader(name = "Authorization", required = false) String token) {
 
 
         try {

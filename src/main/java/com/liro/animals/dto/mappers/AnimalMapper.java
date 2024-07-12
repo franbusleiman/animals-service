@@ -3,6 +3,7 @@ package com.liro.animals.dto.mappers;
 import com.liro.animals.dto.AnimalDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.RecordDTO;
+import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalsSharedUsers;
@@ -17,6 +18,10 @@ public interface AnimalMapper {
     @Mapping(target = "breedId", source = "breed.id")
     @Mapping(target = "mainColorHex", source = "mainColor.hex")
     AnimalResponse animalToAnimalResponse(Animal animal);
+
+    @Mapping(target = "breedId", source = "breed.id")
+    @Mapping(target = "mainColorHex", source = "mainColor.hex")
+    AnimalCompleteResponse animalToAnimalCompleteResponse(Animal animal);
 
     @Mapping(target = "validCastrated", ignore = true)
     @Mapping(target = "validBreed", ignore = true)
