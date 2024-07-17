@@ -6,6 +6,7 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.client.RestTemplate;
@@ -74,9 +75,16 @@ public class RestTemplateConfig {
                 .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo())
                 .globalResponseMessage(RequestMethod.GET, list)
-                .globalResponseMessage(RequestMethod.POST, list);
+                .globalResponseMessage(RequestMethod.POST, list)
+            .directModelSubstitute(Pageable.class, SwaggerPageable.class);
+    }
 
+    private static class SwaggerPageable {
+        private Integer page;
+        private Integer size;
+        private List<String> sort;
 
+        // Getters and setters
     }
 
 
