@@ -44,6 +44,9 @@ public class AnimalsController {
                                                                                    @RequestHeader(name = "Authorization", required = false) String token) {
 
 
+        System.out.println("Page number: " + pageable.getPageNumber());
+        System.out.println("Page size: " + pageable.getPageSize());
+
         try {
             return ResponseEntity.ok(animalService.getAnimalsByOwnerDni(pageable, Long.valueOf(param)));
         } catch (NumberFormatException e) {

@@ -362,6 +362,9 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni) {
 
+        System.out.println("Page number: " + pageable.getPageNumber());
+        System.out.println("Page size: " + pageable.getPageSize());
+
         UserResponseDTO userDTO1 = userService.getUserByIdentificationNr(dni);
 
         return animalRepository.findAllByOwnerUserId(userDTO1.getId(), pageable)
