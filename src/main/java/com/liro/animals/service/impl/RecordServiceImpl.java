@@ -94,7 +94,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public RecordResponse createRecord(RecordDTO recordDto, UserDTO userDTO) {
-            Animal animal = util.validatePermissions(recordDto.getAnimalId(), userDTO,
+        Animal animal = util.validatePermissions(recordDto.getAnimalId(), userDTO,
             true, false, true, false);
         Record record = recordMapper.recordDtoToRecord(recordDto);
 

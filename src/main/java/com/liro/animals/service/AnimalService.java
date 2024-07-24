@@ -41,6 +41,6 @@ public interface AnimalService {
     Page<AnimalsSharedClientProfilesWADTO> getSharedAnimals(Pageable pageable, UserDTO userDTO);
 
     Page<AnimalResponse> getOwnAnimals(Pageable pageable, UserDTO userDTO);
-    Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni);
+    Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni, UserDTO userDTO);
     Page<AnimalCompleteResponse> getAnimalsByNameAndVetId(Pageable pageable, String name, UserDTO userDTO);
 }

@@ -1,8 +1,6 @@
 package com.liro.animals.dto.responses;
 
-import com.liro.animals.dto.AnimalDTO;
-import com.liro.animals.dto.AnimalsSharedClientProfilesDTO;
-import com.liro.animals.dto.UserResponseDTO;
+import com.liro.animals.dto.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,6 +19,9 @@ public class AnimalCompleteResponse extends AnimalDTO {
     private Long id;
 
     private UserResponseDTO owner;
+    private BreedResponse breed;
+    private AnimalTypeResponse animalType;
+    private RecordResponse record;
     private Set<AnimalsSharedClientProfilesDTO> sharedWith;
     private boolean disabled;
     private boolean death;

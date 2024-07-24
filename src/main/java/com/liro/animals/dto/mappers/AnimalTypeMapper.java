@@ -1,5 +1,6 @@
 package com.liro.animals.dto.mappers;
 
+import com.liro.animals.dto.AnimalDTO;
 import com.liro.animals.dto.AnimalTypeDTO;
 import com.liro.animals.dto.responses.AnimalTypeResponse;
 import com.liro.animals.model.dbentities.AnimalType;

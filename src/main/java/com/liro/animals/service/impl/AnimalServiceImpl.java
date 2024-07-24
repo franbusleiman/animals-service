@@ -6,19 +6,25 @@ import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.UserResponseDTO;
 import com.liro.animals.dto.mappers.AnimalMapper;
+import com.liro.animals.dto.mappers.AnimalTypeMapper;
+import com.liro.animals.dto.mappers.BreedMapper;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
+import com.liro.animals.dto.responses.BreedResponse;
+import com.liro.animals.dto.responses.RecordResponse;
 import com.liro.animals.exceptions.ResourceNotFoundException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalColor;
 import com.liro.animals.model.dbentities.AnimalsSharedUsers;
 import com.liro.animals.model.dbentities.Breed;
+import com.liro.animals.model.dbentities.Record;
 import com.liro.animals.model.enums.Castrated;
 import com.liro.animals.repositories.AnimalColorRepository;
 import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.repositories.AnimalsSharedUsersRepository;
 import com.liro.animals.service.AnimalService;
 import com.liro.animals.service.BreedService;
+import com.liro.animals.service.RecordService;
 import com.liro.animals.service.UserService;
 import com.liro.animals.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,8 +42,11 @@ public class AnimalServiceImpl implements AnimalService {
     private final AnimalColorRepository animalColorRepository;
     private final AnimalsSharedUsersRepository animalsSharedUsersRepository;
     private final BreedService breedService;
+    private final BreedMapper breedMapper;
+    private final AnimalTypeMapper animalTypeMapper;
     private final AnimalMapper animalMapper;
     private final UserService userService;
+    private final RecordService recordService;
     private final Util util;
 
     @Autowired
@@ -47,7 +56,7 @@ public class AnimalServiceImpl implements AnimalService {
                              BreedService breedService,
                              AnimalMapper animalMapper,
                              UserService userService,
-                             Util util) {
+                             Util util, BreedMapper breedMapper, AnimalTypeMapper animalTypeMapper, RecordService recordService) {
         this.animalRepository = animalRepository;
         this.animalColorRepository = animalColorRepository;
         this.animalsSharedUsersRepository = animalsSharedUsersRepository;
@@ -55,6 +64,9 @@ public class AnimalServiceImpl implements AnimalService {
         this.animalMapper = animalMapper;
         this.userService = userService;
         this.util = util;
+        this.breedMapper = breedMapper;
+        this.animalTypeMapper = animalTypeMapper;
+        this.recordService = recordService;
     }
 
     @Override
@@ -360,7 +372,7 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni) {
+    public Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni, UserDTO userDTO) {
 
         System.out.println("Page number: " + pageable.getPageNumber());
         System.out.println("Page size: " + pageable.getPageSize());
@@ -372,7 +384,10 @@ public class AnimalServiceImpl implements AnimalService {
 
                             AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);
                             animalResponse.setOwner(userDTO1);
-                            return  animalResponse;
+                            animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
+                            animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
+                            animalResponse.setRecord(recordService.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L, userDTO));
+                    return  animalResponse;
                 });
     }
 }
