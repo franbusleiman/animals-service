@@ -8,6 +8,7 @@ import com.liro.animals.dto.UserResponseDTO;
 import com.liro.animals.dto.mappers.AnimalMapper;
 import com.liro.animals.dto.mappers.AnimalTypeMapper;
 import com.liro.animals.dto.mappers.BreedMapper;
+import com.liro.animals.dto.mappers.RecordMapper;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.dto.responses.BreedResponse;
@@ -22,6 +23,7 @@ import com.liro.animals.model.enums.Castrated;
 import com.liro.animals.repositories.AnimalColorRepository;
 import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.repositories.AnimalsSharedUsersRepository;
+import com.liro.animals.repositories.RecordRepository;
 import com.liro.animals.service.AnimalService;
 import com.liro.animals.service.BreedService;
 import com.liro.animals.service.RecordService;
@@ -46,7 +48,8 @@ public class AnimalServiceImpl implements AnimalService {
     private final AnimalTypeMapper animalTypeMapper;
     private final AnimalMapper animalMapper;
     private final UserService userService;
-    private final RecordService recordService;
+    private final RecordMapper recordMapper;
+    private final RecordRepository recordRepository;
     private final Util util;
 
     @Autowired
@@ -56,7 +59,11 @@ public class AnimalServiceImpl implements AnimalService {
                              BreedService breedService,
                              AnimalMapper animalMapper,
                              UserService userService,
-                             Util util, BreedMapper breedMapper, AnimalTypeMapper animalTypeMapper, RecordService recordService) {
+                             Util util,
+                             BreedMapper breedMapper,
+                             AnimalTypeMapper animalTypeMapper,
+                             RecordMapper recordMapper,
+                             RecordRepository recordRepository) {
         this.animalRepository = animalRepository;
         this.animalColorRepository = animalColorRepository;
         this.animalsSharedUsersRepository = animalsSharedUsersRepository;
@@ -66,7 +73,8 @@ public class AnimalServiceImpl implements AnimalService {
         this.util = util;
         this.breedMapper = breedMapper;
         this.animalTypeMapper = animalTypeMapper;
-        this.recordService = recordService;
+        this.recordMapper = recordMapper;
+        this.recordRepository = recordRepository;
     }
 
     @Override
@@ -386,7 +394,7 @@ public class AnimalServiceImpl implements AnimalService {
                             animalResponse.setOwner(userDTO1);
                             animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
                             animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
-                            animalResponse.setRecord(recordService.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L, userDTO));
+                            animalResponse.setRecord(recordMapper.recordToRecordResponse(recordRepository.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L).orElseGet(null)));
                     return  animalResponse;
                 });
     }
