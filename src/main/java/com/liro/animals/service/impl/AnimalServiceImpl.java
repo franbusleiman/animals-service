@@ -394,7 +394,7 @@ public class AnimalServiceImpl implements AnimalService {
                             animalResponse.setOwner(userDTO1);
                             animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
                             animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
-                            animalResponse.setRecord(recordMapper.recordToRecordResponse(recordRepository.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L).orElseGet(null)));
+                            animalResponse.setRecord(recordMapper.recordToRecordResponse(recordRepository.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L).orElseGet(() ->new Record())));
                     return  animalResponse;
                 });
     }
