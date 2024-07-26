@@ -3,9 +3,11 @@ package com.liro.animals.dto.responses;
 
 import com.liro.animals.dto.AnimalDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesDTO;
+import com.liro.animals.model.dbentities.AnimalColor;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import lombok.AllArgsConstructor;
@@ -29,4 +31,5 @@ public class AnimalResponse extends AnimalDTO {
     private Set<AnimalsSharedClientProfilesDTO> sharedWith;
     private boolean disabled;
     private boolean death;
+    private Set<AnimalColor> colors;
 }
