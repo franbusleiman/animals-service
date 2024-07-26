@@ -19,5 +19,5 @@ public class UserResponseDTO {
     private String name;
     private String surname;
     private String identificationNr;
-    private String mail;
+    private String email;
 }
