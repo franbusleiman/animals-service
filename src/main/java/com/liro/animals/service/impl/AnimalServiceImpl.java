@@ -81,6 +81,7 @@ public class AnimalServiceImpl implements AnimalService {
     public AnimalResponse getAnimalResponse(Long animalId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
             false, false, true, false);
+
         return animalMapper.animalToAnimalResponse(animal);
     }
 

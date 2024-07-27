@@ -31,4 +31,5 @@ public class AnimalResponse extends AnimalDTO {
     private Set<AnimalsSharedClientProfilesDTO> sharedWith;
     private boolean disabled;
     private boolean death;
+    private Set<AnimalColorResponse> colors;
 }

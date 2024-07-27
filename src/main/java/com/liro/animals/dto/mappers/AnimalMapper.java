@@ -12,7 +12,7 @@ import com.liro.animals.model.dbentities.Record;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = AnimalColorMapper.class)
 public interface AnimalMapper {
 
     @Mapping(target = "breedId", source = "breed.id")
