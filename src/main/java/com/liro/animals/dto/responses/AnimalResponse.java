@@ -27,6 +27,8 @@ public class AnimalResponse extends AnimalDTO {
 
     private Long id;
 
+    private BreedResponse breed;
+    private AnimalTypeResponse animalType;
     private Long ownerUserId;
     private Set<AnimalsSharedClientProfilesDTO> sharedWith;
     private boolean disabled;

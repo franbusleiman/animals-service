@@ -72,7 +72,7 @@ public class Animal {
     private AnimalColor mainColor;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "breed_id", nullable = false)
+    @JoinColumn(name = "breed_id", nullable = false) 
     private Breed breed;
 
     @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "animal")
