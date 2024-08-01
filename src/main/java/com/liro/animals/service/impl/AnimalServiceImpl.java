@@ -82,7 +82,12 @@ public class AnimalServiceImpl implements AnimalService {
         Animal animal = util.validatePermissions(animalId, userDTO,
             false, false, true, false);
 
-        return animalMapper.animalToAnimalResponse(animal);
+        AnimalResponse animalResponse =  animalMapper.animalToAnimalResponse(animal);
+
+        animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
+        animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
+
+        return animalResponse;
     }
 
     @Override

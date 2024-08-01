@@ -17,6 +17,7 @@ public interface AnimalMapper {
 
     @Mapping(target = "breedId", source = "breed.id")
     @Mapping(target = "mainColorHex", source = "mainColor.hex")
+    @Mapping(target = "mainColorHex", source = "mainColor.hex")
     AnimalResponse animalToAnimalResponse(Animal animal);
 
     @Mapping(target = "breedId", source = "breed.id")
