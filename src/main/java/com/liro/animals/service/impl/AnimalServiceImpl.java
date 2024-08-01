@@ -211,6 +211,7 @@ public class AnimalServiceImpl implements AnimalService {
         Util.updateIfNotNull(animal::setBornHeight, animalRequest.getBornHeight());
         Util.updateIfNotNull(animal::setBornLong, animalRequest.getBornLong());
         Util.updateIfNotNull(animal::setSurname, animalRequest.getSurname());
+        Util.updateIfNotNull(animal::setName, animalRequest.getName());
 
         animalRepository.save(animal);
     }
