@@ -26,8 +26,6 @@ public class Breed {
     private String details;
     private String countryOfOrigin;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "breed")
-    private Set<AnimalData> animalData;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "animal_type_id", nullable = false)

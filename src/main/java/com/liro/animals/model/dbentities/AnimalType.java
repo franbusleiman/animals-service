@@ -28,9 +28,6 @@ public class AnimalType {
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "animalType")
     private Set<Breed> breeds;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "animalType")
-    private Set<AnimalData> animalData;
-
     @ManyToMany
     @JoinTable(
             name = "animal_types_groups",

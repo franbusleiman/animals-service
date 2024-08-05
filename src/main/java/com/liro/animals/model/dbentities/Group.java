@@ -22,9 +22,6 @@ public class Group {
     @Column(unique = true, nullable = false)
     private String groupName;
 
-    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "group")
-    private Set<AnimalData> animalData;
-
     @ManyToMany(mappedBy = "groups")
     private Set<AnimalType> animalTypes;
 
