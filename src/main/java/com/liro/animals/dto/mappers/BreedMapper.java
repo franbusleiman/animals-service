@@ -12,7 +12,6 @@ public interface BreedMapper {
     @Mapping(target = "animalTypeId", source = "animalType.id")
     BreedResponse breedToBreedResponse(Breed breed);
 
-    @Mapping(target = "animalData", ignore = true)
     @Mapping(target = "animalType", ignore = true)
     @Mapping(target = "animals", ignore = true)
     Breed breedDtoToBreed(BreedDTO breedDTO);
