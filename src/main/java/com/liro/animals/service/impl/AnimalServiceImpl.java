@@ -13,6 +13,7 @@ import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.dto.responses.BreedResponse;
 import com.liro.animals.dto.responses.RecordResponse;
+import com.liro.animals.exceptions.BadRequestException;
 import com.liro.animals.exceptions.ResourceNotFoundException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalColor;
@@ -283,9 +284,13 @@ public class AnimalServiceImpl implements AnimalService {
     public void decreaseNumberOfPhotos(Long animalId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
             true, false, true, false);
-        animal.setNumberOfPhotos(animal.getNumberOfPhotos() - 1);
+        if (animal.getNumberOfPhotos() > 0){
+            animal.setNumberOfPhotos(animal.getNumberOfPhotos() - 1);
+            animalRepository.save(animal);
 
-        animalRepository.save(animal);
+        }else throw new BadRequestException("The number of photos cannot be less than 0!");
+
+
     }
 
     @Override
