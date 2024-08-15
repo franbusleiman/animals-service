@@ -9,6 +9,8 @@ import com.liro.animals.dto.responses.AnimalResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface AnimalService {
 
     AnimalResponse getAnimalResponse(Long animalId, UserDTO userDTO);
@@ -41,6 +43,8 @@ public interface AnimalService {
     Page<AnimalsSharedClientProfilesWADTO> getSharedAnimals(Pageable pageable, UserDTO userDTO);
 
     Page<AnimalResponse> getOwnAnimals(Pageable pageable, UserDTO userDTO);
-    Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni, UserDTO userDTO);
+    List<AnimalCompleteResponse> getAnimalsByUserId(Long userId);
     Page<AnimalCompleteResponse> getAnimalsByNameAndVetId(Pageable pageable, String name, UserDTO userDTO);
+    Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni, UserDTO userDTO);
+
 }

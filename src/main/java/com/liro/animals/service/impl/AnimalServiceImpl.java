@@ -36,7 +36,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AnimalServiceImpl implements AnimalService {
@@ -379,6 +381,20 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
+    public List<AnimalCompleteResponse> getAnimalsByUserId(Long userId) {
+        return animalRepository.findAllByOwnerUserId(userId)
+                .stream()
+                .map(animal -> {
+
+                    AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);
+                    animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
+                    animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
+                    return animalResponse;
+                })
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Page<AnimalCompleteResponse> getAnimalsByNameAndVetId(Pageable pageable, String name, UserDTO userDTO) {
 
         return animalRepository.findAllByNameContainingAndMainVetUserId(name, userDTO.getId(), pageable)
@@ -399,8 +415,6 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni, UserDTO userDTO) {
 
-        System.out.println("Page number: " + pageable.getPageNumber());
-        System.out.println("Page size: " + pageable.getPageSize());
 
         UserResponseDTO userDTO1 = userService.getUserByIdentificationNr(dni);
 

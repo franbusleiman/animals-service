@@ -23,6 +23,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.net.URI;
+import java.util.List;
 
 import static com.liro.animals.util.Util.getUser;
 
@@ -60,6 +61,13 @@ public class AnimalsController {
 
             return ResponseEntity.ok(animalService.getAnimalsByNameAndVetId(pageable, param, getUser(token)));
         }
+    }
+
+    @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, value = "/user/{userId}")
+    public ResponseEntity<List<AnimalCompleteResponse>> getAnimalsByUserId(@RequestParam("userId") Long userId) {
+
+            return ResponseEntity.ok(animalService.getAnimalsByUserId(userId));
+
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
