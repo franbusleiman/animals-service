@@ -64,7 +64,7 @@ public class AnimalsController {
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, value = "/user/{userId}")
-    public ResponseEntity<List<AnimalCompleteResponse>> getAnimalsByUserId(@RequestParam("userId") Long userId) {
+    public ResponseEntity<List<AnimalCompleteResponse>> getAnimalsByUserId(@PathVariable("userId") Long userId) {
 
             return ResponseEntity.ok(animalService.getAnimalsByUserId(userId));
 
