@@ -240,15 +240,19 @@ public class AnimalServiceImpl implements AnimalService {
 
         if (animal.getSharedWith() == null) {
             animal.setSharedWith(new HashSet<>());
-            animal.getSharedWith().add(AnimalsSharedUsers.builder()
+        }
+
+// Añadir el nuevo usuario a la colección `sharedWith`
+        animal.getSharedWith().add(AnimalsSharedUsers.builder()
                 .animal(animal)
                 .userId(userToShare.getId())
                 .readOnly(readOnly)
                 .build());
-            System.out.println("---------------------- Animal pre guardado con usuario" + userDTO.toString());
-            animalRepository.save(animal);
-            System.out.println("---------------------- Animal guardado con usuario" + userDTO.toString());
-        }
+
+        System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.toString());
+        animalRepository.save(animal);
+        System.out.println("---------------------- Animal guardado con usuario " + userDTO.toString());
+
 
 
 
