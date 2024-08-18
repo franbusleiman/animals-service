@@ -236,27 +236,39 @@ public class AnimalServiceImpl implements AnimalService {
 
 
         Animal animal = util.validatePermissions(animalId, userDTO,
-            true, true, false, false);
+                true, true, false, false);
 
-        Optional<AnimalsSharedUsers> animalsSharedClientProfiles = animalsSharedUsersRepository
-            .findByAnimalIdAndUserId(animalId, userToShare.getId());
-        System.out.println("animalsSharedClientProfiles = " + animalsSharedClientProfiles);
-        if (animalsSharedClientProfiles.isPresent()) {
-            if (animalsSharedClientProfiles.get().getReadOnly() != readOnly) {
-                animalsSharedClientProfiles.get().setReadOnly(readOnly);
-
-                animalsSharedUsersRepository.save(animalsSharedClientProfiles.get());
-            }
-        } else {
-            if (animal.getSharedWith() == null) animal.setSharedWith(new HashSet<>());
-            animal.getSharedWith().add(AnimalsSharedUsers.builder()
+        if (animal.getSharedWith() == null) {
+            animal.setSharedWith(new HashSet<>());
+        animal.getSharedWith().add(AnimalsSharedUsers.builder()
                 .animal(animal)
                 .userId(userToShare.getId())
                 .readOnly(readOnly)
                 .build());
-
-            animalRepository.save(animal);
+        animalRepository.save(animal);
         }
+
+
+
+//        Optional<AnimalsSharedUsers> animalsSharedClientProfiles = animalsSharedUsersRepository
+//            .findByAnimalIdAndUserId(animalId, userToShare.getId());
+//        System.out.println("animalsSharedClientProfiles = " + animalsSharedClientProfiles);
+//        if (animalsSharedClientProfiles.isPresent()) {
+//            if (animalsSharedClientProfiles.get().getReadOnly() != readOnly) {
+//                animalsSharedClientProfiles.get().setReadOnly(readOnly);
+//
+//                animalsSharedUsersRepository.save(animalsSharedClientProfiles.get());
+//            }
+//        } else {
+//            if (animal.getSharedWith() == null) animal.setSharedWith(new HashSet<>());
+//            animal.getSharedWith().add(AnimalsSharedUsers.builder()
+//                .animal(animal)
+//                .userId(userToShare.getId())
+//                .readOnly(readOnly)
+//                .build());
+//
+//            animalRepository.save(animal);
+//        }
     }
 
     @Override
