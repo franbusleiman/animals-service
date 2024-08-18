@@ -232,12 +232,15 @@ public class AnimalServiceImpl implements AnimalService {
                                        boolean readOnly, UserDTO userDTO) {
         UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
 
+        System.out.println("userToShare = " + userToShare);
+
 
         Animal animal = util.validatePermissions(animalId, userDTO,
             true, true, false, false);
 
         Optional<AnimalsSharedUsers> animalsSharedClientProfiles = animalsSharedUsersRepository
             .findByAnimalIdAndUserId(animalId, userToShare.getId());
+        System.out.println("animalsSharedClientProfiles = " + animalsSharedClientProfiles);
         if (animalsSharedClientProfiles.isPresent()) {
             if (animalsSharedClientProfiles.get().getReadOnly() != readOnly) {
                 animalsSharedClientProfiles.get().setReadOnly(readOnly);
