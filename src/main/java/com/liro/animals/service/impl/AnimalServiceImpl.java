@@ -232,7 +232,7 @@ public class AnimalServiceImpl implements AnimalService {
                                        boolean readOnly, UserDTO userDTO) {
         UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
 
-        System.out.println("userToShare = " + userToShare);
+        System.out.println("userToShareAAAAAAAAAAAAAAAAA = " + userToShare);
 
 
         Animal animal = util.validatePermissions(animalId, userDTO,
@@ -240,12 +240,12 @@ public class AnimalServiceImpl implements AnimalService {
 
         if (animal.getSharedWith() == null) {
             animal.setSharedWith(new HashSet<>());
-        animal.getSharedWith().add(AnimalsSharedUsers.builder()
+            animal.getSharedWith().add(AnimalsSharedUsers.builder()
                 .animal(animal)
                 .userId(userToShare.getId())
                 .readOnly(readOnly)
                 .build());
-        animalRepository.save(animal);
+            animalRepository.save(animal);
         }
 
 
