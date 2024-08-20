@@ -24,7 +24,7 @@ public class AnimalsSharedUsers {
     private Animal animal;
 
     @Column(nullable = false)
-    private Long ownerUserId;
+    private Long userId;
 
     private Boolean readOnly;
 
