@@ -20,8 +20,7 @@ public class AnimalsSharedUsers {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "animal_id")
-    private Animal animal;
+    private Long animalId;
 
     @Column(nullable = false)
     private Long userId;
