@@ -23,10 +23,7 @@ import com.liro.animals.repositories.AnimalColorRepository;
 import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.repositories.AnimalsSharedUsersRepository;
 import com.liro.animals.repositories.RecordRepository;
-import com.liro.animals.service.AnimalService;
-import com.liro.animals.service.BreedService;
-import com.liro.animals.service.RecordService;
-import com.liro.animals.service.UserService;
+import com.liro.animals.service.*;
 import com.liro.animals.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -49,6 +46,7 @@ public class AnimalServiceImpl implements AnimalService {
     private final AnimalTypeMapper animalTypeMapper;
     private final AnimalMapper animalMapper;
     private final UserService userService;
+    private final AnimalsSharedUsersService animalsSharedUsersService;
     private final RecordMapper recordMapper;
     private final RecordRepository recordRepository;
     private final Util util;
@@ -64,7 +62,8 @@ public class AnimalServiceImpl implements AnimalService {
                              BreedMapper breedMapper,
                              AnimalTypeMapper animalTypeMapper,
                              RecordMapper recordMapper,
-                             RecordRepository recordRepository) {
+                             RecordRepository recordRepository,
+                             AnimalsSharedUsersService animalsSharedUsersService) {
         this.animalRepository = animalRepository;
         this.animalColorRepository = animalColorRepository;
         this.animalsSharedUsersRepository = animalsSharedUsersRepository;
@@ -76,6 +75,7 @@ public class AnimalServiceImpl implements AnimalService {
         this.animalTypeMapper = animalTypeMapper;
         this.recordMapper = recordMapper;
         this.recordRepository = recordRepository;
+        this.animalsSharedUsersService = animalsSharedUsersService;
     }
 
     @Override
@@ -228,25 +228,8 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void changeShareStateAnimal(Long animalId, String shareToEmail,
                                        boolean readOnly, UserDTO userDTO) {
-        UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
 
-        System.out.println("userToShareAAAAAAAAAAAAAAAAA = " + userToShare.toString() + userToShare.getName());
-
-
-        Animal animal = util.validatePermissions(animalId, userDTO,
-                true, true, false, false);
-
-        if (animal.getSharedWith() == null) {
-            animal.setSharedWith(new HashSet<>());
-            animal.getSharedWith().add(AnimalsSharedUsers.builder()
-                .animal(animal)
-                .userId(userToShare.getId())
-                .readOnly(readOnly)
-                .build());
-            System.out.println("---------------------- Animal pre guardado con usuario" + userDTO.toString());
-            animalRepository.save(animal);
-            System.out.println("---------------------- Animal guardado con usuario" + userDTO.toString());
-        }
+        animalsSharedUsersService.createRelation(animalId, readOnly, shareToEmail, userDTO);
 
 
 
