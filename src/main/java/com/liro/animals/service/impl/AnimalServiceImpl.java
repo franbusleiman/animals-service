@@ -229,6 +229,7 @@ public class AnimalServiceImpl implements AnimalService {
     public void changeShareStateAnimal(Long animalId, String shareToEmail,
                                        boolean readOnly, UserDTO userDTO) {
 
+        System.out.println("----------------------- LLAMANDO AL METODO NUEVO --------------------------");
         animalsSharedUsersService.createRelation(animalId, readOnly, shareToEmail, userDTO);
 
 
