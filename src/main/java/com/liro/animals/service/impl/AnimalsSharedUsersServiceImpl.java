@@ -40,6 +40,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                 true, true, false, false);
 
         if (animal.getSharedWith() == null) {
+            System.out.println("------------------------- GETSHAREDWITH == NULL --------------------------");
             animal.setSharedWith(new HashSet<>());
         }
 
@@ -49,7 +50,9 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                 .readOnly(readOnly)
                 .build();
 
+        System.out.println("------ REALCION CREADA -------------------------");
         animal.getSharedWith().add(newSharedUser);
+        System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
 
 
         System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.toString());
