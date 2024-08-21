@@ -45,7 +45,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
         }
 
         AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
-                .animalId(animalId)
+                .animal(animal)
                 .userId(userToShare.getId())
                 .readOnly(readOnly)
                 .build();
