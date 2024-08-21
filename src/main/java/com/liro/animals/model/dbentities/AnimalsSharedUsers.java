@@ -20,7 +20,7 @@ public class AnimalsSharedUsers {
     private Long id;
 
     @ManyToOne
-    private Long animalId;
+    private Long animal;
 
     @Column(nullable = false)
     private Long userId;
