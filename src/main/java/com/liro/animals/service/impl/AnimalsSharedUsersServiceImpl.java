@@ -74,7 +74,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
             animal.getSharedWith().add(newSharedUser);
             System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
 
-            System.out.println("------------------- GUARDANDO TABLACA ---------------------------");
+            System.out.println("------------------- GUARDANDO TABLACA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly());
             animalsSharedUsersRepository.save(newSharedUser);
             System.out.println("------------------- GUARDADO EN TABLACA ---------------------------");
 
