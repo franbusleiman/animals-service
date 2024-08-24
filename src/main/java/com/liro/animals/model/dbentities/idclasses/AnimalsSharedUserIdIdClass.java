@@ -13,7 +13,7 @@ import java.util.Objects;
 @Embeddable
 public class AnimalsSharedUserIdIdClass implements Serializable {
 
-    private Long animalId;
+    private Long animal;
     private Long userId;
 
 
@@ -21,7 +21,7 @@ public class AnimalsSharedUserIdIdClass implements Serializable {
     }
 
     public AnimalsSharedUserIdIdClass(Long animal, Long userId) {
-        this.animalId = animal;
+        this.animal= animal;
         this.userId = userId;
     }
 
@@ -30,12 +30,12 @@ public class AnimalsSharedUserIdIdClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AnimalsSharedUserIdIdClass that = (AnimalsSharedUserIdIdClass) o;
-        return Objects.equals(animalId, that.animalId) &&
+        return Objects.equals(animal, that.animal) &&
                 Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(animalId, userId);
+        return Objects.hash(animal, userId);
     }
 }

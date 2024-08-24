@@ -18,7 +18,7 @@ public class AnimalsSharedUsers {
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "animal_id", nullable = false)
-    private Long animalId;
+    private Animal animal;
 
     @Id
     @Column(name = "user_id",nullable = false)
