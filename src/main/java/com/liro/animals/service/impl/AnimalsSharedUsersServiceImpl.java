@@ -14,6 +14,7 @@ import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 
 @Service
 public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService {
@@ -51,23 +52,29 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
             animal.setSharedWith(new HashSet<>());
         }
 
-        AnimalsSharedUsers animalsSharedUsers = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId()).orElseThrow(NotFoundException::new);
-        System.out.println("-------------------------- " + animalsSharedUsers.getUserId() + animalsSharedUsers.getAnimal() + "---------------------------");
 
-        AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
-                .animal(animal)
-                .userId(userToShare.getId())
-                .readOnly(readOnly)
-                .build();
+        Optional<AnimalsSharedUsers> animalsSharedUsers = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
 
-        System.out.println("--------------- REALCION CREADA -------------------------");
-        animal.getSharedWith().add(newSharedUser);
-        System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
+        if (animalsSharedUsers != null){
+            if (animalsSharedUsers.get().getReadOnly() != readOnly)
+            System.out.println("-------------------------- " + animalsSharedUsers.get().getUserId() + "---------------------------");
+            animalsSharedUsers.get().setReadOnly(readOnly);
+        }else {
+
+            AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
+                    .animal(animal)
+                    .userId(userToShare.getId())
+                    .readOnly(readOnly)
+                    .build();
+
+            System.out.println("--------------- REALCION CREADA -------------------------");
+            animal.getSharedWith().add(newSharedUser);
+            System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
 
 
-        System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail());
-        animalRepository.save(animal);
-        System.out.println("---------------------- Animal guardado con usuario " + userDTO.getEmail());
-
+            System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail());
+            animalRepository.save(animal);
+            System.out.println("---------------------- Animal guardado con usuario " + userDTO.getEmail());
+        }
     }
 }
