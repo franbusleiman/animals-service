@@ -2,9 +2,11 @@ package com.liro.animals.service.impl;
 
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.UserResponseDTO;
+import com.liro.animals.exceptions.NotFoundException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalsSharedUsers;
 import com.liro.animals.repositories.AnimalRepository;
+import com.liro.animals.repositories.AnimalsSharedUsersRepository;
 import com.liro.animals.service.AnimalsSharedUsersService;
 import com.liro.animals.service.UserService;
 import com.liro.animals.util.Util;
@@ -19,15 +21,18 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
     private final UserService userService;
     private final Util util;
     private final AnimalRepository animalRepository;
+    private final AnimalsSharedUsersRepository animalsSharedUsersRepository;
 
 
 
     public AnimalsSharedUsersServiceImpl(UserService userService,
                                          Util util,
-                                         AnimalRepository animalRepository) {
+                                         AnimalRepository animalRepository,
+                                         AnimalsSharedUsersRepository animalsSharedUsersRepository) {
         this.userService = userService;
         this.util = util;
         this.animalRepository = animalRepository;
+        this.animalsSharedUsersRepository = animalsSharedUsersRepository;
     }
 
     @Override
@@ -46,20 +51,23 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
             animal.setSharedWith(new HashSet<>());
         }
 
+        AnimalsSharedUsers animalsSharedUsers = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId()).orElseThrow(NotFoundException::new);
+        System.out.println("-------------------------- " + animalsSharedUsers.getUserId() + animalsSharedUsers.getAnimal() + "---------------------------");
+
         AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
                 .animal(animal)
                 .userId(userToShare.getId())
                 .readOnly(readOnly)
                 .build();
 
-        System.out.println("------ REALCION CREADA -------------------------");
+        System.out.println("--------------- REALCION CREADA -------------------------");
         animal.getSharedWith().add(newSharedUser);
         System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
 
 
-        System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.toString());
+        System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail());
         animalRepository.save(animal);
-        System.out.println("---------------------- Animal guardado con usuario " + userDTO.toString());
+        System.out.println("---------------------- Animal guardado con usuario " + userDTO.getEmail());
 
     }
 }
