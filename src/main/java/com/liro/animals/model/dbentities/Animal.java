@@ -75,7 +75,7 @@ public class Animal {
     @JoinColumn(name = "breed_id", nullable = false) 
     private Breed breed;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST}, mappedBy = "animal")
+    @OneToMany(mappedBy = "animal")
     private Set<AnimalsSharedUsers> sharedWith = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.REMOVE}, mappedBy = "animal")

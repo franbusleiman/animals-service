@@ -16,7 +16,7 @@ import lombok.*;
 public class AnimalsSharedUsers {
 
     @Id
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
