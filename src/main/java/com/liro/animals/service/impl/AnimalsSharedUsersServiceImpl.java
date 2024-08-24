@@ -55,7 +55,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
 
         Optional<AnimalsSharedUsers> animalsSharedUsers = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
 
-        if (animalsSharedUsers != null){
+        if (animalsSharedUsers.isPresent()){
             if (animalsSharedUsers.get().getReadOnly() != readOnly)
             System.out.println("-------------------------- " + animalsSharedUsers.get().getUserId() + "---------------------------");
             animalsSharedUsers.get().setReadOnly(readOnly);
