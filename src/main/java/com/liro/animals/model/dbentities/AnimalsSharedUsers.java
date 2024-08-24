@@ -16,13 +16,12 @@ import lombok.*;
 public class AnimalsSharedUsers {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @ManyToOne
+    @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
-    @Column(nullable = false)
+    @Id
+    @JoinColumn(nullable = false)
     private Long userId;
 
     private Boolean readOnly;
