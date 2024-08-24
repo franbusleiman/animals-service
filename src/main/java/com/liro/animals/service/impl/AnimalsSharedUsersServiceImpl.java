@@ -55,10 +55,13 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
 
         Optional<AnimalsSharedUsers> animalsSharedUsers = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
 
-        if (animalsSharedUsers.isPresent()){
-            if (animalsSharedUsers.get().getReadOnly() != readOnly)
-            System.out.println("-------------------------- " + animalsSharedUsers.get().getUserId() + "---------------------------");
-            animalsSharedUsers.get().setReadOnly(readOnly);
+        if (animalsSharedUsers.isPresent()) {
+            AnimalsSharedUsers existingSharedUser = animalsSharedUsers.get();
+            if (!existingSharedUser.getReadOnly().equals(readOnly)) {
+                System.out.println("-------------------------- " + existingSharedUser.getUserId() + "---------------------------");
+                existingSharedUser.setReadOnly(readOnly);
+                animalsSharedUsersRepository.save(existingSharedUser);
+            }
         }else {
 
             AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
@@ -71,10 +74,13 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
             animal.getSharedWith().add(newSharedUser);
             System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
 
+            System.out.println("------------------- GUARDANDO TABLACA ---------------------------");
+            animalsSharedUsersRepository.save(newSharedUser);
 
-            System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail());
+            System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail() + "-----------------");
             animalRepository.save(animal);
-            System.out.println("---------------------- Animal guardado con usuario " + userDTO.getEmail());
+            System.out.println("---------------------- Animal guardado con usuario " + userDTO.getEmail() + "---------------------");
+
         }
     }
 }
