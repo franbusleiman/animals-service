@@ -7,6 +7,7 @@ import com.liro.animals.dto.ApiResponse;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.service.AnimalService;
+import com.liro.animals.service.AnimalsSharedUsersService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,13 @@ import static com.liro.animals.util.Util.getUser;
 public class AnimalsController {
 
     private final AnimalService animalService;
+    private final AnimalsSharedUsersService animalsSharedUsersService;
 
     @Autowired
-    public AnimalsController(AnimalService animalService) {
+    public AnimalsController(AnimalService animalService,
+                             AnimalsSharedUsersService animalsSharedUsersService) {
         this.animalService = animalService;
+        this.animalsSharedUsersService = animalsSharedUsersService;
     }
 
     @GetMapping(value = "/{animalId}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -118,7 +122,7 @@ public class AnimalsController {
                                                        @RequestParam("shareToEmail") String shareToEmail,
                                                        @RequestParam("readOnly") boolean readOnly,
                                                        @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.changeShareStateAnimal(animalId, shareToEmail, readOnly, getUser(token));
+        animalsSharedUsersService.createRelation(animalId,readOnly, shareToEmail, getUser(token));
 
         return ResponseEntity.ok().build();
     }
