@@ -52,7 +52,6 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
             animal.setSharedWith(new HashSet<>());
         }
 
-
         Optional<AnimalsSharedUsers> animalsSharedUsers = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
 
         if (animalsSharedUsers.isPresent()) {
@@ -64,8 +63,6 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
             }
         }else {
             try {
-
-
                 AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
                         .animal(animal)
                         .userId(userToShare.getId())
@@ -79,13 +76,10 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                 System.out.println("------------------- GUARDANDO TABLACA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly());
                 animalsSharedUsersRepository.save(newSharedUser);
                 System.out.println("------------------- GUARDADO EN TABLACA ----------------------------");
-
-                System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail() + "-----------------");
-                animalRepository.save(animal);
-                System.out.println("---------------------- Animal guardado con usuario " + userDTO.getEmail() + "---------------------");
             }catch (Exception e){
                 System.out.println("ERROR = " + e);
             }
+            System.out.println(animal.getSharedWith().size());
         }
     }
 }
