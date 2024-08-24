@@ -4,11 +4,13 @@ package com.liro.animals.model.dbentities.idclasses;
 import com.liro.animals.model.dbentities.Animal;
 import lombok.*;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Getter
 @Setter
+@Embeddable
 public class AnimalsSharedUserIdIdClass implements Serializable {
 
     private Long animalId;
