@@ -71,12 +71,12 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                         .readOnly(readOnly)
                         .build();
 
-                System.out.println("--------------- REALCION CREADA -------------------------");
+                System.out.println("---------------- REALCION CREADA --------------------------");
                 animal.getSharedWith().add(newSharedUser);
                 System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
                 System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
                 System.out.println("------------------- GUARDANDO TABLACA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly());
-                animalRepository.save(animal);
+                animalsSharedUsersRepository.save(newSharedUser);
                 System.out.println("------------------- GUARDADO EN TABLACA ----------------------------");
             }catch (Exception e){
                 System.out.println("ERROR = " + e);
