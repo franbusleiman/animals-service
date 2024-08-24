@@ -8,20 +8,23 @@ import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.util.Objects;
 
+import java.io.Serializable;
+import java.util.Objects;
+import javax.persistence.Embeddable;
+
+@Embeddable
 @Getter
 @Setter
-@Embeddable
 public class AnimalsSharedUserIdIdClass implements Serializable {
 
     private Long animal;
     private Long userId;
 
-
     public AnimalsSharedUserIdIdClass() {
     }
 
     public AnimalsSharedUserIdIdClass(Long animal, Long userId) {
-        this.animal= animal;
+        this.animal = animal;
         this.userId = userId;
     }
 
@@ -39,3 +42,4 @@ public class AnimalsSharedUserIdIdClass implements Serializable {
         return Objects.hash(animal, userId);
     }
 }
+
