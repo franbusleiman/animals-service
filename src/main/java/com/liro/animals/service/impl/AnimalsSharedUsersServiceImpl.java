@@ -39,6 +39,8 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
         Animal animal = util.validatePermissions(animalId, userDTO,
                 true, true, false, false);
 
+        System.out.println("----------------------- ANIMAL " + animal.getName() + animal.getSurname() + "--------------------------");
+
         if (animal.getSharedWith() == null) {
             System.out.println("------------------------- GETSHAREDWITH == NULL --------------------------");
             animal.setSharedWith(new HashSet<>());
