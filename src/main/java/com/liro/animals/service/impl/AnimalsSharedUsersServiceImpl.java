@@ -76,6 +76,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
 
             System.out.println("------------------- GUARDANDO TABLACA ---------------------------");
             animalsSharedUsersRepository.save(newSharedUser);
+            System.out.println("------------------- GUARDADO EN TABLACA ---------------------------");
 
             System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail() + "-----------------");
             animalRepository.save(animal);
