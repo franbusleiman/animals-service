@@ -66,6 +66,17 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
         }else {
             try {
                 if (animal != null && userToShare.getId() != null) {
+                    if (animal == null) {
+                        System.out.println("El objeto 'animal' es null");
+                    } else {
+                        System.out.println("El objeto 'animal' tiene id: " + animal.getId());
+                    }
+
+                    if (userToShare.getId() == null) {
+                        System.out.println("El 'userId' es null");
+                    } else {
+                        System.out.println("El 'userId' tiene valor: " + userToShare.getId());
+                    }
                     AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
                             .animal(animal)
                             .userId(userToShare.getId())
