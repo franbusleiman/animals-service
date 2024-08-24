@@ -21,7 +21,7 @@ public class AnimalsSharedUsers {
     private Animal animal;
 
     @Id
-    @JoinColumn(nullable = false)
+    @Column(name = "user_id",nullable = false)
     private Long userId;
 
     private Boolean readOnly;

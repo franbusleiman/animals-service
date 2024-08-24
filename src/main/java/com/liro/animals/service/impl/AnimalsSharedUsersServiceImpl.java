@@ -47,15 +47,17 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
 
         System.out.println("----------------------- ANIMAL " + animal.getName() + animal.getSurname() + "--------------------------");
 
+        Optional<AnimalsSharedUsers> animalsSharedUsersOptional = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
+
+
         if (animal.getSharedWith() == null) {
             System.out.println("------------------------- GETSHAREDWITH == NULL --------------------------");
             animal.setSharedWith(new HashSet<>());
         }
 
-        Optional<AnimalsSharedUsers> animalsSharedUsers = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
 
-        if (animalsSharedUsers.isPresent()) {
-            AnimalsSharedUsers existingSharedUser = animalsSharedUsers.get();
+        if (animalsSharedUsersOptional.isPresent()) {
+            AnimalsSharedUsers existingSharedUser = animalsSharedUsersOptional.get();
             if (!existingSharedUser.getReadOnly().equals(readOnly)) {
                 System.out.println("-------------------------- " + existingSharedUser.getUserId() + "---------------------------");
                 existingSharedUser.setReadOnly(readOnly);
