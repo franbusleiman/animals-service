@@ -11,15 +11,15 @@ import java.util.Objects;
 @Setter
 public class AnimalsSharedUserIdIdClass implements Serializable {
 
-    private Animal animal;
+    private Long animalId;
     private Long userId;
 
 
     public AnimalsSharedUserIdIdClass() {
     }
 
-    public AnimalsSharedUserIdIdClass(Animal animal, Long userId) {
-        this.animal = animal;
+    public AnimalsSharedUserIdIdClass(Long animal, Long userId) {
+        this.animalId = animal;
         this.userId = userId;
     }
 
@@ -28,12 +28,12 @@ public class AnimalsSharedUserIdIdClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AnimalsSharedUserIdIdClass that = (AnimalsSharedUserIdIdClass) o;
-        return Objects.equals(animal, that.animal) &&
+        return Objects.equals(animalId, that.animalId) &&
                 Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(animal, userId);
+        return Objects.hash(animalId, userId);
     }
 }

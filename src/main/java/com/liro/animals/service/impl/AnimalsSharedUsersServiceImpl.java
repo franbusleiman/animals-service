@@ -78,7 +78,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                         System.out.println("El 'userId' tiene valor: " + userToShare.getId());
                     }
                     AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
-                            .animal(animal)
+                            .animalId(animal.getId())
                             .userId(userToShare.getId())
                             .readOnly(readOnly)
                             .build();
