@@ -65,20 +65,24 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
             }
         }else {
             try {
-                AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
-                        .animal(animal)
-                        .userId(userToShare.getId())
-                        .readOnly(readOnly)
-                        .build();
+                if (animal != null && userToShare.getId() != null) {
+                    AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
+                            .animal(animal)
+                            .userId(userToShare.getId())
+                            .readOnly(readOnly)
+                            .build();
 
-                System.out.println("---------------- REALCION CREADA --------------------------");
-                animal.getSharedWith().add(newSharedUser);
-                System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
-                System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
-                System.out.println("------------------- GUARDANDO TABLACA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly());
-                animalsSharedUsersRepository.save(newSharedUser);
-                System.out.println("------------------- GUARDADO EN TABLACA ----------------------------");
-            }catch (Exception e){
+                    System.out.println("--------------- RELACIÓN CREADA -------------------------");
+                    animal.getSharedWith().add(newSharedUser);
+                    System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
+                    System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
+                    System.out.println("------------------- GUARDANDO EN LA TABLA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly());
+                    animalRepository.save(animal);
+                    System.out.println("------------------- GUARDADO EN LA TABLA ----------------------------");
+                } else {
+                    System.out.println("ERROR: Animal o UserID es null");
+                }
+            } catch (Exception e) {
                 System.out.println("ERROR = " + e);
             }
             System.out.println(animal.getSharedWith().size());
