@@ -17,13 +17,13 @@ import javax.persistence.Embeddable;
 @Setter
 public class AnimalsSharedUserIdIdClass implements Serializable {
 
-    private Long animal;
+    private Animal animal;
     private Long userId;
 
     public AnimalsSharedUserIdIdClass() {
     }
 
-    public AnimalsSharedUserIdIdClass(Long animal, Long userId) {
+    public AnimalsSharedUserIdIdClass(Animal animal, Long userId) {
         this.animal = animal;
         this.userId = userId;
     }
