@@ -72,17 +72,17 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                         .readOnly(readOnly)
                         .build();
 
-//                System.out.println("--------------- REALCION CREADA -------------------------");
-//                animal.getSharedWith().add(newSharedUser);
-//                System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
-//                System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
+                System.out.println("--------------- REALCION CREADA -------------------------");
+                animal.getSharedWith().add(newSharedUser);
+                System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
+                System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
                 System.out.println("------------------- GUARDANDO TABLACA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly());
                 animalsSharedUsersRepository.save(newSharedUser);
                 System.out.println("------------------- GUARDADO EN TABLACA ----------------------------");
 
-//                System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail() + "-----------------");
-//                animalRepository.save(animal);
-//                System.out.println("---------------------- Animal guardado con usuario " + userDTO.getEmail() + "---------------------");
+                System.out.println("---------------------- Animal pre guardado con usuario " + userDTO.getEmail() + "-----------------");
+                animalRepository.save(animal);
+                System.out.println("---------------------- Animal guardado con usuario " + userDTO.getEmail() + "---------------------");
             }catch (Exception e){
                 System.out.println("ERROR = " + e);
             }
