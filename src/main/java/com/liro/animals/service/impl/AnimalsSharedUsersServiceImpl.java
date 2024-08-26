@@ -5,6 +5,7 @@ import com.liro.animals.dto.UserResponseDTO;
 import com.liro.animals.exceptions.NotFoundException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalsSharedUsers;
+import com.liro.animals.model.dbentities.idclasses.AnimalsSharedUserIdIdClass;
 import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.repositories.AnimalsSharedUsersRepository;
 import com.liro.animals.service.AnimalsSharedUsersService;
@@ -59,7 +60,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
         if (animalsSharedUsersOptional.isPresent()) {
             AnimalsSharedUsers existingSharedUser = animalsSharedUsersOptional.get();
             if (!existingSharedUser.getReadOnly().equals(readOnly)) {
-                System.out.println("-------------------------- " + existingSharedUser.getUserId() + "---------------------------");
+                System.out.println("-------------------------- " + existingSharedUser.getId() + "---------------------------");
                 existingSharedUser.setReadOnly(readOnly);
                 animalsSharedUsersRepository.save(existingSharedUser);
             }
@@ -77,9 +78,9 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                     } else {
                         System.out.println("El 'userId' tiene valor: " + userToShare.getId());
                     }
+                    AnimalsSharedUserIdIdClass animalsSharedUserIdIdClass = new AnimalsSharedUserIdIdClass(animal, userToShare.getId());
                     AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
-                            .animal(animal)
-                            .userId(userToShare.getId())
+                            .id(animalsSharedUserIdIdClass)
                             .readOnly(readOnly)
                             .build();
 
@@ -87,7 +88,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                     animal.getSharedWith().add(newSharedUser);
                     System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
                     System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
-                    System.out.println("------------------- GUARDANDO EN LA TABLA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly() + animal.getId());
+                    System.out.println("------------------- GUARDANDO EN LA TABLA ---------------------------" + newSharedUser.getId() + newSharedUser.getReadOnly() + animal.getId());
                     animalsSharedUsersRepository.save(newSharedUser);
                     System.out.println("------------------- GUARDADO EN LA TABLA ----------------------------");
                 } else {
