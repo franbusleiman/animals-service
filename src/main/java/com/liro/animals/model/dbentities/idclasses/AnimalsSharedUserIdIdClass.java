@@ -4,22 +4,25 @@ package com.liro.animals.model.dbentities.idclasses;
 import com.liro.animals.model.dbentities.Animal;
 import lombok.*;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
-import java.io.Serializable;
-import java.util.Objects;
-import javax.persistence.Embeddable;
 
 @Embeddable
 @Getter
 @Setter
 public class AnimalsSharedUserIdIdClass implements Serializable {
 
+    @ManyToOne
+    @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
-    private Long userId;
 
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
     public AnimalsSharedUserIdIdClass() {
     }
 

@@ -15,14 +15,8 @@ import lombok.*;
 @Builder
 public class AnimalsSharedUsers {
 
-    @Id
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "animal_id", nullable = false)
-    private Animal animal;
-
-    @Id
-    @Column(name = "user_id",nullable = false)
-    private Long userId;
+    @EmbeddedId
+    private  AnimalsSharedUserIdIdClass id;
 
     private Boolean readOnly;
 
