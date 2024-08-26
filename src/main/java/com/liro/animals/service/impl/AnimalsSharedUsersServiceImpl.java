@@ -78,6 +78,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                     } else {
                         System.out.println("El 'userId' tiene valor: " + userToShare.getId());
                     }
+
                     AnimalsSharedUserIdIdClass animalsSharedUserIdIdClass = new AnimalsSharedUserIdIdClass(animal, userToShare.getId());
                     AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
                             .id(animalsSharedUserIdIdClass)
