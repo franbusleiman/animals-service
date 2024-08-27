@@ -17,18 +17,15 @@ import java.util.Objects;
 @Setter
 public class AnimalsSharedUserIdIdClass implements Serializable {
 
-    @ManyToOne
-    @JoinColumn(name = "animal_id", nullable = false)
-    private Animal animal;
+    private Long animalId;
 
-    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     public AnimalsSharedUserIdIdClass() {
     }
 
-    public AnimalsSharedUserIdIdClass(Animal animal, Long userId) {
-        this.animal = animal;
+    public AnimalsSharedUserIdIdClass(Long animalId, Long userId) {
+        this.animalId = animalId;
         this.userId = userId;
     }
 
@@ -37,7 +34,7 @@ public class AnimalsSharedUserIdIdClass implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AnimalsSharedUserIdIdClass that = (AnimalsSharedUserIdIdClass) o;
-        return Objects.equals(animal, that.animal) &&
+        return Objects.equals(animalId, that.animalId) &&
                 Objects.equals(userId, that.userId);
     }
 

@@ -17,22 +17,16 @@ import java.util.Objects;
 @Builder
 public class AnimalsSharedUsers {
 
-    @EmbeddedId
-    private  AnimalsSharedUserIdIdClass id;
+    @Id
+    private Long animalId;
+
+    @Id
+    private Long userId;
 
     private Boolean readOnly;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        AnimalsSharedUsers that = (AnimalsSharedUsers) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(readOnly, that.readOnly);
-    }
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Animal animal;
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, readOnly);
-    }
+
 }

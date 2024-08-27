@@ -60,7 +60,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
         if (animalsSharedUsersOptional.isPresent()) {
             AnimalsSharedUsers existingSharedUser = animalsSharedUsersOptional.get();
             if (!existingSharedUser.getReadOnly().equals(readOnly)) {
-                System.out.println("-------------------------- " + existingSharedUser.getId() + "---------------------------");
+                System.out.println("-------------------------- " + existingSharedUser.getUserId() + "---------------------------");
                 existingSharedUser.setReadOnly(readOnly);
                 animalsSharedUsersRepository.save(existingSharedUser);
             }
@@ -79,9 +79,10 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                         System.out.println("El 'userId' tiene valor: " + userToShare.getId());
                     }
 
-                    AnimalsSharedUserIdIdClass animalsSharedUserIdIdClass = new AnimalsSharedUserIdIdClass(animal, userToShare.getId());
                     AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
-                            .id(animalsSharedUserIdIdClass)
+                            .animal(animal)
+                            .userId(userToShare.getId())
+                            .animalId(animal.getId())
                             .readOnly(readOnly)
                             .build();
 
@@ -89,7 +90,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                     animal.getSharedWith().add(newSharedUser);
                     System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
                     System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
-                    System.out.println("------------------- GUARDANDO EN LA TABLA ---------------------------" + newSharedUser.getId() + newSharedUser.getReadOnly() + animal.getId());
+                    System.out.println("------------------- GUARDANDO EN LA TABLA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly() + animal.getId());
                     animalsSharedUsersRepository.save(newSharedUser);
                     System.out.println("------------------- GUARDADO EN LA TABLA ----------------------------");
                 } else {
