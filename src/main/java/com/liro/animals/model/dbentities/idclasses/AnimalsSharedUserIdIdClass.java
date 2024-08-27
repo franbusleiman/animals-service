@@ -40,7 +40,7 @@ public class AnimalsSharedUserIdIdClass implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(animal, userId);
+        return Objects.hash(animalId, userId);
     }
 }
 
