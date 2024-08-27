@@ -17,10 +17,10 @@ import java.util.Objects;
 @Builder
 public class AnimalsSharedUsers {
 
-    @Id
+    @EmbeddedId
     private Long animalId;
 
-    @Id
+    @EmbeddedId
     private Long userId;
 
     private Boolean readOnly;
