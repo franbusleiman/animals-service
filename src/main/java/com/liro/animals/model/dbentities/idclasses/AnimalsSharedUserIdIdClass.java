@@ -12,7 +12,6 @@ import java.io.Serializable;
 import java.util.Objects;
 
 
-@Embeddable
 @Getter
 @Setter
 public class AnimalsSharedUserIdIdClass implements Serializable {

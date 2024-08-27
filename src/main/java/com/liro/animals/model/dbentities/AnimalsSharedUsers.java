@@ -17,10 +17,12 @@ import java.util.Objects;
 @Builder
 public class AnimalsSharedUsers {
 
-    @EmbeddedId
+    @Id
+    @Column(name = "animal_id")
     private Long animalId;
 
-    @EmbeddedId
+    @Id
+    @Column(name = "user_id")
     private Long userId;
 
     private Boolean readOnly;
