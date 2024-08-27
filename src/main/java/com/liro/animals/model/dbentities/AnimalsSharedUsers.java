@@ -18,7 +18,7 @@ import java.util.Objects;
 public class AnimalsSharedUsers {
 
     @Id
-    @Column(name = "animal_id")
+    @Column(name = "animal_id", insertable = false, updatable = false)
     private Long animalId;
 
     @Id
