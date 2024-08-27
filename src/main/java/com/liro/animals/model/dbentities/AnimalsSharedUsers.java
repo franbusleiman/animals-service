@@ -4,6 +4,8 @@ import com.liro.animals.model.dbentities.idclasses.AnimalsSharedUserIdIdClass;
 import javax.persistence.*;
 
 import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import java.util.Objects;
 
@@ -27,7 +29,8 @@ public class AnimalsSharedUsers {
 
     private Boolean readOnly;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     private Animal animal;
 
 
