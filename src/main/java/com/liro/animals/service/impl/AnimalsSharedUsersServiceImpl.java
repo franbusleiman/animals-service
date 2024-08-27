@@ -91,7 +91,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                     System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
                     System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
                     System.out.println("------------------- GUARDANDO EN LA TABLA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly() + animal.getId());
-                    animalsSharedUsersRepository.save(newSharedUser);
+                    animalRepository.save(animal);
                     System.out.println("------------------- GUARDADO EN LA TABLA ----------------------------");
                 } else {
                     System.out.println("ERROR: Animal o UserID es null");
