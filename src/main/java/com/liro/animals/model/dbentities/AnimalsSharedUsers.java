@@ -13,13 +13,13 @@ import lombok.*;
 @Builder
 public class AnimalsSharedUsers {
 
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
+    @Id
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
