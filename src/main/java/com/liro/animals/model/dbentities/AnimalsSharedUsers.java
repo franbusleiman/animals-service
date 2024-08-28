@@ -9,7 +9,6 @@ import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "animals_shared_users")
-@IdClass(AnimalsSharedUserIdClass.class)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -17,19 +16,16 @@ import org.hibernate.annotations.NotFoundAction;
 @Builder
 public class AnimalsSharedUsers {
 
-    @Id
-    @Column(name = "animal_id", insertable = false, updatable = false)
-    private Long animalId;
+    @EmbeddedId
+    private AnimalsSharedUserIdClass animalsSharedUserIdClass;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "animal_id", nullable = false)
+    private Animal animal;
 
     @Id
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     private Boolean readOnly;
-
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @NotFound(action = NotFoundAction.IGNORE)
-    private Animal animal;
-
-
 }
