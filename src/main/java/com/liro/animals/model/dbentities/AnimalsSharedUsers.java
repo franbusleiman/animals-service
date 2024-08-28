@@ -17,7 +17,6 @@ public class AnimalsSharedUsers {
     @JoinColumn(name = "animal_id", nullable = false)
     private Animal animal;
 
-    @Id
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
