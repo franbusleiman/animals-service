@@ -23,7 +23,6 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
     private final AnimalsSharedUsersRepository animalsSharedUsersRepository;
 
 
-
     public AnimalsSharedUsersServiceImpl(UserService userService,
                                          Util util,
                                          AnimalRepository animalRepository,
@@ -45,36 +44,26 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
         Optional<AnimalsSharedUsers> animalsSharedUsersOptional = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
 
 
-        if (animal.getSharedWith() == null) {
-            animal.setSharedWith(new HashSet<>());
-        }
-
-
         if (animalsSharedUsersOptional.isPresent()) {
             AnimalsSharedUsers existingSharedUser = animalsSharedUsersOptional.get();
             if (!existingSharedUser.getReadOnly().equals(readOnly)) {
-                System.out.println("-------------------------- " + existingSharedUser.getUserId() + "---------------------------");
                 existingSharedUser.setReadOnly(readOnly);
                 animalsSharedUsersRepository.save(existingSharedUser);
             }
-        }else {
-            try {
-                    AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
-                            .animal(animal)
-                            .userId(userToShare.getId())
-                            .readOnly(readOnly)
-                            .build();
+        } else {
+            AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
+                    .animal(animal)
+                    .userId(userToShare.getId())
+                    .readOnly(readOnly)
+                    .build();
 
-                    animal.getSharedWith().add(newSharedUser);
-
-                    animalRepository.save(animal);
-
-            } catch (Exception e) {
-                System.out.println("ERROR = " + e);
-            }finally {
-                System.out.println(animal.getSharedWith().size());
-
+            if (animal.getSharedWith() == null) {
+                animal.setSharedWith(new HashSet<>());
             }
+
+            animal.getSharedWith().add(newSharedUser);
+
+            animalsSharedUsersRepository.save(newSharedUser);
         }
     }
 }
