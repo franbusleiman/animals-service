@@ -1,11 +1,8 @@
 package com.liro.animals.model.dbentities;
 
-import com.liro.animals.model.dbentities.idclasses.AnimalsSharedUserIdClass;
 import javax.persistence.*;
 
 import lombok.*;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 @Entity
 @Table(name = "animals_shared_users")
@@ -15,9 +12,6 @@ import org.hibernate.annotations.NotFoundAction;
 @AllArgsConstructor
 @Builder
 public class AnimalsSharedUsers {
-
-    @EmbeddedId
-    private AnimalsSharedUserIdClass animalsSharedUserIdClass;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "animal_id", nullable = false)
