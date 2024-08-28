@@ -2,16 +2,13 @@ package com.liro.animals.service.impl;
 
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.UserResponseDTO;
-import com.liro.animals.exceptions.NotFoundException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalsSharedUsers;
-import com.liro.animals.model.dbentities.idclasses.AnimalsSharedUserIdIdClass;
 import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.repositories.AnimalsSharedUsersRepository;
 import com.liro.animals.service.AnimalsSharedUsersService;
 import com.liro.animals.service.UserService;
 import com.liro.animals.util.Util;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -41,18 +38,14 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
     public void createRelation(Long animalId, Boolean readOnly, String shareToEmail, UserDTO userDTO) {
 
         UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
-        System.out.println("---------------------- = " + userToShare.getName() + userToShare.getEmail() + "---------------------");
 
         Animal animal = util.validatePermissions(animalId, userDTO,
                 true, true, false, false);
-
-        System.out.println("----------------------- ANIMAL " + animal.getName() + animal.getSurname() + "--------------------------");
 
         Optional<AnimalsSharedUsers> animalsSharedUsersOptional = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
 
 
         if (animal.getSharedWith() == null) {
-            System.out.println("------------------------- GETSHAREDWITH == NULL --------------------------");
             animal.setSharedWith(new HashSet<>());
         }
 
@@ -66,19 +59,6 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
             }
         }else {
             try {
-                if (animal != null && userToShare.getId() != null) {
-                    if (animal == null) {
-                        System.out.println("El objeto 'animal' es null");
-                    } else {
-                        System.out.println("El objeto 'animal' tiene id: " + animal.getId());
-                    }
-
-                    if (userToShare.getId() == null) {
-                        System.out.println("El 'userId' es null");
-                    } else {
-                        System.out.println("El 'userId' tiene valor: " + userToShare.getId());
-                    }
-
                     AnimalsSharedUsers newSharedUser = AnimalsSharedUsers.builder()
                             .animal(animal)
                             .userId(userToShare.getId())
@@ -86,20 +66,16 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
                             .readOnly(readOnly)
                             .build();
 
-                    System.out.println("--------------- RELACIÓN CREADA -------------------------");
                     animal.getSharedWith().add(newSharedUser);
-                    System.out.println("------------------- AÑADIENDO A LA LISTA ---------------------------");
-                    System.out.println("------------------LISTA " + animal.getSharedWith().size() + "------------------------");
-                    System.out.println("------------------- GUARDANDO EN LA TABLA ---------------------------" + newSharedUser.getUserId() + newSharedUser.getReadOnly() + animal.getId());
+
                     animalRepository.save(animal);
-                    System.out.println("------------------- GUARDADO EN LA TABLA ----------------------------");
-                } else {
-                    System.out.println("ERROR: Animal o UserID es null");
-                }
+
             } catch (Exception e) {
                 System.out.println("ERROR = " + e);
+            }finally {
+                System.out.println(animal.getSharedWith().size());
+
             }
-            System.out.println(animal.getSharedWith().size());
         }
     }
 }

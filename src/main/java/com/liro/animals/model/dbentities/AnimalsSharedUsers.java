@@ -1,17 +1,15 @@
 package com.liro.animals.model.dbentities;
 
-import com.liro.animals.model.dbentities.idclasses.AnimalsSharedUserIdIdClass;
+import com.liro.animals.model.dbentities.idclasses.AnimalsSharedUserIdClass;
 import javax.persistence.*;
 
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
-import java.util.Objects;
-
 @Entity
 @Table(name = "animals_shared_users")
-@IdClass(AnimalsSharedUserIdIdClass.class)
+@IdClass(AnimalsSharedUserIdClass.class)
 @Getter
 @Setter
 @NoArgsConstructor

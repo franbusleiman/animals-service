@@ -1,29 +1,24 @@
 package com.liro.animals.model.dbentities.idclasses;
 
 
-import com.liro.animals.model.dbentities.Animal;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
 
 @Getter
 @Setter
-public class AnimalsSharedUserIdIdClass implements Serializable {
+public class AnimalsSharedUserIdClass implements Serializable {
 
     private Long animalId;
 
     private Long userId;
 
-    public AnimalsSharedUserIdIdClass() {
+    public AnimalsSharedUserIdClass() {
     }
 
-    public AnimalsSharedUserIdIdClass(Long animalId, Long userId) {
+    public AnimalsSharedUserIdClass(Long animalId, Long userId) {
         this.animalId = animalId;
         this.userId = userId;
     }
@@ -32,7 +27,7 @@ public class AnimalsSharedUserIdIdClass implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AnimalsSharedUserIdIdClass that = (AnimalsSharedUserIdIdClass) o;
+        AnimalsSharedUserIdClass that = (AnimalsSharedUserIdClass) o;
         return Objects.equals(animalId, that.animalId) &&
                 Objects.equals(userId, that.userId);
     }

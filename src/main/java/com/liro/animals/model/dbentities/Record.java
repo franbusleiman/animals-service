@@ -1,11 +1,9 @@
 package com.liro.animals.model.dbentities;
 
-import com.liro.animals.model.dbentities.idclasses.AnimalsSharedUserIdIdClass;
 import javax.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import javax.persistence.*;
 
 @Entity
 @Table(name = "records", indexes = {

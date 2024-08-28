@@ -1,6 +1,5 @@
 package com.liro.animals.model.dbentities;
 
-import com.liro.animals.model.dbentities.idclasses.AnimalsSharedUserIdIdClass;
 import javax.persistence.*;
 import lombok.*;
 
