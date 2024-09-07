@@ -28,6 +28,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.net.URI;
+import java.util.List;
 
 @RestController
 @RequestMapping("/breeds")
@@ -82,6 +83,13 @@ public class BreedsController {
 
         return ResponseEntity.created(location).body(
             new ApiResponse(true, "Breed created successfully"));
+    }
+
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ApiResponse> migrateBreeds(@Valid @RequestBody List<BreedDTO> breedsDto) {
+         breedService.migrateBreeds(breedsDto);
+
+        return ResponseEntity.status(200).build();
     }
 
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})

@@ -7,6 +7,8 @@ import com.liro.animals.repositories.BreedRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface BreedService {
 
     Page<BreedResponse> findAll(Pageable pageable);
@@ -20,6 +22,8 @@ public interface BreedService {
     BreedResponse getBreedResponse(Long breedId);
 
     BreedResponse createBreed(BreedDTO breedDTO);
+    Void migrateBreeds(List<BreedDTO> breedDTOs);
+
 
     void updateBreed(BreedDTO breedDto, Long breedId);
 
