@@ -87,13 +87,6 @@ public class AnimalsController {
                 new ApiResponse(true, "Animal created successfully"));
     }
 
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> createAnimalsByVetMigrator(@RequestBody @Valid List<AnimalDTO> animalRegisters,
-                                                        @RequestParam("vetUserId") Long vetUserId){
-        animalService.createUsersByVetMigrator(animalRegisters, vetUserId);
-
-        return ResponseEntity.ok().build();
-    }
 
     @PutMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> updateAnimal(@Valid @RequestBody AnimalDTO animalRequest,
