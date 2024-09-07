@@ -66,7 +66,7 @@ public class BreedsController {
         return ResponseEntity.ok(breedService.findAllByNameContainingAndAnimalTypeId(nameContaining, animalTypeId, pageable));
     }
 
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/breed", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ApiResponse> createBreed(@Valid @RequestBody BreedDTO breedDto,  @RequestHeader(name = "Authorization", required = false) String token) {
         BreedResponse breedResponse = breedService.createBreed(breedDto);
 
