@@ -2,6 +2,7 @@ package com.liro.animals.controllers;
 
 
 import com.liro.animals.dto.AnimalDTO;
+import com.liro.animals.dto.AnimalMigratorDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.ApiResponse;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
@@ -85,6 +86,13 @@ public class AnimalsController {
 
         return ResponseEntity.created(location).body(
                 new ApiResponse(true, "Animal created successfully"));
+    }
+
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ApiResponse> migrateAnimals(@Valid @RequestBody List<AnimalMigratorDTO> animalMigratorDTOList, @RequestParam("vetUserId") Long vetUserId) {
+        animalService.migrateAnimals(animalMigratorDTOList, vetUserId);
+
+        return ResponseEntity.ok().build();
     }
 
 

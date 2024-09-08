@@ -2,6 +2,7 @@ package com.liro.animals.service;
 
 
 import com.liro.animals.dto.AnimalDTO;
+import com.liro.animals.dto.AnimalMigratorDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
@@ -16,6 +17,9 @@ public interface AnimalService {
     AnimalResponse getAnimalResponse(Long animalId, UserDTO userDTO);
 
     AnimalResponse createAnimal(AnimalDTO animalRequest, UserDTO userDTO);
+
+    Void migrateAnimals(List<AnimalMigratorDTO> animalMigratorDTOList, Long vetUserId);
+
 
     void updateAnimal(AnimalDTO animalRequest, Long animalId, UserDTO userDTO);
 

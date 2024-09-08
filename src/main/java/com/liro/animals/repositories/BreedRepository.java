@@ -8,8 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface BreedRepository extends JpaRepository<Breed, Long> {
+
+    Optional<Breed> findByName(String name);
 
     Page<Breed> findAllByNameContaining(String nameContaining, Pageable pageable);
 
