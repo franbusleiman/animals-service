@@ -88,7 +88,7 @@ public class AnimalsController {
                 new ApiResponse(true, "Animal created successfully"));
     }
 
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/migrate", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ApiResponse> migrateAnimals(@Valid @RequestBody List<AnimalMigratorDTO> animalMigratorDTOList, @RequestParam("vetUserId") Long vetUserId) {
         animalService.migrateAnimals(animalMigratorDTOList, vetUserId);
 
