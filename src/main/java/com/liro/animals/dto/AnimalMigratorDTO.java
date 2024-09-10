@@ -2,10 +2,7 @@ package com.liro.animals.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.liro.animals.model.enums.Sex;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.Date;
@@ -15,6 +12,7 @@ import java.util.Date;
 @SuperBuilder
 @Getter
 @Setter
+@ToString
 public class AnimalMigratorDTO {
     private String name;
     private String surname;

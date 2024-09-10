@@ -139,6 +139,9 @@ public class AnimalServiceImpl implements AnimalService {
 
         animalMigratorDTOList.forEach(animalRequest -> {
 
+
+            System.out.println("New Animal: " + animalRequest);
+
             Animal animal = animalMapper.animalMigratorDtoToAnimal(animalRequest);
 
             animal.setMainVetUserId(vetUserId);
