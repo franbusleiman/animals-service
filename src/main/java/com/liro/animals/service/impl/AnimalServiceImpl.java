@@ -143,7 +143,7 @@ public class AnimalServiceImpl implements AnimalService {
 
             animal.setMainVetUserId(vetUserId);
 
-            Breed breed = breedRepository.findByName(animalRequest.getName()).orElseThrow(
+            Breed breed = breedRepository.findByName(animalRequest.getBreed()).orElseThrow(
                     () -> new ResourceNotFoundException("Breed not found with name: "
                             + animalRequest.getName()));
 
