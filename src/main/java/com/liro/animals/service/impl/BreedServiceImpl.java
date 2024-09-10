@@ -98,28 +98,31 @@ public class BreedServiceImpl implements BreedService {
 
         breedDTOs.forEach(breedDto -> {
 
-            if (breedDto.getName() != null) {
-                breedDto.setName(breedDto.getName().toLowerCase());
+            if (!breedRepository.findByName(breedDto.getName()).isPresent()){
+                if (breedDto.getName() != null) {
+                    breedDto.setName(breedDto.getName().toLowerCase());
+                }
+                if (breedDto.getFormalName() != null) {
+                    breedDto.setFormalName(breedDto.getFormalName().toLowerCase());
+                }
+                Breed breed = breedMapper.breedDtoToBreed(breedDto);
+                breed.setName(breed.getName().toLowerCase());
+                breed.setFormalName(breed.getFormalName().toLowerCase());
+
+                AnimalType animalType = animalTypeRepository.
+                        findById(breedDto.getAnimalTypeId()).orElseThrow(
+                                () -> new ResourceNotFoundException("AnimalType not found with id: "
+                                        + breedDto.getAnimalTypeId()));
+
+                breed.setAnimalType(animalType);
+
+                if (animalType.getBreeds() == null) animalType.setBreeds(new HashSet<>());
+                animalType.getBreeds().add(breed);
+
+                breedRepository.save(breed);
             }
-            if (breedDto.getFormalName() != null) {
-                breedDto.setFormalName(breedDto.getFormalName().toLowerCase());
-            }
-            Breed breed = breedMapper.breedDtoToBreed(breedDto);
-            breed.setName(breed.getName().toLowerCase());
-            breed.setFormalName(breed.getFormalName().toLowerCase());
+            });
 
-            AnimalType animalType = animalTypeRepository.
-                    findById(breedDto.getAnimalTypeId()).orElseThrow(
-                            () -> new ResourceNotFoundException("AnimalType not found with id: "
-                                    + breedDto.getAnimalTypeId()));
-
-            breed.setAnimalType(animalType);
-
-            if (animalType.getBreeds() == null) animalType.setBreeds(new HashSet<>());
-            animalType.getBreeds().add(breed);
-
-             breedRepository.save(breed);
-        });
 
         return null;
     }
