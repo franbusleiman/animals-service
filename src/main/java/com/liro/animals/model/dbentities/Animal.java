@@ -51,6 +51,8 @@ public class Animal {
     private Long bornHeight;
     private Integer numberOfPhotos;
 
+    private String vetterCode;
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Castrated castrated;

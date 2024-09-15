@@ -5,6 +5,7 @@ import com.liro.animals.dto.AnimalMigratorDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.RecordDTO;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
+import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalsSharedUsers;
@@ -20,6 +21,7 @@ public interface AnimalMapper {
     @Mapping(target = "mainColorHex", source = "mainColor.hex")
     AnimalResponse animalToAnimalResponse(Animal animal);
 
+    AnimalMigrationResponse animalToAnimalMigrationResponse(Animal animal);
     @Mapping(target = "breedId", source = "breed.id")
     @Mapping(target = "mainColorHex", source = "mainColor.hex")
     AnimalCompleteResponse animalToAnimalCompleteResponse(Animal animal);

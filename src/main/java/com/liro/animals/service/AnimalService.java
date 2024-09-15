@@ -6,6 +6,7 @@ import com.liro.animals.dto.AnimalMigratorDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
+import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +19,7 @@ public interface AnimalService {
 
     AnimalResponse createAnimal(AnimalDTO animalRequest, UserDTO userDTO);
 
-    Void migrateAnimals(List<AnimalMigratorDTO> animalMigratorDTOList, Long vetUserId);
+    List<AnimalMigrationResponse> migrateAnimals(List<AnimalMigratorDTO> animalMigratorDTOList, Long vetUserId);
 
 
     void updateAnimal(AnimalDTO animalRequest, Long animalId, UserDTO userDTO);

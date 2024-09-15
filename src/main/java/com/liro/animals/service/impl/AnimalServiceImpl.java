@@ -7,6 +7,7 @@ import com.liro.animals.dto.mappers.AnimalTypeMapper;
 import com.liro.animals.dto.mappers.BreedMapper;
 import com.liro.animals.dto.mappers.RecordMapper;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
+import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.exceptions.BadRequestException;
 import com.liro.animals.exceptions.ResourceNotFoundException;
@@ -24,6 +25,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -134,15 +136,16 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Void migrateAnimals(List<AnimalMigratorDTO> animalMigratorDTOList, Long vetUserId) {
+    public List<AnimalMigrationResponse> migrateAnimals(List<AnimalMigratorDTO> animalMigratorDTOList, Long vetUserId) {
 
-
+        List<AnimalMigrationResponse> responses = new ArrayList<>();
         animalMigratorDTOList.forEach(animalRequest -> {
 
 
-            System.out.println("New Animal: " + animalRequest);
-
             Animal animal = animalMapper.animalMigratorDtoToAnimal(animalRequest);
+
+            animal.setVetterCode(vetUserId + "-" + animalRequest.getVetterCode());
+
 
             animal.setMainVetUserId(vetUserId);
 
@@ -155,11 +158,10 @@ public class AnimalServiceImpl implements AnimalService {
             breed.getAnimals().add(animal);
 
 
-            animalMapper.animalToAnimalResponse(
-                    animalRepository.save(animal));
+            responses.add(animalMapper.animalToAnimalMigrationResponse(animalRepository.save(animal)));
         });
 
-        return null;
+        return responses;
     }
 
     @Override

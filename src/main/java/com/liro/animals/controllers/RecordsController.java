@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.List;
 
 import static com.liro.animals.util.Util.getUser;
 
@@ -76,6 +77,14 @@ public class RecordsController {
 
         return ResponseEntity.created(location).body(
             new ApiResponse(true, "Record created successfully"));
+    }
+
+    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ApiResponse> migrateRecords(@Valid @RequestBody List<RecordDTO> recordDtos,
+                                                    @RequestParam(name = "vetUserId",  required = false) Long vetUserId) {
+        Void recordResponse = recordService.migrateRecords(recordDtos, vetUserId);
+
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping(value = "/{recordId}", produces = {MediaType.APPLICATION_JSON_VALUE})

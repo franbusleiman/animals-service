@@ -7,6 +7,8 @@ import com.liro.animals.dto.responses.RecordResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface RecordService {
 
     Page<RecordResponse> findAllByAnimalId(Long animalId, UserDTO userDTO, Pageable pageable);
@@ -21,6 +23,8 @@ public interface RecordService {
     RecordResponse getRecordResponse(Long recordId, UserDTO userDTO);
 
     RecordResponse createRecord(RecordDTO recordDTO, UserDTO userDTO);
+    Void migrateRecords(List<RecordDTO> recordDTOs, Long  vetUserId);
+
 
     void deleteRecord(Long recordId, UserDTO userDTO);
 }

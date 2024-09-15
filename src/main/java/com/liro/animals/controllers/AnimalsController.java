@@ -6,6 +6,7 @@ import com.liro.animals.dto.AnimalMigratorDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.ApiResponse;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
+import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.service.AnimalService;
 import com.liro.animals.service.AnimalsSharedUsersService;
@@ -89,10 +90,9 @@ public class AnimalsController {
     }
 
     @PostMapping(value = "/migrate", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ApiResponse> migrateAnimals(@Valid @RequestBody List<AnimalMigratorDTO> animalMigratorDTOList, @RequestParam("vetUserId") Long vetUserId) {
-        animalService.migrateAnimals(animalMigratorDTOList, vetUserId);
+    public ResponseEntity<List<AnimalMigrationResponse>> migrateAnimals(@Valid @RequestBody List<AnimalMigratorDTO> animalMigratorDTOList, @RequestParam("vetUserId") Long vetUserId) {
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(animalService.migrateAnimals(animalMigratorDTOList, vetUserId));
     }
 
 

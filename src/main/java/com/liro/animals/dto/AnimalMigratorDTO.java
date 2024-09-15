@@ -23,4 +23,5 @@ public class AnimalMigratorDTO {
     private Sex sex;
     private String breed;
     private Long ownerUserId;
+    private String vetterCode;
 }
