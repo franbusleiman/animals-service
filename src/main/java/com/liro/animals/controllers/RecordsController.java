@@ -79,10 +79,10 @@ public class RecordsController {
             new ApiResponse(true, "Record created successfully"));
     }
 
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(value = "/migrate", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ApiResponse> migrateRecords(@Valid @RequestBody List<RecordDTO> recordDtos,
                                                     @RequestParam(name = "vetUserId",  required = false) Long vetUserId) {
-        Void recordResponse = recordService.migrateRecords(recordDtos, vetUserId);
+         recordService.migrateRecords(recordDtos, vetUserId);
 
         return ResponseEntity.ok().build();
     }
