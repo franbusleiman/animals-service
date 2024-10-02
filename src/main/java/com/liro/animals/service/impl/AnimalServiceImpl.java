@@ -420,19 +420,21 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public Page<AnimalCompleteResponse> getAnimalsByNameAndVetId(Pageable pageable, String name, UserDTO userDTO) {
 
-        return animalRepository.findAllByNameContainingAndMainVetUserId(name, userDTO.getId(), pageable)
-                .map(animal -> {
+        if(!name.isEmpty()) {
+            return animalRepository.findAllByNameContainingAndMainVetUserId(name, userDTO.getId(), pageable)
+                    .map(animal -> {
 
-                    UserResponseDTO userDTO1 = userService.getUserById(animal.getOwnerUserId());
+                        UserResponseDTO userDTO1 = userService.getUserById(animal.getOwnerUserId());
 
-                    AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);
-                    animalResponse.setOwner(userDTO1);
-                    animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
-                    animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
-                    animalResponse.setRecord(recordMapper.recordToRecordResponse(recordRepository.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L).orElseGet(() -> new Record())));
+                        AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);
+                        animalResponse.setOwner(userDTO1);
+                        animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
+                        animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
+                        animalResponse.setRecord(recordMapper.recordToRecordResponse(recordRepository.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L).orElseGet(() -> new Record())));
 
-                    return animalResponse;
-                });
+                        return animalResponse;
+                    });
+        }return Page.empty();
     }
 
     @Override
