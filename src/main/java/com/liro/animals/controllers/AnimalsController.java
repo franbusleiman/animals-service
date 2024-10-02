@@ -60,13 +60,15 @@ public class AnimalsController {
 
         System.out.println("Page number: " + pageable.getPageNumber());
         System.out.println("Page size: " + pageable.getPageSize());
+        if (!param.isEmpty()) {
+            try {
+                return ResponseEntity.ok(animalService.getAnimalsByOwnerDni(pageable, Long.valueOf(param), getUser(token)));
+            } catch (NumberFormatException e) {
 
-        try {
-            return ResponseEntity.ok(animalService.getAnimalsByOwnerDni(pageable, Long.valueOf(param), getUser(token)));
-        } catch (NumberFormatException e) {
-
-            return ResponseEntity.ok(animalService.getAnimalsByNameAndVetId(pageable, param, getUser(token)));
+                return ResponseEntity.ok(animalService.getAnimalsByNameAndVetId(pageable, param, getUser(token)));
+            }
         }
+        return null;
     }
 
     @GetMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, value = "/user/{userId}")
