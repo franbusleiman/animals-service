@@ -18,7 +18,6 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     Page<Animal> findAllByOwnerUserId(Long ownerUserId, Pageable pageable);
 
-    Page<Animal> findAllByNameContainingAndMainVetUserId(String nameContaining, Long mainVetUserId, Pageable pageable);
 
     @Query("SELECT DISTINCT a FROM Animal a " +
             "LEFT JOIN a.extraClinics ec " +
