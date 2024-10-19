@@ -154,7 +154,6 @@ public class AnimalsController {
     public ResponseEntity<Void> hasPermissions(@RequestParam("animalId") Long animalId,
                                                @RequestParam("needWritePermissions") Boolean needWritePermissions,
                                                @RequestParam("onlyOwner") Boolean onlyOwner,
-                                               @RequestParam("vetEnabled") Boolean vetEnabled,
                                                @RequestParam("onlyVet") Boolean onlyVet,
                                                @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                                @RequestHeader(name = "Authorization", required = false) String token) {
