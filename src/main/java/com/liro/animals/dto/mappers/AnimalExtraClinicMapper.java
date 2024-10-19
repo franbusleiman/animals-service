@@ -6,7 +6,7 @@ import com.liro.animals.dto.responses.AnimalExtraClinicResponse;
 import com.liro.animals.model.dbentities.AnimalsExtraClinics;
 import org.mapstruct.Mapper;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface AnimalExtraClinicMapper {
 
 
