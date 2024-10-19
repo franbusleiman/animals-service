@@ -1,13 +1,17 @@
 package com.liro.animals.util;
 
 
+import com.liro.animals.config.FeignClinicClientClient;
 import com.liro.animals.dto.UserDTO;
+import com.liro.animals.dto.requests.ClinicClientDTO;
 import com.liro.animals.exceptions.ResourceNotFoundException;
 import com.liro.animals.exceptions.UnauthorizedException;
 import com.liro.animals.model.dbentities.Animal;
-import com.liro.animals.model.dbentities.AnimalsSharedUsers;
+import com.liro.animals.model.dbentities.AnimalsExtraClinics;
+import com.liro.animals.repositories.AnimalExtraClinicsRepository;
 import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.repositories.AnimalsSharedUsersRepository;
+import feign.Feign;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,95 +19,122 @@ import org.springframework.stereotype.Component;
 
 import java.util.Base64;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 @Component
 public class Util {
 
     private final AnimalsSharedUsersRepository animalsSharedUsersRepository;
+    private final AnimalExtraClinicsRepository animalExtraClinicsRepository;
     private final AnimalRepository animalRepository;
+    private final FeignClinicClientClient feignClinicClientClient;
 
     @Autowired
     public Util(AnimalsSharedUsersRepository animalsSharedUsersRepository,
-                AnimalRepository animalRepository) {
+                AnimalRepository animalRepository, AnimalExtraClinicsRepository animalExtraClinicsRepository,
+                FeignClinicClientClient feignClinicClientClient) {
         this.animalsSharedUsersRepository = animalsSharedUsersRepository;
         this.animalRepository = animalRepository;
+        this.animalExtraClinicsRepository = animalExtraClinicsRepository;
+        this.feignClinicClientClient = feignClinicClientClient;
     }
 
     public Animal validatePermissions(Long animalId, UserDTO user,
-                                      boolean needWritePermissions, boolean onlyOwner,
-                                      boolean vetEnabled, boolean onlyVet) {
-        Animal animal = animalRepository.
-            findById(animalId).orElseThrow(
-            () -> new ResourceNotFoundException("Animal not found with id: "
-                + animalId));
+                                      boolean needWritePermissions, boolean onlyOwner, boolean onlyVet) {
+        Animal animal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found with id: " + animalId));
 
-        // if onlyVets, return the animal if is the user is an enabledVet and error if it isn't
-        boolean validVet = validateVet(user);
-        if (onlyVet) {
-            if (!validVet) {
-                throw new UnauthorizedException("You are not a valid veterinary");
-            }
+        boolean isOwner = animal.getOwnerUserId().equals(user.getId());
+        boolean isVet = validateVet(user);
+        boolean isSharedOwnerWithWrite = isSharedOwnerWithWritePermissions(animal, user);
+        boolean isSharedOwner = isSharedOwner(animal, user);
+        boolean isInMainClinic = animal.getMainClinicId() != null && animal.getMainClinicId().equals(user.getClinicId());
+        boolean isInExtraClinics = isInExtraClinics(animal, user);
+        boolean isPublic = animal.getIsPublic() != null && animal.getIsPublic();
 
-            return animal;
-        }
-
-        // if vetEnabled, return the animal if the user is an enabledVet
-        if (vetEnabled) {
-            if (validVet) {
-                return animal;
-            }
-        }
-
-        // if onlyOwner, return the animal if it's the owner and error if it isn't
-        boolean owner = animal.getOwnerUserId().equals(user.getId());
+        // Prioridad a onlyOwner
         if (onlyOwner) {
-            if (!owner) {
+            if (!isOwner) {
                 throw new UnauthorizedException("You are not the owner of this animal");
             }
-
-            return animal;
+            return animal; // Si es el dueño, no necesita más validación.
         }
 
-        // return the animal if it's the owner
-        if (owner) {
-            return animal;
-        }
-
-        // return error if the animal isn't shared with the user
-        Optional<AnimalsSharedUsers> animalsSharedClientProfiles = animalsSharedUsersRepository
-                .findByAnimalIdAndUserId(animalId, user.getId());
-        if (!animalsSharedClientProfiles.isPresent()) {
-            throw new UnauthorizedException("You are not allowed to this animal");
-        }
-
-        // if needWritePermissions, return error if the animal shared with the user is with readOnly as true
-        if (needWritePermissions) {
-            if (animalsSharedClientProfiles.get().getReadOnly()) {
-                throw new UnauthorizedException("You are not allowed to make changes into this animal");
+        // Validación para onlyVet
+        if (onlyVet) {
+            if (!isVet) {
+                throw new UnauthorizedException("You are not a valid veterinary");
             }
+            // Si es público y el vet no está en mainClinic ni extraClinics, agregamos la clínica
+            addVetClinicIfPublic(animal, user, isInMainClinic, isInExtraClinics);
+            return animal;
         }
 
-        // Only return if shares can access the call
+        // Verificar permisos de escritura
+        if (needWritePermissions) {
+            if (!isSharedOwnerWithWrite && !isOwner && !isInMainClinic) {
+                throw new UnauthorizedException("You do not have write permissions for this animal");
+            }
+            return animal; // Si tiene permisos de escritura, no necesita más validación.
+        }
+
+        // Si no se requiere escritura, verificar acceso general
+        if (!isPublic && !isOwner && !isSharedOwner && !isInExtraClinics && !isInMainClinic) {
+            throw new UnauthorizedException("You do not have permission to access this animal");
+        }
+
+        // Añadir la clínica si es público y es veterinario
+        addVetClinicIfPublic(animal, user, isInMainClinic, isInExtraClinics);
         return animal;
     }
 
-    public boolean validateVet(UserDTO user) {
-        // TODO: Change to check the validity of a veterinary using his plate
-        //  If invalid, change the enabled boolean to false and return false
-        //  If valid, change the enabled boolean to true and return true
-        //  Create an endpoint to do this validation in the userService
-        return user.getRoles().contains("ROLE_VET");
-    }
+    private void addVetClinicIfPublic(Animal animal, UserDTO user, boolean isInMainClinic, boolean isInExtraClinics) {
 
-    public static <T> void updateIfNotNull(Consumer<T> setterMethod, T value) {
-        if (value != null){
-            setterMethod.accept(value);
+        if (animal.getIsPublic() && validateVet(user) && user.getClinicId() != null) {
+            if (!isInMainClinic && !isInExtraClinics) {
+                if (animal.getMainClinicId() == null) {
+                    // Si no tiene mainClinic, se asigna la clínica del veterinario como main
+                    animal.setMainClinicId(user.getClinicId());
+                } else {
+                    // Si ya tiene una mainClinic, agregar la clínica como extra
+                    animal.getExtraClinics().add(new AnimalsExtraClinics(animal, user.getClinicId()));
+                }
+                addClientToClinic(animal.getOwnerUserId(), user.getClinicId());
+            }
         }
     }
 
-    public static UserDTO getUser(String token){
+    private void addClientToClinic(Long userId, Long clinicId){
+
+        ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
+                .userId(userId)
+                .clinicId(clinicId)
+                .accountBalance(0.00)
+                .build();
+
+        feignClinicClientClient.addClinicClient(clinicClientDTO);
+    }
+
+    private boolean isSharedOwnerWithWritePermissions(Animal animal, UserDTO user) {
+        return animal.getSharedWith().stream()
+                .anyMatch(shared -> shared.getUserId().equals(user.getId()) && !shared.getReadOnly());
+    }
+
+    private boolean isSharedOwner(Animal animal, UserDTO user) {
+        return animal.getSharedWith().stream()
+                .anyMatch(shared -> shared.getUserId().equals(user.getId()));
+    }
+
+    private boolean isInExtraClinics(Animal animal, UserDTO user) {
+        return user.getClinicId() != null &&
+                animal.getExtraClinics().stream()
+                        .anyMatch(extraClinic -> extraClinic.getClinicId().equals(user.getClinicId()));
+    }
+
+    public boolean validateVet(UserDTO user) {
+        return user.getRoles().contains("ROLE_VET");
+    }
+    public static UserDTO getUser(String token, Long clinicHeader){
             Claims claims;
 
             claims = Jwts.parser()
@@ -116,6 +147,14 @@ public class Util {
                     .email((String) claims.get("email"))
                     .id(Long.valueOf((Integer) claims.get("id")))
                     .roles((List<String>) claims.get("authorities"))
+                    .clinicId(clinicHeader)
                     .build();
         }
+
+
+    public static <T> void updateIfNotNull(Consumer<T> setterMethod, T value) {
+        if (value != null){
+            setterMethod.accept(value);
+        }
+    }
 }

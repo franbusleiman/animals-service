@@ -39,7 +39,7 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
         UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
 
         Animal animal = util.validatePermissions(animalId, userDTO,
-                true, true, false, false);
+                false, true,  false);
 
         Optional<AnimalsSharedUsers> animalsSharedUsersOptional = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());
 

@@ -10,6 +10,7 @@ import com.liro.animals.exceptions.ResourceNotFoundException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalColor;
 import com.liro.animals.repositories.AnimalColorRepository;
+import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.service.AnimalColorService;
 import com.liro.animals.service.UserService;
 import com.liro.animals.util.Util;
@@ -26,6 +27,7 @@ import java.util.stream.Collectors;
 public class AnimalColorServiceImpl implements AnimalColorService {
 
     private final AnimalColorRepository animalColorRepository;
+    private final AnimalRepository animalRepository;
     private final AnimalColorMapper animalColorMapper;
     private final UserService userService;
     private final Util util;
@@ -34,9 +36,11 @@ public class AnimalColorServiceImpl implements AnimalColorService {
     public AnimalColorServiceImpl(AnimalColorRepository animalColorRepository,
                                   AnimalColorMapper animalColorMapper,
                                   UserService userService,
+                                  AnimalRepository animalRepository,
                                   Util util) {
         this.animalColorRepository = animalColorRepository;
         this.animalColorMapper = animalColorMapper;
+        this.animalRepository = animalRepository;
         this.userService = userService;
         this.util = util;
     }
@@ -56,16 +60,17 @@ public class AnimalColorServiceImpl implements AnimalColorService {
 
     @Override
     public List<AnimalColorResponse> findAllByAnimalId(Long animalId, UserDTO userDTO) {
-        Animal animal = util.validatePermissions(animalId, userDTO,false, false, true, false);
 
-        return animal.getColors().stream().map(animalColorMapper::animalColorToAnimalColorResponse)
+        Animal animal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found with id: " + animalId));        return animal.getColors().stream().map(animalColorMapper::animalColorToAnimalColorResponse)
             .collect(Collectors.toList());
     }
 
     @Override
     public AnimalColorResponse findMainColorByAnimalId(Long animalId, UserDTO userDTO) {
-        Animal animal = util.validatePermissions(animalId, userDTO,false, false, true, false);
 
+        Animal animal = animalRepository.findById(animalId)
+                .orElseThrow(() -> new ResourceNotFoundException("Animal not found with id: " + animalId));
         return animalColorMapper.animalColorToAnimalColorResponse(animal.getMainColor());
     }
 

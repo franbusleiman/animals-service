@@ -19,7 +19,7 @@ public interface AnimalService {
 
     AnimalResponse createAnimal(AnimalDTO animalRequest, UserDTO userDTO);
 
-    List<AnimalMigrationResponse> migrateAnimals(List<AnimalMigratorDTO> animalMigratorDTOList, Long vetUserId);
+    List<AnimalMigrationResponse> migrateAnimals(List<AnimalMigratorDTO> animalMigratorDTOList, Long vetClinicId);
 
 
     void updateAnimal(AnimalDTO animalRequest, Long animalId, UserDTO userDTO);
@@ -43,7 +43,7 @@ public interface AnimalService {
     void changeOwner(Long animalId, String emailToTransfer, UserDTO userDTO);
 
     void hasPermissions(Long animalId, UserDTO userDTO, boolean needWritePermissions,
-                        boolean onlyOwner, boolean vetEnabled, boolean onlyVet);
+                        boolean onlyOwner, boolean onlyVet);
 
     Page<AnimalsSharedClientProfilesWADTO> getSharedAnimals(Pageable pageable, UserDTO userDTO);
 

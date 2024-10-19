@@ -50,7 +50,7 @@ public class Animal {
     private Long bornLong;
     private Long bornHeight;
     private Integer numberOfPhotos;
-
+    private Boolean isPublic;
     private String vetterCode;
 
     @Column(nullable = false)
@@ -81,18 +81,12 @@ public class Animal {
     private Set<AnimalsSharedUsers> sharedWith = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.REMOVE}, mappedBy = "animal")
-    private Set<AnimalsExtraVets> extraVets = new HashSet<>();
+    private Set<AnimalsExtraClinics> extraClinics = new HashSet<>();
 
     @OneToMany(cascade = {CascadeType.REMOVE}, mappedBy = "animal")
     private Set<Record> records = new HashSet<>();
 
-    @OneToMany(cascade = {CascadeType.REMOVE}, mappedBy = "animal")
-    private Set<AnimalRelation> relations = new HashSet<>();
-
-    @OneToMany(cascade = {CascadeType.REMOVE}, mappedBy = "animalRelationOf")
-    private Set<AnimalRelation> relationsOf = new HashSet<>();
-
-    private Long mainVetUserId;
+    private Long mainClinicId;
 
     @Column(nullable = false)
     private Long ownerUserId;

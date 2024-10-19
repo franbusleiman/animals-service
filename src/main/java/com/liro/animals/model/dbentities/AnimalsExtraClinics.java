@@ -1,18 +1,18 @@
 package com.liro.animals.model.dbentities;
 
-import com.liro.animals.model.dbentities.idclasses.AnimalsExtraVetsIdClass;
+import com.liro.animals.model.dbentities.idclasses.AnimalsExtraClinicsIdClass;
 import javax.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "animals_extra_vets")
-@IdClass(AnimalsExtraVetsIdClass.class)
+@Table(name = "animals_extra_clinics")
+@IdClass(AnimalsExtraClinicsIdClass.class)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AnimalsExtraVets {
+public class AnimalsExtraClinics {
 
     @Id
     @ManyToOne
@@ -20,5 +20,5 @@ public class AnimalsExtraVets {
     private Animal animal;
 
     @Id
-    private Long vetUserId;
+    private Long clinicId;
 }
