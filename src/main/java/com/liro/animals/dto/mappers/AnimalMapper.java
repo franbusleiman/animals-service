@@ -36,8 +36,8 @@ public interface AnimalMapper {
     @Mapping(target = "ownerUserId", ignore = true)
     @Mapping(target = "mainColor", ignore = true)
     @Mapping(target = "colors", ignore = true)
-    @Mapping(target = "mainVetUserId", ignore = true)
-    @Mapping(target = "extraVets", ignore = true)
+    @Mapping(target = "mainClinicId", ignore = true)
+    @Mapping(target = "extraClinics", ignore = true)
     @Mapping(target = "breed", ignore = true)
     Animal animalDtoToAnimal(AnimalDTO animalRequest);
 
@@ -49,8 +49,8 @@ public interface AnimalMapper {
     @Mapping(target = "sharedWith", ignore = true)
     @Mapping(target = "mainColor", ignore = true)
     @Mapping(target = "colors", ignore = true)
-    @Mapping(target = "mainVetUserId", ignore = true)
-    @Mapping(target = "extraVets", ignore = true)
+    @Mapping(target = "mainClinicId", ignore = true)
+    @Mapping(target = "extraClinics", ignore = true)
     @Mapping(target = "breed", ignore = true)
     Animal animalMigratorDtoToAnimal(AnimalMigratorDTO animalMigratorDTO);
 
