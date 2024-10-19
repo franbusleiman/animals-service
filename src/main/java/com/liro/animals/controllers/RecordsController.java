@@ -33,21 +33,19 @@ public class RecordsController {
     @GetMapping(value = "/{recordId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<RecordResponse> getRecord(@PathVariable("recordId") Long recordId,
                                                     @RequestHeader(name = "Authorization",  required = false) String token) {
-        return ResponseEntity.ok(recordService.getRecordResponse(recordId, getUser(token)));
+        return ResponseEntity.ok(recordService.getRecordResponse(recordId));
     }
 
     @GetMapping(value = "/findAll", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<RecordResponse>> getAll(@RequestParam("animalId") Long animalId,
-                                                       @RequestHeader(name = "Authorization",  required = false) String token,
                                                        Pageable pageable) {
-        return ResponseEntity.ok(recordService.findAllByAnimalId(animalId, getUser(token), pageable));
+        return ResponseEntity.ok(recordService.findAllByAnimalId(animalId,  pageable));
     }
 
     @GetMapping(value = "/findAllLastByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<RecordResponse>> getAllLast(@RequestParam("animalId") Long animalId,
-                                                           @RequestHeader(name = "Authorization",  required = false) String token,
                                                            Pageable pageable) {
-        return ResponseEntity.ok(recordService.findAllLastByAnimalId(animalId, getUser(token), pageable));
+        return ResponseEntity.ok(recordService.findAllLastByAnimalId(animalId, pageable));
     }
 
     @GetMapping(value = "/findAllByAnimalIdAndRecordTypeId", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -56,20 +54,21 @@ public class RecordsController {
                                                                    @RequestHeader(name = "Authorization",  required = false) String token,
                                                                    Pageable pageable) {
         return ResponseEntity.ok(recordService
-            .findAllByAnimalIdAndRecordTypeId(animalId, recordTypeId, getUser(token), pageable));
+            .findAllByAnimalIdAndRecordTypeId(animalId, recordTypeId, pageable));
     }
 
     @GetMapping(value = "/findLastByAnimalIdAndRecordTypeId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<RecordResponse> getLastByRecordType(@RequestParam("animalId") Long animalId,
                                                               @RequestParam("recordTypeId") Long recordTypeId,
                                                               @RequestHeader(name = "Authorization",  required = false) String token) {
-        return ResponseEntity.ok(recordService.findLastByAnimalIdAndRecordTypeId(animalId, recordTypeId, getUser(token)));
+        return ResponseEntity.ok(recordService.findLastByAnimalIdAndRecordTypeId(animalId, recordTypeId));
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ApiResponse> createRecord(@Valid @RequestBody RecordDTO recordDto,
+                                                    @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                                     @RequestHeader(name = "Authorization",  required = false) String token) {
-        RecordResponse recordResponse = recordService.createRecord(recordDto, getUser(token));
+        RecordResponse recordResponse = recordService.createRecord(recordDto, getUser(token, clinicId));
 
         URI location = ServletUriComponentsBuilder
             .fromCurrentContextPath().path("/records/{recordId}")
@@ -90,7 +89,7 @@ public class RecordsController {
     @DeleteMapping(value = "/{recordId}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> deleteRecord(@PathVariable("recordId") Long recordId,
                                              @RequestHeader(name = "Authorization",  required = false) String token) {
-        recordService.deleteRecord(recordId, getUser(token));
+        recordService.deleteRecord(recordId);
 
         return ResponseEntity.ok().build();
     }

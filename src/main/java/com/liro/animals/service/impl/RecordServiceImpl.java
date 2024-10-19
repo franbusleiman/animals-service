@@ -53,14 +53,14 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public Page<RecordResponse> findAllByAnimalId(Long animalId, UserDTO userDTO, Pageable pageable) {
+    public Page<RecordResponse> findAllByAnimalId(Long animalId,  Pageable pageable) {
 
         return recordRepository.findAllByAnimalId(animalId, pageable)
                 .map(recordMapper::recordToRecordResponse);
     }
 
     @Override
-    public Page<RecordResponse> findAllLastByAnimalId(Long animalId, UserDTO userDTO, Pageable pageable) {
+    public Page<RecordResponse> findAllLastByAnimalId(Long animalId,  Pageable pageable) {
 
         return recordRepository.findAllLastByAnimalId(animalId, pageable)
                 .map(recordMapper::recordToRecordResponse);
@@ -68,15 +68,14 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public Page<RecordResponse> findAllByAnimalIdAndRecordTypeId(Long animalId, Long recordTypeId,
-                                                                 UserDTO userDTO, Pageable pageable) {
+                                                                  Pageable pageable) {
 
         return recordRepository.findAllByAnimalIdAndRecordTypeId(animalId, recordTypeId, pageable)
                 .map(recordMapper::recordToRecordResponse);
     }
 
     @Override
-    public RecordResponse findLastByAnimalIdAndRecordTypeId(Long animalId, Long recordTypeId,
-                                                            UserDTO userDTO) {
+    public RecordResponse findLastByAnimalIdAndRecordTypeId(Long animalId, Long recordTypeId) {
 
         return recordMapper.recordToRecordResponse(recordRepository
                 .findLastByAnimalIdAndRecordTypeId(animalId, recordTypeId)
@@ -85,7 +84,7 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public RecordResponse getRecordResponse(Long recordId, UserDTO userDTO) {
+    public RecordResponse getRecordResponse(Long recordId) {
 
         Record record = recordRepository.findById(recordId)
                 .orElseThrow(() -> new ResourceNotFoundException("Record not found with id: " + recordId));
@@ -154,13 +153,13 @@ public class RecordServiceImpl implements RecordService {
 
     //TODO
     @Override
-    public void deleteRecord(Long recordId, UserDTO userDTO) {
+    public void deleteRecord(Long recordId) {
 
         Record record = recordRepository.findById(recordId)
                 .orElseThrow(() -> new ResourceNotFoundException("Record not found with id: " + recordId));
 
-        Animal animal = util.validatePermissions(record.getAnimal().getId(), userDTO,
-                false, true,  false);
+       // Animal animal = util.validatePermissions(record.getAnimal().getId(), userDTO,
+       //         false, true,  false);
 
         recordRepository.deleteById(recordId);
     }

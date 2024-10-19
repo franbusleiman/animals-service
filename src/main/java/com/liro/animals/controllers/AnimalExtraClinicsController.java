@@ -34,20 +34,20 @@ public class AnimalExtraClinicsController {
     @GetMapping(value = "/findByClinicId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalExtraClinicResponse>> getExtraClinicsRelationsByClinicId(Pageable pageable, @RequestParam("clinicId") Long clinicId,
                                                                                               @RequestHeader(name = "Authorization",  required = false) String token) {
-        return ResponseEntity.ok(animalExtraClinicsService.getExtraClinicsRelationsByClinicId(pageable,clinicId, getUser(token)));
+        return ResponseEntity.ok(animalExtraClinicsService.getExtraClinicsRelationsByClinicId(pageable,clinicId, getUser(token, null)));
     }
 
     @GetMapping(value = "/findByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalExtraClinicResponse>> getExtraClinicsRelationsByAnimalId(Pageable pageable, @RequestParam("animalId") Long animalId,
                                                                                               @RequestHeader(name = "Authorization",  required = false) String token) {
-        return ResponseEntity.ok(animalExtraClinicsService.getExtraClinicsRelationsByClinicId( pageable,animalId, getUser(token)));
+        return ResponseEntity.ok(animalExtraClinicsService.getExtraClinicsRelationsByClinicId( pageable,animalId, getUser(token, null)));
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ApiResponse> create(@Valid @RequestBody AnimalExtraClinicDTO animalExtraClinicDTO,
                                                     @RequestHeader(name = "Authorization",  required = false) String token) {
 
-        AnimalExtraClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addExtraClinic(animalExtraClinicDTO, getUser(token));
+        AnimalExtraClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addExtraClinic(animalExtraClinicDTO, getUser(token, null));
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/clinics/{clinicId}")

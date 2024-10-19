@@ -11,20 +11,20 @@ import java.util.List;
 
 public interface RecordService {
 
-    Page<RecordResponse> findAllByAnimalId(Long animalId, UserDTO userDTO, Pageable pageable);
+    Page<RecordResponse> findAllByAnimalId(Long animalId, Pageable pageable);
 
-    Page<RecordResponse> findAllLastByAnimalId(Long animalId, UserDTO userDTO, Pageable pageable);
+    Page<RecordResponse> findAllLastByAnimalId(Long animalId,  Pageable pageable);
 
     Page<RecordResponse> findAllByAnimalIdAndRecordTypeId(Long animalId, Long recordTypeId,
-                                                          UserDTO userDTO, Pageable pageable);
+                                                           Pageable pageable);
 
-    RecordResponse findLastByAnimalIdAndRecordTypeId(Long animalId, Long recordTypeId, UserDTO userDTO);
+    RecordResponse findLastByAnimalIdAndRecordTypeId(Long animalId, Long recordTypeId);
 
-    RecordResponse getRecordResponse(Long recordId, UserDTO userDTO);
+    RecordResponse getRecordResponse(Long recordId);
 
     RecordResponse createRecord(RecordDTO recordDTO, UserDTO userDTO);
     Void migrateRecords(List<RecordDTO> recordDTOs, Long  vetUserId);
 
 
-    void deleteRecord(Long recordId, UserDTO userDTO);
+    void deleteRecord(Long recordId);
 }

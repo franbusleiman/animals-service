@@ -53,14 +53,14 @@ public class AnimalColorsController {
     @GetMapping(value = "/findAllByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<AnimalColorResponse>> getAllByAnimalId(@RequestParam("animalId") Long animalId,
              @RequestHeader(name = "Authorization", required = false) String token) {
-        return ResponseEntity.ok(animalColorService.findAllByAnimalId(animalId, getUser(token)));
+        return ResponseEntity.ok(animalColorService.findAllByAnimalId(animalId, getUser(token, null)));
     }
 
     @GetMapping(value = "/findMainColorByAnimalId", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<AnimalColorResponse> getMainColorByAnimalId(@RequestParam("animalId") Long animalId,
                                                                       @RequestHeader(name = "Authorization") String token) {
 
-        return ResponseEntity.ok(animalColorService.findMainColorByAnimalId(animalId, getUser(token)));
+        return ResponseEntity.ok(animalColorService.findMainColorByAnimalId(animalId, getUser(token, null)));
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
