@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(name = "clinic-service")
+@FeignClient(name = "clinics-service")
 public interface FeignClinicClientClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/clinicClients")
