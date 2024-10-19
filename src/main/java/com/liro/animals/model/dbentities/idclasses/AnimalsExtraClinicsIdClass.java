@@ -4,5 +4,5 @@ import java.io.Serializable;
 
 public class AnimalsExtraClinicsIdClass implements Serializable {
     private Long animal;
-    private Long vetUserId;
+    private Long clinicId;
 }
