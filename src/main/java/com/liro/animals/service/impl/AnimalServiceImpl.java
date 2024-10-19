@@ -96,23 +96,17 @@ public class AnimalServiceImpl implements AnimalService {
 
         if (animalRequest.getOwnerUserId() != null) {
 
-            System.out.println(userDTO.getRoles());
 
             if (userDTO.getRoles().contains("ROLE_VET")) {
-
-
-                System.out.println(animalRequest.getOwnerUserId());
 
                 animal.setMainClinicId(userDTO.getClinicId());
                 animal.setOwnerUserId(animalRequest.getOwnerUserId());
             }
         } else {
 
-            System.out.println("paso2");
 
             animal.setOwnerUserId(userDTO.getId());
         }
-        System.out.println("paso3");
 
         Breed breed = breedRepository.
                 findById(animalRequest.getBreedId()).orElseThrow(
@@ -131,6 +125,7 @@ public class AnimalServiceImpl implements AnimalService {
         animal.setMainColor(animalColor);
         if (animalColor.getMainColorOf() == null) animalColor.setMainColorOf(new HashSet<>());
         animalColor.getMainColorOf().add(animal);
+        animal.setIsPublic(false);
 
         return animalMapper.animalToAnimalResponse(
                 animalRepository.save(animal));
@@ -155,6 +150,8 @@ public class AnimalServiceImpl implements AnimalService {
                             + animalRequest.getName()));
 
             animal.setBreed(breed);
+            animal.setIsPublic(false);
+
             if (breed.getAnimals() == null) breed.setAnimals(new HashSet<>());
             breed.getAnimals().add(animal);
 
