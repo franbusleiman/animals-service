@@ -14,7 +14,7 @@ import java.util.Set;
         name = "animals",
         indexes = {
                 @Index(name = "owner_user_index", columnList = "ownerUserId"),
-                @Index(name = "main_vet_user_index", columnList = "mainVetUserId")
+                @Index(name = "main_clinic_index", columnList = "mainClinicId")
         }
 )
 @Getter
