@@ -3,6 +3,8 @@ package com.liro.animals.model.dbentities;
 import com.liro.animals.model.enums.Castrated;
 import com.liro.animals.model.enums.Sex;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 import java.time.LocalDate;
@@ -50,6 +52,8 @@ public class Animal {
     private Long bornLong;
     private Long bornHeight;
     private Integer numberOfPhotos;
+
+    @NotNull
     private Boolean isPublic;
     private String vetterCode;
 
