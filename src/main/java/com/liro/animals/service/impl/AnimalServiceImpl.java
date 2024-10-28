@@ -125,7 +125,7 @@ public class AnimalServiceImpl implements AnimalService {
         animal.setMainColor(animalColor);
         if (animalColor.getMainColorOf() == null) animalColor.setMainColorOf(new HashSet<>());
         animalColor.getMainColorOf().add(animal);
-        animal.setIsPublic(false);
+        animal.setIsPublic(true);
 
         return animalMapper.animalToAnimalResponse(
                 animalRepository.save(animal));
@@ -150,7 +150,7 @@ public class AnimalServiceImpl implements AnimalService {
                             + animalRequest.getName()));
 
             animal.setBreed(breed);
-            animal.setIsPublic(false);
+            animal.setIsPublic(true);
 
             if (breed.getAnimals() == null) breed.setAnimals(new HashSet<>());
             breed.getAnimals().add(animal);
