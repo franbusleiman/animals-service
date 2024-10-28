@@ -80,7 +80,7 @@ public class AnimalsController {
     }
 
     @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ApiResponse> createAnimal(@Valid @RequestBody AnimalDTO animalRequest,
+    public ResponseEntity<AnimalResponse> createAnimal(@Valid @RequestBody AnimalDTO animalRequest,
                                                     @RequestHeader(name = "clinicId", required = false) Long clinicId,
 
                                                     @RequestHeader(name = "Authorization", required = false) String token) {
@@ -90,8 +90,7 @@ public class AnimalsController {
                 .fromCurrentContextPath().path("/animals/{animalId}")
                 .buildAndExpand(animalResponse.getId()).toUri();
 
-        return ResponseEntity.created(location).body(
-                new ApiResponse(true, "Animal created successfully"));
+        return ResponseEntity.created(location).body(animalResponse);
     }
 
     @PostMapping(value = "/migrate", produces = {MediaType.APPLICATION_JSON_VALUE})
