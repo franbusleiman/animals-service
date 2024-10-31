@@ -56,4 +56,18 @@ public class AnimalExtraClinicsController {
         return ResponseEntity.created(location).body(
                 new ApiResponse(true, "Clinic added successfully"));
     }
+
+    @PostMapping(value = "/addClinic",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApiResponse> addClinic(@Valid @RequestBody AnimalExtraClinicDTO animalExtraClinicDTO,
+                                                 @RequestHeader(name = "Authorization", required = false) String token){
+
+        AnimalExtraClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addExtraClinic(animalExtraClinicDTO, getUser(token, null));
+
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentContextPath().path("/clinics/addClinic/{clinicId}")
+                .buildAndExpand(animalExtraClinicResponse.getId()).toUri();
+
+        return ResponseEntity.created(location).body(
+                new ApiResponse(true, "Clinic added successfully"));
+    }
 }
