@@ -79,6 +79,9 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
             animal.getExtraClinics().add(animalsExtraClinics);
             animalsExtraClinics.setAnimal(animal);
+        }else{
+            animal.getExtraClinics().add(animalsExtraClinics);
+            animalsExtraClinics.setAnimal(animal);
         }
         return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animalExtraClinicsRepository.save(animalsExtraClinics));
     }
