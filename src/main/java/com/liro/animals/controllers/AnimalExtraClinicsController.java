@@ -65,7 +65,7 @@ public class AnimalExtraClinicsController {
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
-                .path("/clinics/{clinicId}")
+                .path("/{clinicId}")
                 .buildAndExpand(animalExtraClinicResponse.getId())
                 .toUri();
 
