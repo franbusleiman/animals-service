@@ -64,8 +64,10 @@ public class AnimalExtraClinicsController {
         AnimalExtraClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addExtraClinic(animalExtraClinicDTO, getUser(token, null));
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/clinics/addClinic/{clinicId}")
-                .buildAndExpand(animalExtraClinicResponse.getId()).toUri();
+                .fromCurrentRequest()
+                .path("/clinics/{clinicId}")
+                .buildAndExpand(animalExtraClinicResponse.getId())
+                .toUri();
 
         return ResponseEntity.created(location).body(
                 new ApiResponse(true, "Clinic added successfully"));
