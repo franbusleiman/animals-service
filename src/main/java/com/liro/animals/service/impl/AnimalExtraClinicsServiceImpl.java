@@ -1,10 +1,13 @@
 package com.liro.animals.service.impl;
 
 
+import com.liro.animals.config.FeignClinicClientClient;
 import com.liro.animals.dto.AnimalExtraClinicDTO;
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.mappers.AnimalExtraClinicMapper;
+import com.liro.animals.dto.requests.ClinicClientDTO;
 import com.liro.animals.dto.responses.AnimalExtraClinicResponse;
+import com.liro.animals.exceptions.ConflictException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalsExtraClinics;
 import com.liro.animals.repositories.AnimalExtraClinicsRepository;
@@ -15,7 +18,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.liro.animals.util.Util.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService {
@@ -23,13 +28,16 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 
     private AnimalExtraClinicsRepository animalExtraClinicsRepository;
     private AnimalExtraClinicMapper animalExtraClinicMapper;
+    private FeignClinicClientClient feignClinicClientClient;
     private Util util;
 
 
     public AnimalExtraClinicsServiceImpl(AnimalExtraClinicsRepository animalExtraClinicsRepository, AnimalExtraClinicMapper animalExtraClinicMapper,
+                                         FeignClinicClientClient feignClinicClientClient,
                                          Util util) {
         this.animalExtraClinicsRepository = animalExtraClinicsRepository;
         this.animalExtraClinicMapper = animalExtraClinicMapper;
+        this.feignClinicClientClient = feignClinicClientClient;
         this.util = util;
     }
 
@@ -42,6 +50,35 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,
                 true, false, false);
 
+        return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animalExtraClinicsRepository.save(animalsExtraClinics));
+    }
+
+    @Override
+    public AnimalExtraClinicResponse addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO) {
+
+        AnimalsExtraClinics animalsExtraClinics =animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
+
+       Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
+
+        try {
+            ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
+                    .clinicId(animalExtraClinicDTO.getExtraClinicId())
+                    .userId(userDTO.getId())
+                    .accountBalance(0.00)
+                    .build();
+            feignClinicClientClient.addClinicClient(clinicClientDTO);
+        }catch (RuntimeException e){
+            e.getMessage();
+
+        }
+
+
+        if (animal.getMainClinicId() == null){
+            animal.setMainClinicId(animalsExtraClinics.getClinicId());
+        } else if (animal.getExtraClinics() == null) {
+            animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
+            animal.getExtraClinics().add(animalsExtraClinics);
+        }
         return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animalExtraClinicsRepository.save(animalsExtraClinics));
     }
 
