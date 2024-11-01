@@ -59,20 +59,17 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
     @Override
     public AnimalExtraClinicResponse addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO) {
 
-        AnimalsExtraClinics animalsExtraClinics =animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
 
         if (animal.getMainClinicId() == null){
-            animal.setMainClinicId(animalsExtraClinics.getClinicId());
-            animalsExtraClinics.setAnimal(animal);
+            animal.setMainClinicId(animalExtraClinicDTO.getExtraClinicId());
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
+            AnimalsExtraClinics animalsExtraClinics =animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
             animal.getExtraClinics().add(animalsExtraClinics);
             animalsExtraClinics.setAnimal(animal);
-        }else{
-            animal.getExtraClinics().add(animalsExtraClinics);
-            animalsExtraClinics.setAnimal(animal);
+            animalExtraClinicsRepository.save(animalsExtraClinics);
         }
 
         try {
@@ -85,7 +82,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         }catch (Exception e){
             e.printStackTrace();
         }
-        return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animalExtraClinicsRepository.save(animalsExtraClinics));
+        return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animal);
     }
 
     @Override
