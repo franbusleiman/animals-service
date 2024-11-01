@@ -15,8 +15,10 @@ import com.liro.animals.service.AnimalExtraClinicsService;
 import com.liro.animals.util.Util;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import com.liro.animals.util.Util.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashSet;
 import java.util.List;
@@ -60,6 +62,8 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
 
+        System.out.println(userDTO.getId() + userDTO.getEmail());
+
         try {
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                     .clinicId(animalExtraClinicDTO.getExtraClinicId())
@@ -68,7 +72,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
                     .build();
             feignClinicClientClient.addClinicClient(clinicClientDTO);
         }catch (RuntimeException e){
-            e.getMessage();
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al añadir el cliente de clínica");
 
         }
 
