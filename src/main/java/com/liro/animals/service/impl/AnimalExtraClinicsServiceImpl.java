@@ -66,6 +66,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
 
         System.out.println(userDTO.getId() + userDTO.getEmail());
+        System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
 
         try {
             System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
