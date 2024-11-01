@@ -57,7 +57,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
     }
 
     @Override
-    public AnimalExtraClinicResponse addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO) {
+    public void addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO) {
 
 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
@@ -82,7 +82,6 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         }catch (Exception e){
             e.printStackTrace();
         }
-        return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animal);
     }
 
     @Override

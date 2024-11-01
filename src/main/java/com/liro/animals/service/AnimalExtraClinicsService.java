@@ -12,7 +12,7 @@ public interface AnimalExtraClinicsService {
 
     AnimalExtraClinicResponse addExtraClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO);
 
-    AnimalExtraClinicResponse addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO);
+    void addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO);
 
     Page<AnimalExtraClinicResponse> getExtraClinicsRelationsByClinicId(Pageable pageable, Long clinicId, UserDTO userDTO);
 
