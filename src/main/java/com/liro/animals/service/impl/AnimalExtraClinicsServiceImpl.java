@@ -60,19 +60,20 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
     public AnimalExtraClinicResponse addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO) {
 
         System.out.println("-----------------METODO INICIADO ------------------");
+        System.out.println("----------------- " + animalExtraClinicDTO.getExtraClinicId() + "---------- " + animalExtraClinicDTO.getAnimalId() + "------------------------");
 
         AnimalsExtraClinics animalsExtraClinics =animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
 
         System.out.println(userDTO.getId() + userDTO.getEmail());
-        System.out.println(userDTO.getId());
+        System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
 
         try {
             System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                     .userId(userDTO.getId())
-                    .clinicId(animalsExtraClinics.getClinicId())
+                    .clinicId(animalExtraClinicDTO.getExtraClinicId())
                     .accountBalance(0.00)
                     .build();
             feignClinicClientClient.addClinicClient(clinicClientDTO);
