@@ -68,6 +68,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         System.out.println(userDTO.getId() + userDTO.getEmail());
 
         try {
+            System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                     .clinicId(animalExtraClinicDTO.getExtraClinicId())
                     .userId(userDTO.getId())
@@ -78,15 +79,18 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al añadir el cliente de clínica");
 
         }
-
+        System.out.println("------------ PASO EL BLOQUE TRY ----------------");
 
         if (animal.getMainClinicId() == null){
+            System.out.println("------------ IF ----------------");
             animal.setMainClinicId(animalsExtraClinics.getClinicId());
         } else if (animal.getExtraClinics() == null) {
+            System.out.println("------------ ELSE IF ----------------");
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
             animal.getExtraClinics().add(animalsExtraClinics);
             animalsExtraClinics.setAnimal(animal);
         }else{
+            System.out.println("------------ ELSE ----------------");
             animal.getExtraClinics().add(animalsExtraClinics);
             animalsExtraClinics.setAnimal(animal);
         }
