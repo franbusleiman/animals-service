@@ -47,6 +47,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
     public AnimalExtraClinicResponse addExtraClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO) {
 
 
+
         AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
 
         util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,

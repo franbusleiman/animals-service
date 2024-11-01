@@ -62,7 +62,9 @@ public class AnimalExtraClinicsController {
                                                  @RequestHeader(name = "Authorization", required = false) String token){
         System.out.println("------------ CONTROLADOR INICIADO------------");
 
-        AnimalExtraClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addExtraClinic(animalExtraClinicDTO, getUser(token, null));
+        AnimalExtraClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addClinic(animalExtraClinicDTO, getUser(token, null));
+
+        System.out.println("------------ CONTROLADOR ETAPA MEDIA ------------");
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
