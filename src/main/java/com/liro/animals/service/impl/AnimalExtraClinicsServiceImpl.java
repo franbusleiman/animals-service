@@ -63,12 +63,9 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
 
-        System.out.println(userDTO.getId() + userDTO.getEmail());
-        System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
-
         if (animal.getMainClinicId() == null){
             animal.setMainClinicId(animalsExtraClinics.getClinicId());
-            animal.getExtraClinics().add(animalsExtraClinics);
+            animalsExtraClinics.setAnimal(animal);
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
             animal.getExtraClinics().add(animalsExtraClinics);
@@ -79,7 +76,6 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         }
 
         try {
-            System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                     .userId(userDTO.getId())
                     .clinicId(animalExtraClinicDTO.getExtraClinicId())
