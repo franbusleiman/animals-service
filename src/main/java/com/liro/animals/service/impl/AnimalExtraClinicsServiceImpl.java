@@ -66,13 +66,13 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
 
         System.out.println(userDTO.getId() + userDTO.getEmail());
-        System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
+        System.out.println(animalsExtraClinics.getClinicId() + userDTO.getId());
 
         try {
             System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
-                    .clinicId(animalExtraClinicDTO.getExtraClinicId())
                     .userId(userDTO.getId())
+                    .clinicId(animalsExtraClinics.getClinicId())
                     .accountBalance(0.00)
                     .build();
             feignClinicClientClient.addClinicClient(clinicClientDTO);
