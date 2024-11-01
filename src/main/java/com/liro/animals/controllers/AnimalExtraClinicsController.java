@@ -60,6 +60,7 @@ public class AnimalExtraClinicsController {
     @PostMapping(value = "/addClinic",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApiResponse> addClinic(@Valid @RequestBody AnimalExtraClinicDTO animalExtraClinicDTO,
                                                  @RequestHeader(name = "Authorization", required = false) String token){
+        System.out.println("------------ CONTROLADOR INICIADO------------");
 
         AnimalExtraClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addExtraClinic(animalExtraClinicDTO, getUser(token, null));
 
@@ -68,6 +69,8 @@ public class AnimalExtraClinicsController {
                 .path("/{clinicId}")
                 .buildAndExpand(animalExtraClinicResponse.getId())
                 .toUri();
+
+        System.out.println("------------ RETORNANDO ------------");
 
         return ResponseEntity.created(location).body(
                 new ApiResponse(true, "Clinic added successfully"));

@@ -58,6 +58,8 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
     @Override
     public AnimalExtraClinicResponse addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO) {
 
+        System.out.println("-----------------METODO INICIADO ------------------");
+
         AnimalsExtraClinics animalsExtraClinics =animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
