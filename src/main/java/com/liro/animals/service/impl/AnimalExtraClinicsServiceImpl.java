@@ -59,15 +59,23 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
     @Override
     public AnimalExtraClinicResponse addClinic(AnimalExtraClinicDTO animalExtraClinicDTO, UserDTO userDTO) {
 
-        System.out.println("-----------------METODO INICIADO ------------------");
-        System.out.println("----------------- " + animalExtraClinicDTO.getExtraClinicId() + "---------- " + animalExtraClinicDTO.getAnimalId() + "------------------------");
-
         AnimalsExtraClinics animalsExtraClinics =animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
 
        Animal animal = util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,true, false, false);
 
         System.out.println(userDTO.getId() + userDTO.getEmail());
         System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
+
+        if (animal.getMainClinicId() == null){
+            animal.setMainClinicId(animalsExtraClinics.getClinicId());
+        } else if (animal.getExtraClinics() == null) {
+            animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
+            animal.getExtraClinics().add(animalsExtraClinics);
+            animalsExtraClinics.setAnimal(animal);
+        }else{
+            animal.getExtraClinics().add(animalsExtraClinics);
+            animalsExtraClinics.setAnimal(animal);
+        }
 
         try {
             System.out.println(animalExtraClinicDTO.getExtraClinicId() + userDTO.getId());
@@ -77,24 +85,8 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
                     .accountBalance(0.00)
                     .build();
             feignClinicClientClient.addClinicClient(clinicClientDTO);
-        }catch (RuntimeException e){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Error al añadir el cliente de clínica");
-
-        }
-        System.out.println("------------ PASO EL BLOQUE TRY ----------------");
-
-        if (animal.getMainClinicId() == null){
-            System.out.println("------------ IF ----------------");
-            animal.setMainClinicId(animalsExtraClinics.getClinicId());
-        } else if (animal.getExtraClinics() == null) {
-            System.out.println("------------ ELSE IF ----------------");
-            animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
-            animal.getExtraClinics().add(animalsExtraClinics);
-            animalsExtraClinics.setAnimal(animal);
-        }else{
-            System.out.println("------------ ELSE ----------------");
-            animal.getExtraClinics().add(animalsExtraClinics);
-            animalsExtraClinics.setAnimal(animal);
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animalExtraClinicsRepository.save(animalsExtraClinics));
     }
