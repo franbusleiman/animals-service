@@ -97,6 +97,7 @@ public class BreedServiceImpl implements BreedService {
     public Void migrateBreeds(List<BreedDTO> breedDTOs) {
 
         breedDTOs.forEach(breedDto -> {
+            System.out.println(breedDto);
 
             if (!breedRepository.findByName(breedDto.getName()).isPresent()){
                 if (breedDto.getName() != null) {
@@ -119,6 +120,7 @@ public class BreedServiceImpl implements BreedService {
                 if (animalType.getBreeds() == null) animalType.setBreeds(new HashSet<>());
                 animalType.getBreeds().add(breed);
 
+                System.out.println(breed);
                 breedRepository.save(breed);
             }
             });
