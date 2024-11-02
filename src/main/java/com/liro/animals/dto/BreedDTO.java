@@ -20,6 +20,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,6 +32,6 @@ public class BreedDTO {
     private String name;
     private String formalName;
     private String details;
-
+    private Set<String> alternativeNames;
     private Long animalTypeId;
 }

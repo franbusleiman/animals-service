@@ -3,6 +3,8 @@ package com.liro.animals.model.dbentities;
 import javax.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -32,6 +34,11 @@ public class Breed {
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "breed")
     private Set<Animal> animals;
+
+    @ElementCollection
+    @CollectionTable(name = "breeds_alternative_names", joinColumns = @JoinColumn(name = "breed_id"))
+    @Column(name = "alternative_names")
+    private List<String> alternativeNames = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
