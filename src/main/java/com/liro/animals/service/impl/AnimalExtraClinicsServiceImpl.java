@@ -11,6 +11,7 @@ import com.liro.animals.exceptions.ConflictException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalsExtraClinics;
 import com.liro.animals.repositories.AnimalExtraClinicsRepository;
+import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.service.AnimalExtraClinicsService;
 import com.liro.animals.util.Util;
 import org.springframework.data.domain.Page;
@@ -31,15 +32,19 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
     private AnimalExtraClinicsRepository animalExtraClinicsRepository;
     private AnimalExtraClinicMapper animalExtraClinicMapper;
     private FeignClinicClientClient feignClinicClientClient;
+
+    private AnimalRepository animalRepository;
     private Util util;
 
 
     public AnimalExtraClinicsServiceImpl(AnimalExtraClinicsRepository animalExtraClinicsRepository, AnimalExtraClinicMapper animalExtraClinicMapper,
                                          FeignClinicClientClient feignClinicClientClient,
+                                         AnimalRepository animalRepository,
                                          Util util) {
         this.animalExtraClinicsRepository = animalExtraClinicsRepository;
         this.animalExtraClinicMapper = animalExtraClinicMapper;
         this.feignClinicClientClient = feignClinicClientClient;
+        this.animalRepository = animalRepository;
         this.util = util;
     }
 
@@ -64,9 +69,11 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 
         if (animal.getMainClinicId() == null){
             animal.setMainClinicId(animalExtraClinicDTO.getExtraClinicId());
+            animalRepository.save(animal);
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
-            AnimalsExtraClinics animalsExtraClinics =animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
+        }else {
+            AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
             animal.getExtraClinics().add(animalsExtraClinics);
             animalsExtraClinics.setAnimal(animal);
             animalExtraClinicsRepository.save(animalsExtraClinics);
