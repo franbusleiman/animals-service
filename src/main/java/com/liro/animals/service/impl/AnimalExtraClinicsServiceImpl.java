@@ -72,12 +72,11 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
             animalRepository.save(animal);
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
-        }else {
+        }
             AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
             animal.getExtraClinics().add(animalsExtraClinics);
             animalsExtraClinics.setAnimal(animal);
             animalExtraClinicsRepository.save(animalsExtraClinics);
-        }
 
         try {
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
