@@ -60,14 +60,8 @@ public class AnimalExtraClinicsController {
     @PostMapping(value = "/addClinic",produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse addClinic(@Valid @RequestBody AnimalExtraClinicDTO animalExtraClinicDTO,
                                                  @RequestHeader(name = "Authorization", required = false) String token){
-        System.out.println("------------ CONTROLADOR INICIADO------------");
 
         animalExtraClinicsService.addClinic(animalExtraClinicDTO, getUser(token, null));
-
-        System.out.println("------------ CONTROLADOR ETAPA MEDIA ------------");
-
-
-        System.out.println("------------ RETORNANDO ------------");
 
         return new ApiResponse(true, "Clinic added successfully");
     }
