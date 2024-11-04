@@ -1,5 +1,6 @@
 package com.liro.animals.repositories;
 
+import com.liro.animals.model.dbentities.AnimalType;
 import com.liro.animals.model.dbentities.Breed;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,6 +53,14 @@ public interface BreedRepository extends JpaRepository<Breed, Long> {
             @Param("animalTypeId") Long animalTypeId,
             Pageable pageable
     );
+
+
+    @Query("SELECT b FROM Breed b " +
+            "WHERE b.animalType = :animalType " +
+            "AND (b.name = :name OR :name MEMBER OF b.alternativeNames)")
+    Optional<Breed> findByAnimalTypeAndNameOrAlternativeNames(
+            @Param("animalType") AnimalType animalType,
+            @Param("name") String name);
 
     @Query(
             value = "SELECT * FROM breeds WHERE id IN " +
