@@ -147,8 +147,8 @@ public class AnimalServiceImpl implements AnimalService {
 
 
             AnimalType animalType = getAnimalType(animalRequest.getEspecie());
-            Breed breed = breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, animalRequest.getBreed()).orElseGet(()->
-                   breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "mestizo").get());
+            Breed breed = breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, animalRequest.getBreed()).stream().findFirst().orElseGet(()->
+                   breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "mestizo").stream().findFirst().get());
 
             animal.setBreed(breed);
             animal.setIsPublic(true);

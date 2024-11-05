@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -58,7 +59,7 @@ public interface BreedRepository extends JpaRepository<Breed, Long> {
     @Query("SELECT b FROM Breed b " +
             "WHERE b.animalType = :animalType " +
             "AND (b.name = :name OR :name MEMBER OF b.alternativeNames)")
-    Optional<Breed> findByAnimalTypeAndNameOrAlternativeNames(
+    List<Breed> findByAnimalTypeAndNameOrAlternativeNames(
             @Param("animalType") AnimalType animalType,
             @Param("name") String name);
 
