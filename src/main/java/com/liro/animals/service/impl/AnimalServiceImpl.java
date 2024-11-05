@@ -147,8 +147,20 @@ public class AnimalServiceImpl implements AnimalService {
 
 
             AnimalType animalType = getAnimalType(animalRequest.getEspecie());
-            Breed breed = breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, animalRequest.getBreed()).stream().findFirst().orElseGet(()->
-                   breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "mestizo").stream().findFirst().get());
+
+
+            Breed breed = breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, animalRequest.getBreed()).stream().findFirst().orElseGet(() ->{
+
+
+                        if (animalType.getName().equals("canine")) {
+                         return   breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "mestizo").stream().findFirst().get();
+
+                        } else {
+                          return  breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "gato común").stream().findFirst().get();
+                        }
+            });
+
+
 
             animal.setBreed(breed);
             animal.setIsPublic(true);
@@ -162,9 +174,9 @@ public class AnimalServiceImpl implements AnimalService {
         return responses;
     }
 
-    private AnimalType getAnimalType(String animalType){
+    private AnimalType getAnimalType(String animalType) {
 
-        switch (animalType){
+        switch (animalType) {
             case "Felino":
                 return animalTypeRepository.findByFormalName("feline").get();
             default:
@@ -317,7 +329,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void decreaseNumberOfPhotos(Long animalId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                true, false,  false);
+                true, false, false);
         if (animal.getNumberOfPhotos() > 0) {
             animal.setNumberOfPhotos(animal.getNumberOfPhotos() - 1);
             animalRepository.save(animal);
@@ -348,7 +360,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void removeColor(Long animalId, Long animalColorId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                true, false,  false);
+                true, false, false);
         AnimalColor animalColor = animalColorRepository.
                 findById(animalColorId).orElseThrow(
                         () -> new ResourceNotFoundException("Animal color not found with id: "
@@ -368,7 +380,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void changeMainColor(Long animalId, Long animalColorId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                true, false,  false);
+                true, false, false);
         AnimalColor animalColor = animalColorRepository.
                 findById(animalColorId).orElseThrow(
                         () -> new ResourceNotFoundException("Animal color not found with id: "
@@ -384,7 +396,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void changeOwner(Long animalId, String emailToTransfer, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                false, true,  false);
+                false, true, false);
 
         UserResponseDTO userDTO1 = userService.getUserByEmail(emailToTransfer);
         animal.setOwnerUserId(userDTO.getId());
