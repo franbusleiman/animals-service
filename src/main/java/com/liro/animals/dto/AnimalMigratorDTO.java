@@ -22,6 +22,7 @@ public class AnimalMigratorDTO {
     private Boolean death;
     private Sex sex;
     private String breed;
+    private String especie;
     private Long ownerUserId;
     private String vetterCode;
 }

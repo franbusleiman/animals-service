@@ -11,10 +11,7 @@ import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.exceptions.BadRequestException;
 import com.liro.animals.exceptions.ResourceNotFoundException;
-import com.liro.animals.model.dbentities.Animal;
-import com.liro.animals.model.dbentities.AnimalColor;
-import com.liro.animals.model.dbentities.AnimalsSharedUsers;
-import com.liro.animals.model.dbentities.Breed;
+import com.liro.animals.model.dbentities.*;
 import com.liro.animals.model.dbentities.Record;
 import com.liro.animals.model.enums.Castrated;
 import com.liro.animals.repositories.*;
@@ -40,6 +37,7 @@ public class AnimalServiceImpl implements AnimalService {
     private final BreedRepository breedRepository;
     private final BreedMapper breedMapper;
     private final AnimalTypeMapper animalTypeMapper;
+    private final AnimalTypeRepository animalTypeRepository;
     private final AnimalMapper animalMapper;
     private final UserService userService;
     private final AnimalsSharedUsersService animalsSharedUsersService;
@@ -55,6 +53,7 @@ public class AnimalServiceImpl implements AnimalService {
                              AnimalMapper animalMapper,
                              UserService userService,
                              Util util,
+                             AnimalTypeRepository animalTypeRepository,
                              BreedMapper breedMapper,
                              AnimalTypeMapper animalTypeMapper,
                              RecordMapper recordMapper,
@@ -69,6 +68,7 @@ public class AnimalServiceImpl implements AnimalService {
         this.util = util;
         this.breedMapper = breedMapper;
         this.animalTypeMapper = animalTypeMapper;
+        this.animalTypeRepository = animalTypeRepository;
         this.recordMapper = recordMapper;
         this.recordRepository = recordRepository;
         this.animalsSharedUsersService = animalsSharedUsersService;
@@ -145,9 +145,22 @@ public class AnimalServiceImpl implements AnimalService {
 
             animal.setMainClinicId(vetClinicId);
 
-            Breed breed = breedRepository.findByName(animalRequest.getBreed()).orElseThrow(
-                    () -> new ResourceNotFoundException("Breed not found with name: "
-                            + animalRequest.getName()));
+
+            AnimalType animalType = getAnimalType(animalRequest.getEspecie());
+
+
+            Breed breed = breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, animalRequest.getBreed()).stream().findFirst().orElseGet(() ->{
+
+
+                        if (animalType.getName().equals("canine")) {
+                         return   breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "mestizo").stream().findFirst().get();
+
+                        } else {
+                          return  breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "gato común").stream().findFirst().get();
+                        }
+            });
+
+
 
             animal.setBreed(breed);
             animal.setIsPublic(true);
@@ -155,11 +168,20 @@ public class AnimalServiceImpl implements AnimalService {
             if (breed.getAnimals() == null) breed.setAnimals(new HashSet<>());
             breed.getAnimals().add(animal);
 
-
             responses.add(animalMapper.animalToAnimalMigrationResponse(animalRepository.save(animal)));
         });
 
         return responses;
+    }
+
+    private AnimalType getAnimalType(String animalType) {
+
+        switch (animalType) {
+            case "Felino":
+                return animalTypeRepository.findByFormalName("feline").get();
+            default:
+                return animalTypeRepository.findByFormalName("canine").get();
+        }
     }
 
     @Override
@@ -307,7 +329,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void decreaseNumberOfPhotos(Long animalId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                true, false,  false);
+                true, false, false);
         if (animal.getNumberOfPhotos() > 0) {
             animal.setNumberOfPhotos(animal.getNumberOfPhotos() - 1);
             animalRepository.save(animal);
@@ -338,7 +360,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void removeColor(Long animalId, Long animalColorId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                true, false,  false);
+                true, false, false);
         AnimalColor animalColor = animalColorRepository.
                 findById(animalColorId).orElseThrow(
                         () -> new ResourceNotFoundException("Animal color not found with id: "
@@ -358,7 +380,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void changeMainColor(Long animalId, Long animalColorId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                true, false,  false);
+                true, false, false);
         AnimalColor animalColor = animalColorRepository.
                 findById(animalColorId).orElseThrow(
                         () -> new ResourceNotFoundException("Animal color not found with id: "
@@ -374,7 +396,7 @@ public class AnimalServiceImpl implements AnimalService {
     @Override
     public void changeOwner(Long animalId, String emailToTransfer, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                false, true,  false);
+                false, true, false);
 
         UserResponseDTO userDTO1 = userService.getUserByEmail(emailToTransfer);
         animal.setOwnerUserId(userDTO.getId());
