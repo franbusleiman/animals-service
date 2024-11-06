@@ -106,7 +106,6 @@ public class AnimalsController {
                                              @RequestHeader(name = "clinicId", required = false) Long clinicId,
 
                                              @RequestHeader(name = "Authorization", required = false) String token) {
-        System.out.println("------------------------------- " + animalRequest.getMainColorHex()+ "---------------------------------");
         animalService.updateAnimal(animalRequest, animalId, getUser(token, clinicId));
 
         return ResponseEntity.ok().build();
