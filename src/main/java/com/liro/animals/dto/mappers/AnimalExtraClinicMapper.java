@@ -4,14 +4,18 @@ package com.liro.animals.dto.mappers;
 import com.liro.animals.dto.AnimalClinicDTO;
 import com.liro.animals.dto.responses.AnimalClinicResponse;
 import com.liro.animals.model.dbentities.AnimalsExtraClinics;
+import com.liro.animals.repositories.AnimalRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 
 @Mapper(componentModel = "spring")
 public interface AnimalExtraClinicMapper {
 
-    @Mapping(target = "animal", ignore = true)
-    @Mapping(target = "clinicId", source = "clinicId")
+
+
+
+
     AnimalsExtraClinics animalClinicDTOToAnimalExtraClinics(AnimalClinicDTO animalClinicDTO);
 
 

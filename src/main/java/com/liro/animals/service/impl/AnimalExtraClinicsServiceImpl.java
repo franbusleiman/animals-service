@@ -67,8 +67,10 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
         }
-            AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalClinicDTOToAnimalExtraClinics(animalClinicDTO);
-            animalsExtraClinics.setAnimal(animal);
+        AnimalsExtraClinics animalsExtraClinics = AnimalsExtraClinics.builder()
+                .animal(animal)
+                .clinicId(animalClinicDTO.getClinicId())
+                .build();
             animal.getExtraClinics().add(animalsExtraClinics);
 
             animalExtraClinicsRepository.save(animalsExtraClinics);
@@ -76,7 +78,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         try {
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                     .userId(userDTO.getId())
-                    .clinicId(animalClinicDTO.getClinicId())
+                    .clinicId(animalClinicDTO.getAnimalId())
                     .accountBalance(0.00)
                     .build();
             feignClinicClientClient.addClinicClient(clinicClientDTO);
