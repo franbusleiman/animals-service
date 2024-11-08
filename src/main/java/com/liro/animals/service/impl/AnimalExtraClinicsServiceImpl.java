@@ -47,7 +47,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 
 
 
-        AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOToAnimalExtraClinics(animalClinicDTO);
+        AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalClinicDTOToAnimalExtraClinics(animalClinicDTO);
 
         util.validatePermissions(animalClinicDTO.getAnimalId(), userDTO,
                 true, false, false);
@@ -62,12 +62,12 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
        Animal animal = util.validatePermissions(animalClinicDTO.getAnimalId(), userDTO,true, false, false);
 
         if (animal.getMainClinicId() == null){
-            animal.setMainClinicId(animalClinicDTO.getExtraClinicId());
+            animal.setMainClinicId(animalClinicDTO.getClinicId());
             animalRepository.save(animal);
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
         }
-            AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOToAnimalExtraClinics(animalClinicDTO);
+            AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalClinicDTOToAnimalExtraClinics(animalClinicDTO);
             animalsExtraClinics.setAnimal(animal);
             animal.getExtraClinics().add(animalsExtraClinics);
 
@@ -76,7 +76,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         try {
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                     .userId(userDTO.getId())
-                    .clinicId(animalClinicDTO.getExtraClinicId())
+                    .clinicId(animalClinicDTO.getClinicId())
                     .accountBalance(0.00)
                     .build();
             feignClinicClientClient.addClinicClient(clinicClientDTO);
