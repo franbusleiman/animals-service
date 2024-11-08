@@ -11,7 +11,6 @@ import com.liro.animals.model.dbentities.AnimalsExtraClinics;
 import com.liro.animals.repositories.AnimalExtraClinicsRepository;
 import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.repositories.AnimalsSharedUsersRepository;
-import feign.Feign;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +111,7 @@ public class Util {
                 .accountBalance(0.00)
                 .build();
 
-        feignClinicClientClient.addClinicClient(clinicClientDTO);
+        feignClinicClientClient.createClinicClient(clinicClientDTO);
     }
 
     private boolean isSharedOwnerWithWritePermissions(Animal animal, UserDTO user) {

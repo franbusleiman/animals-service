@@ -67,7 +67,6 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
         }else {
-            System.out.println(animalClinicDTO.getClinicId() + animalClinicDTO.getAnimalId());
             AnimalsExtraClinics animalsExtraClinics = AnimalsExtraClinics.builder()
                     .animal(animal)
                     .clinicId(animalClinicDTO.getClinicId())
@@ -81,7 +80,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
                     .clinicId(animalClinicDTO.getAnimalId())
                     .accountBalance(0.00)
                     .build();
-            feignClinicClientClient.addClinicClient(clinicClientDTO);
+            feignClinicClientClient.createClinicClient(clinicClientDTO);
         }catch (Exception e){
             e.printStackTrace();
         }
