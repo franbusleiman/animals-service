@@ -11,6 +11,7 @@ import org.mapstruct.Mapping;
 public interface AnimalExtraClinicMapper {
 
     @Mapping(target = "animal", ignore = true)
+    @Mapping(target = "clinicId", source = "clinicId")
     AnimalsExtraClinics animalClinicDTOToAnimalExtraClinics(AnimalClinicDTO animalClinicDTO);
 
 
