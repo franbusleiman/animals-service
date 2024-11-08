@@ -1,8 +1,8 @@
 package com.liro.animals.dto.mappers;
 
 
-import com.liro.animals.dto.AnimalExtraClinicDTO;
-import com.liro.animals.dto.responses.AnimalExtraClinicResponse;
+import com.liro.animals.dto.AnimalClinicDTO;
+import com.liro.animals.dto.responses.AnimalClinicResponse;
 import com.liro.animals.model.dbentities.AnimalsExtraClinics;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -11,11 +11,9 @@ import org.mapstruct.Mapping;
 public interface AnimalExtraClinicMapper {
 
 
-//    AnimalsExtraClinics animalExtraClinicDTOTOAnimalExtrClinic(AnimalExtraClinicDTO animalExtraClinicDTO);
-    @Mapping(target = "clinicId", source = "extraClinicId")
-    AnimalsExtraClinics animalExtraClinicDTOToAnimalExtraClinics(AnimalExtraClinicDTO animalExtraClinicDTO);
+    AnimalsExtraClinics animalClinicDTOToAnimalExtraClinics(AnimalClinicDTO animalClinicDTO);
 
 
-    AnimalExtraClinicResponse animalExtraClinicToAnimalExtraClinicResponse(AnimalsExtraClinics animalsExtraClinics);
+    AnimalClinicResponse animalExtraClinicToAnimalExtraClinicResponse(AnimalsExtraClinics animalsExtraClinics);
 
 }

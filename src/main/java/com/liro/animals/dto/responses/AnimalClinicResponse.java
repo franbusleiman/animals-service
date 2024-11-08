@@ -1,7 +1,7 @@
 package com.liro.animals.dto.responses;
 
 
-import com.liro.animals.dto.AnimalExtraClinicDTO;
+import com.liro.animals.dto.AnimalClinicDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @Setter
-public class AnimalExtraClinicResponse extends AnimalExtraClinicDTO {
+public class AnimalClinicResponse extends AnimalClinicDTO {
 
 
     private Long id;

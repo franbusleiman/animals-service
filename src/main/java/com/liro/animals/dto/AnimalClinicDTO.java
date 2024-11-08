@@ -11,9 +11,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @Getter
 @Setter
-public class AnimalExtraClinicDTO {
+public class AnimalClinicDTO {
 
     private Long animalId;
 
-    private Long extraClinicId;
+    private Long clinicId;
 }
