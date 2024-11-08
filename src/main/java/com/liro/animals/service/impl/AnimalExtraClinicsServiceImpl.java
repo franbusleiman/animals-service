@@ -66,15 +66,16 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
             animalRepository.save(animal);
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
-        }
+        }else {
+            System.out.println(animalClinicDTO.getClinicId() + animalClinicDTO.getAnimalId());
             AnimalsExtraClinics animalsExtraClinics = AnimalsExtraClinics.builder()
-                .animal(animal)
-                .clinicId(animalClinicDTO.getClinicId())
-                .build();
+                    .animal(animal)
+                    .clinicId(animalClinicDTO.getClinicId())
+                    .build();
             animal.getExtraClinics().add(animalsExtraClinics);
 
             animalExtraClinicsRepository.save(animalsExtraClinics);
-
+        }
         try {
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                     .userId(userDTO.getId())
