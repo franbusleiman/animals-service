@@ -73,7 +73,6 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
                     .clinicId(animalClinicDTO.getClinicId())
                     .build();
             animal.getExtraClinics().add(animalsExtraClinics);
-
             animalExtraClinicsRepository.save(animalsExtraClinics);
         }
         try {
