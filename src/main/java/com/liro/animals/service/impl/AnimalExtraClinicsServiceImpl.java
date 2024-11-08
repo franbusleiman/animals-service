@@ -53,7 +53,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 
 
 
-        AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
+        AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOToAnimalExtraClinics(animalExtraClinicDTO);
 
         util.validatePermissions(animalExtraClinicDTO.getAnimalId(), userDTO,
                 true, false, false);
@@ -73,9 +73,10 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
         }
-            AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOTOAnimalExtrClinic(animalExtraClinicDTO);
-            animal.getExtraClinics().add(animalsExtraClinics);
+            AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalExtraClinicDTOToAnimalExtraClinics(animalExtraClinicDTO);
             animalsExtraClinics.setAnimal(animal);
+            animal.getExtraClinics().add(animalsExtraClinics);
+
             animalExtraClinicsRepository.save(animalsExtraClinics);
 
         try {
