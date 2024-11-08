@@ -67,7 +67,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         } else if (animal.getExtraClinics() == null) {
             animal.setExtraClinics(new HashSet<AnimalsExtraClinics>());
         }
-        AnimalsExtraClinics animalsExtraClinics = AnimalsExtraClinics.builder()
+            AnimalsExtraClinics animalsExtraClinics = AnimalsExtraClinics.builder()
                 .animal(animal)
                 .clinicId(animalClinicDTO.getClinicId())
                 .build();
