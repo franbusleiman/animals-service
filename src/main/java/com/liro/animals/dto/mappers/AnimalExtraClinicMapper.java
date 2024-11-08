@@ -10,7 +10,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AnimalExtraClinicMapper {
 
-    @Mapping(target = "clinicId", source = "clinicId")
+    @Mapping(target = "animal", ignore = true)
     AnimalsExtraClinics animalClinicDTOToAnimalExtraClinics(AnimalClinicDTO animalClinicDTO);
 
 
