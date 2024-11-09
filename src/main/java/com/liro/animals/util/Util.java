@@ -11,6 +11,7 @@ import com.liro.animals.model.dbentities.AnimalsExtraClinics;
 import com.liro.animals.repositories.AnimalExtraClinicsRepository;
 import com.liro.animals.repositories.AnimalRepository;
 import com.liro.animals.repositories.AnimalsSharedUsersRepository;
+import feign.Feign;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,10 +39,12 @@ public class Util {
         this.feignClinicClientClient = feignClinicClientClient;
     }
 
-    public Animal validatePermissions(Long animalId, UserDTO user,
+    public Animal validatePermissions(Long animalId, String token, Long clinicHeader,
                                       boolean needWritePermissions, boolean onlyOwner, boolean onlyVet) {
         Animal animal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal not found with id: " + animalId));
+
+        UserDTO user = getUser(token,clinicHeader);
 
         boolean isOwner = animal.getOwnerUserId().equals(user.getId());
         boolean isVet = validateVet(user);
@@ -65,7 +68,7 @@ public class Util {
                 throw new UnauthorizedException("You are not a valid veterinary");
             }
             // Si es público y el vet no está en mainClinic ni extraClinics, agregamos la clínica
-            addVetClinicIfPublic(animal, user, isInMainClinic, isInExtraClinics);
+            addVetClinicIfPublic(animal, user,token, isInMainClinic, isInExtraClinics);
             return animal;
         }
 
@@ -83,11 +86,11 @@ public class Util {
         }
 
         // Añadir la clínica si es público y es veterinario
-        addVetClinicIfPublic(animal, user, isInMainClinic, isInExtraClinics);
+        addVetClinicIfPublic(animal, user,token, isInMainClinic, isInExtraClinics);
         return animal;
     }
 
-    private void addVetClinicIfPublic(Animal animal, UserDTO user, boolean isInMainClinic, boolean isInExtraClinics) {
+    private void addVetClinicIfPublic(Animal animal, UserDTO user, String token, boolean isInMainClinic, boolean isInExtraClinics) {
 
         if (animal.getIsPublic() && validateVet(user) && user.getClinicId() != null) {
             if (!isInMainClinic && !isInExtraClinics) {
@@ -98,12 +101,12 @@ public class Util {
                     // Si ya tiene una mainClinic, agregar la clínica como extra
                     animal.getExtraClinics().add(new AnimalsExtraClinics(animal, user.getClinicId()));
                 }
-                addClientToClinic(animal.getOwnerUserId(), user.getClinicId());
+                addClientToClinic(animal.getOwnerUserId(), user.getClinicId(), token);
             }
         }
     }
 
-    private void addClientToClinic(Long userId, Long clinicId){
+    private void addClientToClinic(Long userId, Long clinicId, String token){
 
         ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                 .userId(userId)
@@ -111,7 +114,7 @@ public class Util {
                 .accountBalance(0.00)
                 .build();
 
-        feignClinicClientClient.createClinicClient(clinicClientDTO);
+        feignClinicClientClient.addClinicClient(clinicClientDTO, token);
     }
 
     private boolean isSharedOwnerWithWritePermissions(Animal animal, UserDTO user) {

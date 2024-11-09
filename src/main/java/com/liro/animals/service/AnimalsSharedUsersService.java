@@ -9,7 +9,7 @@ public interface AnimalsSharedUsersService {
 
 //    Page<AnimalsSharedUsersResponse> findAll(Pageable pageable);
 
-    void createRelation(Long animalId, Boolean readOnly, String shareToEmail, UserDTO userDTO);
+    void createRelation(Long animalId, Boolean readOnly, String shareToEmail, String token, Long clinicId);
 
 //    void deleteRelation(Long animalId, Long userId);
 

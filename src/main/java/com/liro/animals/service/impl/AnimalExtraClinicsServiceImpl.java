@@ -42,24 +42,25 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
         this.util = util;
     }
 
+//    @Override
+//    public AnimalClinicResponse addExtraClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO) {
+//
+//
+//
+//        AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalClinicDTOToAnimalExtraClinics(animalClinicDTO);
+//
+//        util.validatePermissions(animalClinicDTO.getAnimalId(), userDTO,
+//                true, false, false);
+//
+//        return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animalExtraClinicsRepository.save(animalsExtraClinics));
+//    }
+
     @Override
-    public AnimalClinicResponse addExtraClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO) {
+    public void addClinic(AnimalClinicDTO animalClinicDTO, String token, Long clinicId) {
 
+        UserDTO userDTO = Util.getUser(token, clinicId);
 
-
-        AnimalsExtraClinics animalsExtraClinics = animalExtraClinicMapper.animalClinicDTOToAnimalExtraClinics(animalClinicDTO);
-
-        util.validatePermissions(animalClinicDTO.getAnimalId(), userDTO,
-                true, false, false);
-
-        return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animalExtraClinicsRepository.save(animalsExtraClinics));
-    }
-
-    @Override
-    public void addClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO) {
-
-
-       Animal animal = util.validatePermissions(animalClinicDTO.getAnimalId(), userDTO,true, false, false);
+       Animal animal = util.validatePermissions(animalClinicDTO.getAnimalId(), token, clinicId,true, false, false);
 
         if (animal.getMainClinicId() == null){
             animal.setMainClinicId(animalClinicDTO.getClinicId());
@@ -80,7 +81,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
                     .clinicId(animalClinicDTO.getAnimalId())
                     .accountBalance(0.00)
                     .build();
-            feignClinicClientClient.createClinicClient(clinicClientDTO);
+            feignClinicClientClient.addClinicClient(clinicClientDTO, token);
         }catch (Exception e){
             e.printStackTrace();
         }

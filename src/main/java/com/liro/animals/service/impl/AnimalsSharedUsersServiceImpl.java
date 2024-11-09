@@ -34,11 +34,11 @@ public class AnimalsSharedUsersServiceImpl implements AnimalsSharedUsersService 
     }
 
     @Override
-    public void createRelation(Long animalId, Boolean readOnly, String shareToEmail, UserDTO userDTO) {
+    public void createRelation(Long animalId, Boolean readOnly, String shareToEmail, String token, Long clinicId) {
 
         UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
 
-        Animal animal = util.validatePermissions(animalId, userDTO,
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 false, true,  false);
 
         Optional<AnimalsSharedUsers> animalsSharedUsersOptional = animalsSharedUsersRepository.findByAnimalIdAndUserId(animalId, userToShare.getId());

@@ -8,9 +8,9 @@ import org.springframework.data.domain.Pageable;
 
 public interface AnimalExtraClinicsService {
 
-    AnimalClinicResponse addExtraClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO);
+//    AnimalClinicResponse addExtraClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO);
 
-    void addClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO);
+    void addClinic(AnimalClinicDTO animalClinicDTO, String token, Long clinicId);
 
     Page<AnimalClinicResponse> getExtraClinicsRelationsByClinicId(Pageable pageable, Long clinicId, UserDTO userDTO);
 

@@ -106,7 +106,7 @@ public class AnimalsController {
                                              @RequestHeader(name = "clinicId", required = false) Long clinicId,
 
                                              @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.updateAnimal(animalRequest, animalId, getUser(token, clinicId));
+        animalService.updateAnimal(animalRequest, animalId,token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -116,7 +116,7 @@ public class AnimalsController {
                                              @RequestHeader(name = "clinicId", required = false) Long clinicId,
 
                                              @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.deleteAnimal(animalId, getUser(token, clinicId));
+        animalService.deleteAnimal(animalId, token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -144,7 +144,7 @@ public class AnimalsController {
                                                        @RequestParam("readOnly") boolean readOnly,
                                                        @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                                        @RequestHeader(name = "Authorization", required = false) String token) {
-        animalsSharedUsersService.createRelation(animalId,readOnly, shareToEmail, getUser(token, clinicId));
+        animalsSharedUsersService.createRelation(animalId,readOnly, shareToEmail, token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -156,7 +156,7 @@ public class AnimalsController {
                                                @RequestParam("onlyVet") Boolean onlyVet,
                                                @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                                @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.hasPermissions(animalId, getUser(token, clinicId), needWritePermissions,
+        animalService.hasPermissions(animalId, token, clinicId, needWritePermissions,
                 onlyOwner, onlyVet);
 
         return ResponseEntity.ok().build();
@@ -167,7 +167,7 @@ public class AnimalsController {
                                             @RequestParam("emailToTransfer") String emailToTransfer,
                                             @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                             @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.changeOwner(animalId, emailToTransfer, getUser(token, clinicId));
+        animalService.changeOwner(animalId, emailToTransfer, token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -177,7 +177,7 @@ public class AnimalsController {
                                               @RequestParam("shareToEmail") String shareToEmail,
                                               @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                               @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.removeShareAnimal(animalId, shareToEmail, getUser(token, clinicId));
+        animalService.removeShareAnimal(animalId, shareToEmail, token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -186,7 +186,7 @@ public class AnimalsController {
     public ResponseEntity<Void> increaseNumberOfPhotos(@RequestParam("animalId") Long animalId,
                                                        @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                                        @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.increaseNumberOfPhotos(animalId, getUser(token, clinicId));
+        animalService.increaseNumberOfPhotos(animalId, token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -195,7 +195,7 @@ public class AnimalsController {
     public ResponseEntity<Void> decreaseNumberOfPhotos(@RequestParam("animalId") Long animalId,
                                                        @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                                        @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.decreaseNumberOfPhotos(animalId, getUser(token, clinicId));
+        animalService.decreaseNumberOfPhotos(animalId, token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -205,7 +205,7 @@ public class AnimalsController {
                                          @RequestParam("animalColorId") Long animalColorId,
                                          @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                          @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.addColor(animalId, animalColorId, getUser(token, clinicId));
+        animalService.addColor(animalId, animalColorId, token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -215,7 +215,7 @@ public class AnimalsController {
                                             @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                             @RequestParam("animalColorId") Long animalColorId,
                                             @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.removeColor(animalId, animalColorId, getUser(token, clinicId));
+        animalService.removeColor(animalId, animalColorId, token, clinicId);
 
         return ResponseEntity.ok().build();
     }
@@ -225,7 +225,7 @@ public class AnimalsController {
                                                 @RequestParam("animalColorId") Long animalColorId,
                                                 @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                                 @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.changeMainColor(animalId, animalColorId, getUser(token, clinicId));
+        animalService.changeMainColor(animalId, animalColorId, token, clinicId);
 
         return ResponseEntity.ok().build();
     }

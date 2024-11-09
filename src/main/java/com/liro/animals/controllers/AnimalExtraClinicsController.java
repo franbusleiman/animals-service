@@ -40,25 +40,25 @@ public class AnimalExtraClinicsController {
         return ResponseEntity.ok(animalExtraClinicsService.getExtraClinicsRelationsByClinicId( pageable,animalId, getUser(token, null)));
     }
 
-    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ApiResponse> create(@Valid @RequestBody AnimalClinicDTO animalClinicDTO,
-                                                    @RequestHeader(name = "Authorization",  required = false) String token) {
-
-        AnimalClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addExtraClinic(animalClinicDTO, getUser(token, null));
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/clinics/{clinicId}")
-                .buildAndExpand(animalExtraClinicResponse.getId()).toUri();
-
-        return ResponseEntity.created(location).body(
-                new ApiResponse(true, "Clinic added successfully"));
-    }
+//    @PostMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<ApiResponse> create(@Valid @RequestBody AnimalClinicDTO animalClinicDTO,
+//                                                    @RequestHeader(name = "Authorization",  required = false) String token) {
+//
+//        AnimalClinicResponse animalExtraClinicResponse = animalExtraClinicsService.addExtraClinic(animalClinicDTO, getUser(token, null));
+//
+//        URI location = ServletUriComponentsBuilder
+//                .fromCurrentContextPath().path("/clinics/{clinicId}")
+//                .buildAndExpand(animalExtraClinicResponse.getId()).toUri();
+//
+//        return ResponseEntity.created(location).body(
+//                new ApiResponse(true, "Clinic added successfully"));
+//    }
 
     @PostMapping(value = "/addClinic",produces = MediaType.APPLICATION_JSON_VALUE)
     public ApiResponse addClinic(@Valid @RequestBody AnimalClinicDTO animalClinicDTO,
                                                  @RequestHeader(name = "Authorization", required = false) String token){
 
-        animalExtraClinicsService.addClinic(animalClinicDTO, getUser(token, null));
+        animalExtraClinicsService.addClinic(animalClinicDTO, token, animalClinicDTO.getClinicId());
 
         return new ApiResponse(true, "Clinic added successfully");
     }

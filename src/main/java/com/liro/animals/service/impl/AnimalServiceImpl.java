@@ -185,10 +185,11 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void updateAnimal(AnimalDTO animalRequest, Long animalId, UserDTO userDTO) {
+    public void updateAnimal(AnimalDTO animalRequest, Long animalId, String token, Long clinicId) {
+        UserDTO userDTO = Util.getUser(token, clinicId);
         boolean validVet = util.validateVet(userDTO);
 
-        Animal animal = util.validatePermissions(animalId, userDTO,
+        Animal animal = util.validatePermissions(animalId, token,clinicId,
                 true, false, false);
 
         // Only update if the one setting it is a veterinary
@@ -264,8 +265,8 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void deleteAnimal(Long animalId, UserDTO userDTO) {
-        Animal animal = util.validatePermissions(animalId, userDTO,
+    public void deleteAnimal(Long animalId, String token, Long clinicId) {
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 false, true, false);
 
         animalRepository.delete(animal);
@@ -273,10 +274,11 @@ public class AnimalServiceImpl implements AnimalService {
 
     @Override
     public void changeShareStateAnimal(Long animalId, String shareToEmail,
-                                       boolean readOnly, UserDTO userDTO) {
+                                       boolean readOnly, String token, Long clinicId) {
+
 
         System.out.println("----------------------- LLAMANDO AL METODO NUEVO --------------------------");
-        animalsSharedUsersService.createRelation(animalId, readOnly, shareToEmail, userDTO);
+        animalsSharedUsersService.createRelation(animalId, readOnly, shareToEmail, token, clinicId);
 
 
 //        Optional<AnimalsSharedUsers> animalsSharedClientProfiles = animalsSharedUsersRepository
@@ -301,10 +303,10 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void removeShareAnimal(Long animalId, String shareToEmail, UserDTO userDTO) {
+    public void removeShareAnimal(Long animalId, String shareToEmail, String token, Long clinicId) {
         UserResponseDTO userToShare = userService.getUserByEmail(shareToEmail);
 
-        Animal animal = util.validatePermissions(animalId, userDTO,
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 false, true, false);
 
         Optional<AnimalsSharedUsers> animalsSharedClientProfiles = animalsSharedUsersRepository
@@ -317,9 +319,9 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void increaseNumberOfPhotos(Long animalId, UserDTO userDTO) {
+    public void increaseNumberOfPhotos(Long animalId, String token, Long clinicId) {
 
-        Animal animal = util.validatePermissions(animalId, userDTO,
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 true, false, false);
         animal.setNumberOfPhotos(animal.getNumberOfPhotos() + 1);
 
@@ -327,8 +329,8 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void decreaseNumberOfPhotos(Long animalId, UserDTO userDTO) {
-        Animal animal = util.validatePermissions(animalId, userDTO,
+    public void decreaseNumberOfPhotos(Long animalId, String token, Long clinicId) {
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 true, false, false);
         if (animal.getNumberOfPhotos() > 0) {
             animal.setNumberOfPhotos(animal.getNumberOfPhotos() - 1);
@@ -340,8 +342,8 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void addColor(Long animalId, Long animalColorId, UserDTO userDTO) {
-        Animal animal = util.validatePermissions(animalId, userDTO,
+    public void addColor(Long animalId, Long animalColorId, String token, Long clinicId) {
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 true, false, false);
         AnimalColor animalColor = animalColorRepository.
                 findById(animalColorId).orElseThrow(
@@ -358,8 +360,8 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void removeColor(Long animalId, Long animalColorId, UserDTO userDTO) {
-        Animal animal = util.validatePermissions(animalId, userDTO,
+    public void removeColor(Long animalId, Long animalColorId, String token, Long clinicId) {
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 true, false, false);
         AnimalColor animalColor = animalColorRepository.
                 findById(animalColorId).orElseThrow(
@@ -378,8 +380,8 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void changeMainColor(Long animalId, Long animalColorId, UserDTO userDTO) {
-        Animal animal = util.validatePermissions(animalId, userDTO,
+    public void changeMainColor(Long animalId, Long animalColorId, String token, Long clinicId ) {
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 true, false, false);
         AnimalColor animalColor = animalColorRepository.
                 findById(animalColorId).orElseThrow(
@@ -394,9 +396,10 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void changeOwner(Long animalId, String emailToTransfer, UserDTO userDTO) {
-        Animal animal = util.validatePermissions(animalId, userDTO,
+    public void changeOwner(Long animalId, String emailToTransfer, String token, Long clinicId) {
+        Animal animal = util.validatePermissions(animalId, token, clinicId,
                 false, true, false);
+        UserDTO userDTO = Util.getUser(token, clinicId);
 
         UserResponseDTO userDTO1 = userService.getUserByEmail(emailToTransfer);
         animal.setOwnerUserId(userDTO.getId());
@@ -405,9 +408,9 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void hasPermissions(Long animalId, UserDTO userDTO, boolean needWritePermissions,
+    public void hasPermissions(Long animalId, String token, Long clinicId, boolean needWritePermissions,
                                boolean onlyOwner, boolean onlyVet) {
-        util.validatePermissions(animalId, userDTO, needWritePermissions, onlyOwner, onlyVet);
+        util.validatePermissions(animalId, token, clinicId, needWritePermissions, onlyOwner, onlyVet);
     }
 
     @Override
