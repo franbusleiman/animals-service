@@ -62,7 +62,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 
         UserDTO userDTO = Util.getUser(token, clinicId);
 
-       Animal animal = util.validatePermissions(animalClinicDTO.getAnimalId(), token, clinicId,true, false, false);
+       Animal animal = util.validatePermissions(animalClinicDTO.getAnimalId(), token, clinicId,false, false, false);
 
         if (animal.getMainClinicId() == null){
             animal.setMainClinicId(animalClinicDTO.getClinicId());
