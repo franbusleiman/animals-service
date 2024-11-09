@@ -12,6 +12,5 @@ import javax.validation.Valid;
 public interface FeignClinicClientClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/clinicClients")
-    ResponseEntity<Void> createClinicClient(@Valid @RequestBody ClinicClientDTO clinicClientDTO,
-                                         @RequestHeader(name = "Authorization", required = false) String token);
+    ResponseEntity<Void> createClinicClient(@RequestBody ClinicClientDTO clinicClientDTO);
 }
