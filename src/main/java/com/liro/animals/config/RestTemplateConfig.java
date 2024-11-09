@@ -2,6 +2,7 @@ package com.liro.animals.config;
 
 import com.google.inject.internal.Errors;
 import io.swagger.models.Model;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
@@ -45,7 +46,8 @@ public class RestTemplateConfig {
 
     public String CLIENT_SECRET = "12345";
 
-    public String AUTH_SERVER = "https://api.liro.pet/api/security";
+    @Value(value = "${auth.server}")
+    public String AUTH_SERVER;
 
 
     @Bean
