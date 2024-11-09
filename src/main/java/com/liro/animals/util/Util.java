@@ -114,7 +114,7 @@ public class Util {
                 .accountBalance(0.00)
                 .build();
 
-        feignClinicClientClient.createClinicClient(clinicClientDTO, token);
+        feignClinicClientClient.createClinicClient(token, clinicClientDTO);
     }
 
     private boolean isSharedOwnerWithWritePermissions(Animal animal, UserDTO user) {

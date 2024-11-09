@@ -7,11 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @FeignClient(name = "clinics-service")
 public interface FeignClinicClientClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/clinicClients")
-    ResponseEntity<Void> createClinicClient(@RequestBody ClinicClientDTO clinicClientDTO,
-                                         @RequestHeader(name = "Authorization", required = false) String token);
+    ResponseEntity<Void> createClinicClient(@RequestHeader(name = "Authorization", required = false) String token,
+                                            @RequestBody ClinicClientDTO clinicClientDto);
 }
