@@ -14,7 +14,7 @@ import java.util.List;
 public interface FeignClinicClientClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/clinicClients")
-    ResponseEntity<ApiResponse> createClinicClient(ClinicClientDTO clinicClientDto);
+    ResponseEntity<ApiResponse> createClinicClient(@RequestBody ClinicClientDTO clinicClientDto);
 
     @GetMapping(value = "/clinicClients/{clinicId}")
     ResponseEntity<List<Long>> getUsersByClinicId(@PathVariable("clinicId") Long clinicId);
