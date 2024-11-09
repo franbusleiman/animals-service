@@ -81,7 +81,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
                     .clinicId(animalClinicDTO.getAnimalId())
                     .accountBalance(0.00)
                     .build();
-            feignClinicClientClient.createClinicClient(clinicClientDTO);
+            feignClinicClientClient.createClinicClient(clinicClientDTO, token);
         }catch (Exception e){
             e.printStackTrace();
         }
