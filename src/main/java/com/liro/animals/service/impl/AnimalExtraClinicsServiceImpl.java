@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 
 @Service
@@ -55,6 +56,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 //        return animalExtraClinicMapper.animalExtraClinicToAnimalExtraClinicResponse(animalExtraClinicsRepository.save(animalsExtraClinics));
 //    }
 
+    @Transactional
     @Override
     public void addClinic(AnimalClinicDTO animalClinicDTO, String token, Long clinicId) {
 
@@ -75,17 +77,14 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
             animal.getExtraClinics().add(animalsExtraClinics);
             animalExtraClinicsRepository.save(animalsExtraClinics);
         }
-        try {
+
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                     .userId(userDTO.getId())
                     .clinicId(animalClinicDTO.getAnimalId())
                     .accountBalance(0.00)
                     .build();
             System.out.println(feignClinicClientClient.getUsersByClinicId(clinicId).getBody());
-            feignClinicClientClient.createClinicClient(token, clinicClientDTO);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+            feignClinicClientClient.createClinicClient(clinicClientDTO);
     }
 
     @Override
