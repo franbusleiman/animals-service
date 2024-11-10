@@ -13,7 +13,7 @@ import java.util.List;
 @FeignClient(name = "clinics-service")
 public interface FeignClinicClientClient {
 
-    @RequestMapping(method = RequestMethod.POST, value = "/clinicClients")
+    @RequestMapping(value = "/clinicClients", method = RequestMethod.POST)
     ResponseEntity<ApiResponse> createClinicClient(@RequestBody ClinicClientDTO clinicClientDto);
 
     @GetMapping(value = "/clinicClients/{clinicId}")
