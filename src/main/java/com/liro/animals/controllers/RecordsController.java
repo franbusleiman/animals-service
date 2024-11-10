@@ -68,7 +68,7 @@ public class RecordsController {
     public ResponseEntity<ApiResponse> createRecord(@Valid @RequestBody RecordDTO recordDto,
                                                     @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                                     @RequestHeader(name = "Authorization",  required = false) String token) {
-        RecordResponse recordResponse = recordService.createRecord(recordDto, token, clinicId);
+        RecordResponse recordResponse = recordService.createRecord(recordDto, getUser(token, clinicId));
 
         URI location = ServletUriComponentsBuilder
             .fromCurrentContextPath().path("/records/{recordId}")

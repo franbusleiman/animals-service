@@ -22,7 +22,7 @@ public interface RecordService {
 
     RecordResponse getRecordResponse(Long recordId);
 
-    RecordResponse createRecord(RecordDTO recordDTO, String token, Long clinicId);
+    RecordResponse createRecord(RecordDTO recordDTO, UserDTO userDTO);
     Void migrateRecords(List<RecordDTO> recordDTOs, Long  vetUserId);
 
 

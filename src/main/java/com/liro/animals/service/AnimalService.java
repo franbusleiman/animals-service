@@ -22,27 +22,27 @@ public interface AnimalService {
     List<AnimalMigrationResponse> migrateAnimals(List<AnimalMigratorDTO> animalMigratorDTOList, Long vetClinicId);
 
 
-    void updateAnimal(AnimalDTO animalRequest, Long animalId, String token, Long clinicId);
+    void updateAnimal(AnimalDTO animalRequest, Long animalId, UserDTO userDTO);
 
-    void deleteAnimal(Long animalId, String token, Long clinicId);
+    void deleteAnimal(Long animalId, UserDTO userDTO);
 
-    void changeShareStateAnimal(Long animalId, String shareToEmail, boolean readOnly, String token, Long clinicId);
+    void changeShareStateAnimal(Long animalId, String shareToEmail, boolean readOnly, UserDTO userDTO);
 
-    void removeShareAnimal(Long animalId, String shareToEmail, String token, Long clinicId);
+    void removeShareAnimal(Long animalId, String shareToEmail, UserDTO userDTO);
 
-    void increaseNumberOfPhotos(Long animalId, String token, Long clinicId);
+    void increaseNumberOfPhotos(Long animalId, UserDTO userDTO);
 
-    void decreaseNumberOfPhotos(Long animalId, String token, Long clinicId);
+    void decreaseNumberOfPhotos(Long animalId, UserDTO userDTO);
 
-    void addColor(Long animalId, Long animalColorId, String token, Long clinicId);
+    void addColor(Long animalId, Long animalColorId, UserDTO userDTO);
 
-    void removeColor(Long animalId, Long animalColorId, String token, Long clinicId);
+    void removeColor(Long animalId, Long animalColorId, UserDTO userDTO);
 
-    void changeMainColor(Long animalId, Long animalColorId, String token, Long clinicId);
+    void changeMainColor(Long animalId, Long animalColorId, UserDTO userDTO);
 
-    void changeOwner(Long animalId, String emailToTransfer, String token, Long clinicId);
+    void changeOwner(Long animalId, String emailToTransfer, UserDTO userDTO);
 
-    void hasPermissions(Long animalId, String token, Long clinicId, boolean needWritePermissions,
+    void hasPermissions(Long animalId, UserDTO userDTO, boolean needWritePermissions,
                         boolean onlyOwner, boolean onlyVet);
 
     Page<AnimalsSharedClientProfilesWADTO> getSharedAnimals(Pageable pageable, UserDTO userDTO);

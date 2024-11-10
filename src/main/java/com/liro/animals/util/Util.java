@@ -39,12 +39,11 @@ public class Util {
         this.feignClinicClientClient = feignClinicClientClient;
     }
 
-    public Animal validatePermissions(Long animalId, String token, Long clinicHeader,
+    public Animal validatePermissions(Long animalId, UserDTO user,
                                       boolean needWritePermissions, boolean onlyOwner, boolean onlyVet) {
         Animal animal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal not found with id: " + animalId));
 
-        UserDTO user = getUser(token,clinicHeader);
 
         boolean isOwner = animal.getOwnerUserId().equals(user.getId());
         boolean isVet = validateVet(user);
@@ -68,7 +67,7 @@ public class Util {
                 throw new UnauthorizedException("You are not a valid veterinary");
             }
             // Si es público y el vet no está en mainClinic ni extraClinics, agregamos la clínica
-            addVetClinicIfPublic(animal, user,token, isInMainClinic, isInExtraClinics);
+            addVetClinicIfPublic(animal, user, isInMainClinic, isInExtraClinics);
             return animal;
         }
 
@@ -86,11 +85,11 @@ public class Util {
         }
 
         // Añadir la clínica si es público y es veterinario
-        addVetClinicIfPublic(animal, user,token, isInMainClinic, isInExtraClinics);
+        addVetClinicIfPublic(animal, user, isInMainClinic, isInExtraClinics);
         return animal;
     }
 
-    private void addVetClinicIfPublic(Animal animal, UserDTO user, String token, boolean isInMainClinic, boolean isInExtraClinics) {
+    private void addVetClinicIfPublic(Animal animal, UserDTO user, boolean isInMainClinic, boolean isInExtraClinics) {
 
         if (animal.getIsPublic() && validateVet(user) && user.getClinicId() != null) {
             if (!isInMainClinic && !isInExtraClinics) {
@@ -101,12 +100,12 @@ public class Util {
                     // Si ya tiene una mainClinic, agregar la clínica como extra
                     animal.getExtraClinics().add(new AnimalsExtraClinics(animal, user.getClinicId()));
                 }
-                addClientToClinic(animal.getOwnerUserId(), user.getClinicId(), token);
+                addClientToClinic(animal.getOwnerUserId(), user.getClinicId());
             }
         }
     }
 
-    private void addClientToClinic(Long userId, Long clinicId, String token){
+    private void addClientToClinic(Long userId, Long clinicId){
 
         ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
                 .userId(userId)

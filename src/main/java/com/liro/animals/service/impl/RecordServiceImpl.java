@@ -95,10 +95,9 @@ public class RecordServiceImpl implements RecordService {
     }
 
     @Override
-    public RecordResponse createRecord(RecordDTO recordDto, String token, Long clinicId) {
+    public RecordResponse createRecord(RecordDTO recordDto, UserDTO userDTO) {
 
-        UserDTO userDTO = Util.getUser(token, clinicId);
-        Animal animal = util.validatePermissions(recordDto.getAnimalId(), token, clinicId,
+        Animal animal = util.validatePermissions(recordDto.getAnimalId(), userDTO,
                 false, false,  false);
         Record record = recordMapper.recordDtoToRecord(recordDto);
 

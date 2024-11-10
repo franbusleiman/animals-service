@@ -6,11 +6,11 @@ import com.liro.animals.dto.responses.AnimalClinicResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface AnimalExtraClinicsService {
+public interface AnimalClinicsService {
 
 //    AnimalClinicResponse addExtraClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO);
 
-    void addClinic(AnimalClinicDTO animalClinicDTO, String token);
+    void addClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO);
 
     Page<AnimalClinicResponse> getExtraClinicsRelationsByClinicId(Pageable pageable, Long clinicId, UserDTO userDTO);
 
