@@ -78,12 +78,12 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
             animalExtraClinicsRepository.save(animalsExtraClinics);
         }
 
-        System.out.println(userDTO.getClinicId());
-        System.out.println(animalClinicDTO.getAnimalId());
+        System.out.println(animal.getOwnerUserId());
+        System.out.println(animalClinicDTO.getClinicId());
 
             ClinicClientDTO clinicClientDTO = ClinicClientDTO.builder()
-                    .userId(userDTO.getId())
-                    .clinicId(animalClinicDTO.getAnimalId())
+                    .userId(animal.getOwnerUserId())
+                    .clinicId(animalClinicDTO.getClinicId())
                     .accountBalance(0.00)
                     .build();
             System.out.println(feignClinicClientClient.getUsersByClinicId(clinicId).getBody());
