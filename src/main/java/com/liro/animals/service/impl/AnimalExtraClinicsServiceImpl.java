@@ -58,11 +58,11 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
 
     @Transactional
     @Override
-    public void addClinic(AnimalClinicDTO animalClinicDTO, String token, Long clinicId) {
+    public void addClinic(AnimalClinicDTO animalClinicDTO, String token) {
 
-        UserDTO userDTO = Util.getUser(token, clinicId);
+        UserDTO userDTO = Util.getUser(token, animalClinicDTO.getClinicId());
 
-       Animal animal = util.validatePermissions(animalClinicDTO.getAnimalId(), token, clinicId,false, false, false);
+       Animal animal = util.validatePermissions(animalClinicDTO.getAnimalId(), token, animalClinicDTO.getClinicId(),false, false, false);
 
         if (animal.getMainClinicId() == null){
             animal.setMainClinicId(animalClinicDTO.getClinicId());
@@ -86,7 +86,7 @@ public class AnimalExtraClinicsServiceImpl implements AnimalExtraClinicsService 
                     .clinicId(animalClinicDTO.getClinicId())
                     .accountBalance(0.00)
                     .build();
-            System.out.println(feignClinicClientClient.getUsersByClinicId(clinicId).getBody());
+            System.out.println(feignClinicClientClient.getUsersByClinicId(animalClinicDTO.getClinicId()).getBody());
             feignClinicClientClient.createClinicClient(clinicClientDTO);
     }
 

@@ -10,7 +10,7 @@ public interface AnimalExtraClinicsService {
 
 //    AnimalClinicResponse addExtraClinic(AnimalClinicDTO animalClinicDTO, UserDTO userDTO);
 
-    void addClinic(AnimalClinicDTO animalClinicDTO, String token, Long clinicId);
+    void addClinic(AnimalClinicDTO animalClinicDTO, String token);
 
     Page<AnimalClinicResponse> getExtraClinicsRelationsByClinicId(Pageable pageable, Long clinicId, UserDTO userDTO);
 

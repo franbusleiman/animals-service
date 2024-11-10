@@ -58,7 +58,7 @@ public class AnimalExtraClinicsController {
     public ApiResponse addClinic(@Valid @RequestBody AnimalClinicDTO animalClinicDTO,
                                                  @RequestHeader(name = "Authorization", required = false) String token){
 
-        animalExtraClinicsService.addClinic(animalClinicDTO, token, animalClinicDTO.getClinicId());
+        animalExtraClinicsService.addClinic(animalClinicDTO, token);
 
         return new ApiResponse(true, "Clinic added successfully");
     }
