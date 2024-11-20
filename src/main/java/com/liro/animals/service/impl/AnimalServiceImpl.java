@@ -101,10 +101,11 @@ public class AnimalServiceImpl implements AnimalService {
 
                 animal.setMainClinicId(userDTO.getClinicId());
                 animal.setOwnerUserId(animalRequest.getOwnerUserId());
+                animal.setValidCastrated(true);
             }
         } else {
 
-
+            animal.setValidCastrated(false);
             animal.setOwnerUserId(userDTO.getId());
         }
 

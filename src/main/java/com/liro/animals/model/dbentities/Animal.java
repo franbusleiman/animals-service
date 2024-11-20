@@ -45,8 +45,11 @@ public class Animal {
     private Boolean death;
     private String deathCause;
     private Boolean validBreed;
-    private Boolean validCastrated;
+
+    @NotNull
+    private Boolean validCastrated = false;
     private Boolean validBirthDate = false;
+
     private String bornLocation;
     private Long bornLat;
     private Long bornLong;
