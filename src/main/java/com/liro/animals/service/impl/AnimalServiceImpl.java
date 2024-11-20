@@ -98,7 +98,6 @@ public class AnimalServiceImpl implements AnimalService {
 
 
             if (userDTO.getRoles().contains("ROLE_VET")) {
-                System.out.println("-----------------CONTIENE ROLE VET----------------");
                 animal.setValidCastrated(true);
                 animal.setMainClinicId(userDTO.getClinicId());
                 animal.setOwnerUserId(animalRequest.getOwnerUserId());
