@@ -48,8 +48,8 @@ public class Animal {
 
     @NotNull
     private Boolean validCastrated = false;
-    private Boolean validBirthDate = false;
 
+    private Boolean validBirthDate = false;
     private String bornLocation;
     private Long bornLat;
     private Long bornLong;
