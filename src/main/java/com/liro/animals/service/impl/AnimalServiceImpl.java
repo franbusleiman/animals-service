@@ -107,13 +107,13 @@ public class AnimalServiceImpl implements AnimalService {
 
 
             if (userDTO.getRoles().contains("ROLE_VET")) {
-
+                animal.setValidCastrated(true);
                 animal.setMainClinicId(userDTO.getClinicId());
                 animal.setOwnerUserId(animalRequest.getOwnerUserId());
             }
         } else {
 
-
+            animal.setValidCastrated(false);
             animal.setOwnerUserId(userDTO.getId());
         }
 
