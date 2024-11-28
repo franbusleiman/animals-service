@@ -470,10 +470,14 @@ public class AnimalServiceImpl implements AnimalService {
             return animalRepository.findAllByNameContainingAndMainClinicOrExtraClinics(name, userDTO.getClinicId(), pageable)
                     .map(animal -> {
 
-                        UserResponseDTO userDTO1 = userService.getUserById(animal.getOwnerUserId());
-
                         AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);
-                        animalResponse.setOwner(userDTO1);
+
+                        if(animal.getOwnerUserId()!=null){
+                            UserResponseDTO userDTO1 = userService.getUserById(animal.getOwnerUserId());
+                            animalResponse.setOwner(userDTO1);
+
+                        }
+
                         animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
                         animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
                         animalResponse.setRecord(recordMapper.recordToRecordResponse(recordRepository.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L).orElseGet(() -> new Record())));
