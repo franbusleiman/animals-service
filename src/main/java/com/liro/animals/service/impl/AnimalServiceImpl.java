@@ -177,6 +177,8 @@ public class AnimalServiceImpl implements AnimalService {
 
                     add(animal);
 
+            animalRepository.save(animal);
+
             if(animalRequest.getPeso()!=null){
                 RecordType recordType = recordTypeRepository.findById(3L)
                         .orElseThrow(() -> new ResourceNotFoundException("RecordType not found with id: "));
@@ -194,7 +196,7 @@ public class AnimalServiceImpl implements AnimalService {
             }
 
 
-            responses.add(animalMapper.animalToAnimalMigrationResponse(animalRepository.save(animal)));
+            responses.add(animalMapper.animalToAnimalMigrationResponse(animal));
         });
 
         return responses;
