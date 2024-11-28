@@ -3,7 +3,6 @@ package com.liro.animals.dto.mappers;
 
 import com.liro.animals.dto.GroupDTO;
 import com.liro.animals.dto.responses.GroupResponse;
-import com.liro.animals.model.dbentities.Group;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
