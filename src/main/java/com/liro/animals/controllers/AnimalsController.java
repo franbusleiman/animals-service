@@ -164,10 +164,10 @@ public class AnimalsController {
 
     @PutMapping(value = "/changeOwner", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Void> changeOwner(@RequestParam("animalId") Long animalId,
-                                            @RequestParam("emailToTransfer") String emailToTransfer,
+                                            @RequestParam("ownerUserId") Long ownerUserId,
                                             @RequestHeader(name = "clinicId", required = false) Long clinicId,
                                             @RequestHeader(name = "Authorization", required = false) String token) {
-        animalService.changeOwner(animalId, emailToTransfer, getUser(token, clinicId));
+        animalService.changeOwner(animalId, ownerUserId, getUser(token, clinicId));
 
         return ResponseEntity.ok().build();
     }

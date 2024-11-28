@@ -92,6 +92,5 @@ public class Animal {
 
     private Long mainClinicId;
 
-    @Column(nullable = false)
     private Long ownerUserId;
 }

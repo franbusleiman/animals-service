@@ -25,4 +25,6 @@ public class AnimalMigratorDTO {
     private String especie;
     private Long ownerUserId;
     private String vetterCode;
+
+    private String peso;
 }

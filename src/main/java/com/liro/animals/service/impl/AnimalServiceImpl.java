@@ -11,11 +11,14 @@ import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.exceptions.BadRequestException;
 import com.liro.animals.exceptions.ResourceNotFoundException;
-import com.liro.animals.model.dbentities.*;
 import com.liro.animals.model.dbentities.Record;
+import com.liro.animals.model.dbentities.*;
 import com.liro.animals.model.enums.Castrated;
 import com.liro.animals.repositories.*;
-import com.liro.animals.service.*;
+import com.liro.animals.service.AnimalService;
+import com.liro.animals.service.AnimalsSharedUsersService;
+import com.liro.animals.service.RecordService;
+import com.liro.animals.service.UserService;
 import com.liro.animals.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,6 +46,8 @@ public class AnimalServiceImpl implements AnimalService {
     private final AnimalsSharedUsersService animalsSharedUsersService;
     private final RecordMapper recordMapper;
     private final RecordRepository recordRepository;
+    private final RecordService recordService;
+    private final RecordTypeRepository recordTypeRepository;
     private final Util util;
 
     @Autowired
@@ -57,7 +62,9 @@ public class AnimalServiceImpl implements AnimalService {
                              BreedMapper breedMapper,
                              AnimalTypeMapper animalTypeMapper,
                              RecordMapper recordMapper,
+                             RecordService recordService,
                              RecordRepository recordRepository,
+                             RecordTypeRepository recordTypeRepository,
                              AnimalsSharedUsersService animalsSharedUsersService) {
         this.animalRepository = animalRepository;
         this.animalColorRepository = animalColorRepository;
@@ -71,6 +78,8 @@ public class AnimalServiceImpl implements AnimalService {
         this.animalTypeRepository = animalTypeRepository;
         this.recordMapper = recordMapper;
         this.recordRepository = recordRepository;
+        this.recordService = recordService;
+        this.recordTypeRepository = recordTypeRepository;
         this.animalsSharedUsersService = animalsSharedUsersService;
     }
 
@@ -140,48 +149,55 @@ public class AnimalServiceImpl implements AnimalService {
 
             Animal animal = animalMapper.animalMigratorDtoToAnimal(animalRequest);
 
+
             animal.setVetterCode(vetClinicId + "-" + animalRequest.getVetterCode());
 
 
             animal.setMainClinicId(vetClinicId);
 
 
-            AnimalType animalType = getAnimalType(animalRequest.getEspecie());
+            AnimalType animalType = animalTypeRepository.findByFormalName(animalRequest.getEspecie())
+                    .orElseThrow(() -> new ResourceNotFoundException("animal type not found: " + animalRequest.getEspecie()));
 
 
-            Breed breed = breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, animalRequest.getBreed()).stream().findFirst().orElseGet(() ->{
+            Breed breed = breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, animalRequest.getBreed()).stream().findFirst().orElseGet(() -> {
 
 
-                        if (animalType.getName().equals("canine")) {
-                         return   breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "mestizo").stream().findFirst().get();
+                return breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "mestizo").stream().findFirst()
+                                    .orElseThrow(() -> new ResourceNotFoundException("breed not found"));
 
-                        } else {
-                          return  breedRepository.findByAnimalTypeAndNameOrAlternativeNames(animalType, "gato común").stream().findFirst().get();
-                        }
             });
-
 
 
             animal.setBreed(breed);
             animal.setIsPublic(true);
 
             if (breed.getAnimals() == null) breed.setAnimals(new HashSet<>());
-            breed.getAnimals().add(animal);
+            breed.getAnimals().
+
+                    add(animal);
+
+            if(animalRequest.getPeso()!=null){
+                RecordType recordType = recordTypeRepository.findById(3L)
+                        .orElseThrow(() -> new ResourceNotFoundException("RecordType not found with id: "));
+
+
+                Record record = new Record();
+                record.setRecordType(recordType);
+
+                if (recordType.getRecords() == null) recordType.setRecords(new HashSet<>());
+                recordType.getRecords().add(record);
+
+                record.setAnimal(animal);
+
+               recordRepository.save(record);
+            }
+
 
             responses.add(animalMapper.animalToAnimalMigrationResponse(animalRepository.save(animal)));
         });
 
         return responses;
-    }
-
-    private AnimalType getAnimalType(String animalType) {
-
-        switch (animalType) {
-            case "Felino":
-                return animalTypeRepository.findByFormalName("feline").get();
-            default:
-                return animalTypeRepository.findByFormalName("canine").get();
-        }
     }
 
     @Override
@@ -379,7 +395,7 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void changeMainColor(Long animalId, Long animalColorId, UserDTO userDTO ) {
+    public void changeMainColor(Long animalId, Long animalColorId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
                 true, false, false);
         AnimalColor animalColor = animalColorRepository.
@@ -395,15 +411,16 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public void changeOwner(Long animalId, String emailToTransfer, UserDTO userDTO) {
+    public void changeOwner(Long animalId, Long ownerUserId, UserDTO userDTO) {
         Animal animal = util.validatePermissions(animalId, userDTO,
-                false, true, false);
+                true, false, false);
 
-        UserResponseDTO userDTO1 = userService.getUserByEmail(emailToTransfer);
+        UserResponseDTO userDTO1 = userService.getUserById(ownerUserId);
         animal.setOwnerUserId(userDTO.getId());
 
         animalRepository.save(animal);
     }
+
 
     @Override
     public void hasPermissions(Long animalId, UserDTO userDTO, boolean needWritePermissions,

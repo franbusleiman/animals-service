@@ -40,7 +40,7 @@ public interface AnimalService {
 
     void changeMainColor(Long animalId, Long animalColorId, UserDTO userDTO);
 
-    void changeOwner(Long animalId, String emailToTransfer, UserDTO userDTO);
+    void changeOwner(Long animalId, Long ownerUserId, UserDTO userDTO);
 
     void hasPermissions(Long animalId, UserDTO userDTO, boolean needWritePermissions,
                         boolean onlyOwner, boolean onlyVet);

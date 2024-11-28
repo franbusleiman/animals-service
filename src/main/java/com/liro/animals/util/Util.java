@@ -44,8 +44,7 @@ public class Util {
         Animal animal = animalRepository.findById(animalId)
                 .orElseThrow(() -> new ResourceNotFoundException("Animal not found with id: " + animalId));
 
-
-        boolean isOwner = animal.getOwnerUserId().equals(user.getId());
+        boolean isOwner = animal.getOwnerUserId() != null && animal.getOwnerUserId().equals(user.getId());
         boolean isVet = validateVet(user);
         boolean isSharedOwnerWithWrite = isSharedOwnerWithWritePermissions(animal, user);
         boolean isSharedOwner = isSharedOwner(animal, user);
@@ -53,57 +52,51 @@ public class Util {
         boolean isInExtraClinics = isInExtraClinics(animal, user);
         boolean isPublic = animal.getIsPublic() != null && animal.getIsPublic();
 
-        // Prioridad a onlyOwner
         if (onlyOwner) {
             if (!isOwner) {
                 throw new UnauthorizedException("You are not the owner of this animal");
             }
-            return animal; // Si es el dueño, no necesita más validación.
+            return animal;
         }
 
-        // Validación para onlyVet
         if (onlyVet) {
             if (!isVet) {
                 throw new UnauthorizedException("You are not a valid veterinary");
             }
-            // Si es público y el vet no está en mainClinic ni extraClinics, agregamos la clínica
             addVetClinicIfPublic(animal, user, isInMainClinic, isInExtraClinics);
             return animal;
         }
 
-        // Verificar permisos de escritura
         if (needWritePermissions) {
             if (!isSharedOwnerWithWrite && !isOwner && !isInMainClinic) {
                 throw new UnauthorizedException("You do not have write permissions for this animal");
             }
-            return animal; // Si tiene permisos de escritura, no necesita más validación.
+            return animal;
         }
 
-        // Si no se requiere escritura, verificar acceso general
         if (!isPublic && !isOwner && !isSharedOwner && !isInExtraClinics && !isInMainClinic) {
             throw new UnauthorizedException("You do not have permission to access this animal");
         }
 
-        // Añadir la clínica si es público y es veterinario
         addVetClinicIfPublic(animal, user, isInMainClinic, isInExtraClinics);
         return animal;
     }
 
     private void addVetClinicIfPublic(Animal animal, UserDTO user, boolean isInMainClinic, boolean isInExtraClinics) {
-
         if (animal.getIsPublic() && validateVet(user) && user.getClinicId() != null) {
             if (!isInMainClinic && !isInExtraClinics) {
                 if (animal.getMainClinicId() == null) {
-                    // Si no tiene mainClinic, se asigna la clínica del veterinario como main
                     animal.setMainClinicId(user.getClinicId());
                 } else {
-                    // Si ya tiene una mainClinic, agregar la clínica como extra
                     animal.getExtraClinics().add(new AnimalsExtraClinics(animal, user.getClinicId()));
                 }
-                addClientToClinic(animal.getOwnerUserId(), user.getClinicId());
+                if (animal.getOwnerUserId() != null) {
+                    addClientToClinic(animal.getOwnerUserId(), user.getClinicId());
+                }
             }
         }
     }
+
 
     private void addClientToClinic(Long userId, Long clinicId){
 
