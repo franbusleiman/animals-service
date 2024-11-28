@@ -4,7 +4,6 @@ package com.liro.animals.controllers;
 import com.liro.animals.dto.ApiResponse;
 import com.liro.animals.dto.GroupDTO;
 import com.liro.animals.dto.responses.GroupResponse;
-import com.liro.animals.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
