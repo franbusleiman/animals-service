@@ -423,7 +423,7 @@ public class AnimalServiceImpl implements AnimalService {
                 true, false, false);
 
         UserResponseDTO userDTO1 = userService.getUserById(ownerUserId);
-        animal.setOwnerUserId(userDTO.getId());
+        animal.setOwnerUserId(userDTO1.getId());
 
         animalRepository.save(animal);
     }
