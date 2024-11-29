@@ -27,11 +27,6 @@ public interface BreedRepository extends JpaRepository<Breed, Long> {
             Pageable pageable
     );
 
-    Page<Breed> findAllByNameContainingAndGroupsId(
-            String nameContaining,
-            Long groupId,
-            Pageable pageable
-    );
 
     @Query(
             value = "SELECT * FROM breeds WHERE animal_type_id = :animalTypeId AND (name LIKE %:nameContaining% " +
