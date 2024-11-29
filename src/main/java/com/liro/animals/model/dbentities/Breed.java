@@ -41,12 +41,4 @@ public class Breed {
     @Column(name = "alternative_names")
     private List<String> alternativeNames = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "breeds_groups",
-            joinColumns = @JoinColumn(name = "breed_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id")
-    )
-    private Set<Group> groups;
-
 }
