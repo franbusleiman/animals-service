@@ -21,8 +21,6 @@ public interface BreedRepository extends JpaRepository<Breed, Long> {
 
     Page<Breed> findAllByAnimalTypeId(Long animalTypeId, Pageable pageable);
 
-    Page<Breed> findAllByGroupsId(Long groupId, Pageable pageable);
-
     Page<Breed> findAllByNameContainingAndAnimalTypeId(
             String nameContaining,
             Long animalTypeId,
@@ -63,26 +61,4 @@ public interface BreedRepository extends JpaRepository<Breed, Long> {
             @Param("animalType") AnimalType animalType,
             @Param("name") String name);
 
-    @Query(
-            value = "SELECT * FROM breeds WHERE id IN " +
-                    "( SELECT breed_id FROM breeds_groups WHERE group_id = :groupId )" +
-                    " AND (name LIKE %:nameContaining% OR formal_name LIKE %:nameContaining% " +
-                    "OR id IN (SELECT breed_id FROM animal_data WHERE animal_data_index_id IN (SELECT id FROM " +
-                    "animal_data_indexes WHERE animal_data_index_type = 'general') AND animal_data_type_id IN " +
-                    "(SELECT id FROM animal_data_types WHERE animal_data_type = 'other_names') " +
-                    "AND animal_data_value LIKE %:nameContaining%)) --#pageable",
-            countQuery = "SELECT COUNT(*) FROM breeds WHERE id IN " +
-                    "( SELECT breed_id FROM breeds_groups WHERE group_id = :groupId )" +
-                    " AND (name LIKE %:nameContaining% OR formal_name LIKE %:nameContaining% " +
-                    "OR id IN (SELECT breed_id FROM animal_data WHERE animal_data_index_id IN (SELECT id FROM " +
-                    "animal_data_indexes WHERE animal_data_index_type = 'general') AND animal_data_type_id IN " +
-                    "(SELECT id FROM animal_data_types WHERE animal_data_type = 'other_names') " +
-                    "AND animal_data_value LIKE %:nameContaining%))",
-            nativeQuery = true
-    )
-    Page<Breed> findAllByGroupsIdAndNameContainingOrOtherNameContaining(
-            @Param("nameContaining") String nameContaining,
-            @Param("groupId") Long groupId,
-            Pageable pageable
-    );
 }

@@ -17,8 +17,4 @@ public interface AnimalTypeRepository extends JpaRepository<AnimalType, Long> {
     Optional<AnimalType> findByFormalName(String formalName);
 
     Page<AnimalType> findAllByNameContaining(String nameContaining, Pageable pageable);
-
-    Page<AnimalType> findAllByGroupsId(Long groupId, Pageable pageable);
-
-    Page<AnimalType> findAllByNameContainingAndGroupsId(String nameContaining, Long groupId, Pageable pageable);
 }
