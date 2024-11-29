@@ -26,12 +26,4 @@ public class AnimalType {
 
     @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "animalType")
     private Set<Breed> breeds;
-
-    @ManyToMany
-    @JoinTable(
-            name = "animal_types_groups",
-            joinColumns = @JoinColumn(name = "animal_type_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id")
-    )
-    private Set<Group> groups;
 }
