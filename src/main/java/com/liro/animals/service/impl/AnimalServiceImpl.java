@@ -446,7 +446,12 @@ public class AnimalServiceImpl implements AnimalService {
     public Page<AnimalResponse> getOwnAnimals(Pageable pageable, UserDTO userDTO) {
 
         return animalRepository.findAllByOwnerUserId(userDTO.getId(), pageable)
-                .map(animalMapper::animalToAnimalResponse);
+                .map(animal -> {
+                    AnimalResponse animalResponse = animalMapper.animalToAnimalResponse(animal);
+                    animalResponse.setBreed(breedMapper.breedToBreedResponse(animal.getBreed()));
+                    animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
+                    return animalResponse;
+                });
     }
 
     @Override
