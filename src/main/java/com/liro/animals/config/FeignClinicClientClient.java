@@ -16,6 +16,4 @@ public interface FeignClinicClientClient {
     @PostMapping(value = "/clinicClients")
     ResponseEntity<ApiResponse> createClinicClient(@RequestBody ClinicClientDTO clinicClientDto);
 
-    @GetMapping(value = "/clinicClients/{clinicId}")
-    ResponseEntity<List<Long>> getUsersByClinicId(@PathVariable("clinicId") Long clinicId);
 }

@@ -23,6 +23,7 @@ public class AnimalCompleteResponse extends AnimalDTO {
     private AnimalTypeResponse animalType;
     private RecordResponse record;
     private Set<AnimalsSharedClientProfilesDTO> sharedWith;
-    private boolean disabled;
-    private boolean death;
+    private String profilePictureURL;
+    private Boolean disabled;
+    private Boolean death;
 }

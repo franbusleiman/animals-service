@@ -86,6 +86,7 @@ public class Util {
         if (animal.getIsPublic() && validateVet(user) && user.getClinicId() != null) {
             if (!isInMainClinic && !isInExtraClinics) {
                 if (animal.getMainClinicId() == null) {
+                    
                     animal.setMainClinicId(user.getClinicId());
                 } else {
                     animal.getExtraClinics().add(new AnimalsExtraClinics(animal, user.getClinicId()));

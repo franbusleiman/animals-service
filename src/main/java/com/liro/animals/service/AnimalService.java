@@ -5,6 +5,7 @@ import com.liro.animals.dto.AnimalDTO;
 import com.liro.animals.dto.AnimalMigratorDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
 import com.liro.animals.dto.UserDTO;
+import com.liro.animals.dto.mappers.Liveness;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
@@ -47,7 +48,7 @@ public interface AnimalService {
 
     Page<AnimalsSharedClientProfilesWADTO> getSharedAnimals(Pageable pageable, UserDTO userDTO);
 
-    Page<AnimalResponse> getOwnAnimals(Pageable pageable, UserDTO userDTO);
+    Page<AnimalResponse> getOwnAnimals(Pageable pageable, UserDTO userDTO, Liveness liveness);
     List<AnimalCompleteResponse> getAnimalsByUserId(Long userId);
     Page<AnimalCompleteResponse> getAnimalsByNameAndVetId(Pageable pageable, String name, UserDTO userDTO);
     Page<AnimalCompleteResponse> getAnimalsByOwnerDni(Pageable pageable, Long dni, UserDTO userDTO);

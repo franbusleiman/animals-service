@@ -42,9 +42,13 @@ public class Animal {
     private LocalDate deathDate;
     private Boolean approxDeathDate;
     private Boolean disabled;
+
+    @Column(nullable = false)
     private Boolean death;
     private String deathCause;
     private Boolean validBreed;
+    private String profilePictureURL;
+
 
     @NotNull
     private Boolean validCastrated = false;

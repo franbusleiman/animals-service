@@ -5,7 +5,7 @@ import com.liro.animals.dto.AnimalColorDTO;
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.mappers.AnimalColorMapper;
 import com.liro.animals.dto.responses.AnimalColorResponse;
-import com.liro.animals.exceptions.ConflictException;
+import com.liro.animals.exceptions.BadRequestException;
 import com.liro.animals.exceptions.ResourceNotFoundException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.AnimalColor;
@@ -88,11 +88,11 @@ public class AnimalColorServiceImpl implements AnimalColorService {
         }
         AnimalColor animalColor = animalColorMapper.animalColorDtoToAnimalColor(animalColorDto);
         if (animalColorRepository.existsByName(animalColorDto.getName())) {
-            throw new ConflictException("Animal color with name: "
+            throw new BadRequestException("Animal color with name: "
                 + animalColorDto.getName() + ", already exists");
         }
         if (animalColorRepository.existsByHex(animalColorDto.getHex())) {
-            throw new ConflictException("Animal color with hex: "
+            throw new BadRequestException("Animal color with hex: "
                 + animalColorDto.getHex() + ", already exists");
         }
 

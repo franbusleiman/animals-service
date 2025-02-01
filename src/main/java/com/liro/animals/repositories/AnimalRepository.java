@@ -16,7 +16,11 @@ public interface AnimalRepository extends JpaRepository<Animal, Long> {
 
     List<Animal> findAllByOwnerUserId(Long ownerUserId);
 
-    Page<Animal> findAllByOwnerUserId(Long ownerUserId, Pageable pageable);
+
+    @Query("SELECT a FROM Animal a " +
+            "WHERE a.ownerUserId = :ownerUserId " +
+            "AND (:death IS NULL OR a.death = :death)")
+    Page<Animal> findAllByOwnerUserIdAndIsDeath(@Param("ownerUserId")Long ownerUserId, Pageable pageable, @Param("death")Boolean death);
 
 
     @Query("SELECT DISTINCT a FROM Animal a " +

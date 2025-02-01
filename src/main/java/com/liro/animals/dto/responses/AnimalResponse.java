@@ -34,4 +34,6 @@ public class AnimalResponse extends AnimalDTO {
     private Boolean disabled;
     private Boolean death;
     private Set<AnimalColorResponse> colors;
+
+    private String profilePictureURL;
 }

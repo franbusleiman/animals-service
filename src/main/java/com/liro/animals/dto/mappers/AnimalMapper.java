@@ -30,7 +30,6 @@ public interface AnimalMapper {
     @Mapping(target = "validBreed", ignore = true)
     @Mapping(target = "validBirthDate", ignore = true)
     @Mapping(target = "disabled", ignore = true)
-    @Mapping(target = "death", ignore = true)
     @Mapping(target = "records", ignore = true)
     @Mapping(target = "sharedWith", ignore = true)
     @Mapping(target = "ownerUserId", ignore = true)

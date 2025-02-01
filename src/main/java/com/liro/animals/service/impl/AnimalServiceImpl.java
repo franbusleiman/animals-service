@@ -2,10 +2,7 @@ package com.liro.animals.service.impl;
 
 
 import com.liro.animals.dto.*;
-import com.liro.animals.dto.mappers.AnimalMapper;
-import com.liro.animals.dto.mappers.AnimalTypeMapper;
-import com.liro.animals.dto.mappers.BreedMapper;
-import com.liro.animals.dto.mappers.RecordMapper;
+import com.liro.animals.dto.mappers.*;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
@@ -25,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -99,6 +95,7 @@ public class AnimalServiceImpl implements AnimalService {
         return animalResponse;
     }
 
+    //TODO: EVERY VET CAN CREATE ANIMALS TO OWNERS.
     @Override
     public AnimalResponse createAnimal(AnimalDTO animalRequest, UserDTO userDTO) {
 
@@ -214,6 +211,13 @@ public class AnimalServiceImpl implements AnimalService {
         Animal animal = util.validatePermissions(animalId, userDTO,
                 true, false, false);
 
+
+        if (animalRequest.getDeathDate() != null) {
+            animal.setDeath(true);
+            animal.setDeathDate(animalRequest.getDeathDate());
+        } else{
+
+
         // Only update if the one setting it is a veterinary
         if (animal.getSex() != null) {
             if (validVet) {
@@ -269,10 +273,6 @@ public class AnimalServiceImpl implements AnimalService {
         }
         Util.updateIfNotNull(animal::setApproxBirthDate, animalRequest.getApproxBirthDate());
 
-        if (animalRequest.getDeathDate() != null) {
-            animal.setDeath(true);
-            animal.setDeathDate(animalRequest.getDeathDate());
-        }
         Util.updateIfNotNull(animal::setDeath, animalRequest.getDeath());
         Util.updateIfNotNull(animal::setApproxDeathDate, animalRequest.getApproxDeathDate());
 
@@ -282,6 +282,8 @@ public class AnimalServiceImpl implements AnimalService {
         Util.updateIfNotNull(animal::setBornLong, animalRequest.getBornLong());
         Util.updateIfNotNull(animal::setSurname, animalRequest.getSurname());
         Util.updateIfNotNull(animal::setName, animalRequest.getName());
+
+        }
 
         animalRepository.save(animal);
     }
@@ -443,10 +445,15 @@ public class AnimalServiceImpl implements AnimalService {
     }
 
     @Override
-    public Page<AnimalResponse> getOwnAnimals(Pageable pageable, UserDTO userDTO) {
+    public Page<AnimalResponse> getOwnAnimals(Pageable pageable, UserDTO userDTO, Liveness liveness) {
 
-        return animalRepository.findAllByOwnerUserId(userDTO.getId(), pageable)
-                .map(animalMapper::animalToAnimalResponse);
+
+        return animalRepository.findAllByOwnerUserIdAndIsDeath(userDTO.getId(), pageable, liveness.liveness())
+                .map(animal -> {
+                    AnimalResponse animalResponse = animalMapper.animalToAnimalResponse(animal);
+                    animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
+                    return animalResponse;
+                });
     }
 
     @Override
@@ -470,7 +477,9 @@ public class AnimalServiceImpl implements AnimalService {
             return animalRepository.findAllByNameContainingAndMainClinicOrExtraClinics(name, userDTO.getClinicId(), pageable)
                     .map(animal -> {
 
+                        System.out.println(animal.getDeath());
                         AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);
+                        System.out.println(animalResponse.getDeath());
 
                         if(animal.getOwnerUserId()!=null){
                             UserResponseDTO userDTO1 = userService.getUserById(animal.getOwnerUserId());
@@ -482,6 +491,7 @@ public class AnimalServiceImpl implements AnimalService {
                         animalResponse.setAnimalType(animalTypeMapper.animalTypeToAnimalTypeResponse(animal.getBreed().getAnimalType()));
                         animalResponse.setRecord(recordMapper.recordToRecordResponse(recordRepository.findLastByAnimalIdAndRecordTypeId(animal.getId(), 3L).orElseGet(() -> new Record())));
 
+                        System.out.println(animalResponse.getDeath());
                         return animalResponse;
                     });
         }
@@ -494,7 +504,7 @@ public class AnimalServiceImpl implements AnimalService {
 
         UserResponseDTO userDTO1 = userService.getUserByIdentificationNr(dni);
 
-        return animalRepository.findAllByOwnerUserId(userDTO1.getId(), pageable)
+        return animalRepository.findAllByOwnerUserIdAndIsDeath(userDTO1.getId(), pageable, null)
                 .map(animal -> {
 
                     AnimalCompleteResponse animalResponse = animalMapper.animalToAnimalCompleteResponse(animal);

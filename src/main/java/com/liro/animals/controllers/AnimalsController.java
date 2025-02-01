@@ -4,12 +4,13 @@ package com.liro.animals.controllers;
 import com.liro.animals.dto.AnimalDTO;
 import com.liro.animals.dto.AnimalMigratorDTO;
 import com.liro.animals.dto.AnimalsSharedClientProfilesWADTO;
-import com.liro.animals.dto.ApiResponse;
+import com.liro.animals.dto.mappers.Liveness;
 import com.liro.animals.dto.responses.AnimalCompleteResponse;
 import com.liro.animals.dto.responses.AnimalMigrationResponse;
 import com.liro.animals.dto.responses.AnimalResponse;
 import com.liro.animals.service.AnimalService;
 import com.liro.animals.service.AnimalsSharedUsersService;
+import com.liro.animals.service.impl.FileService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,16 @@ public class AnimalsController {
     private final AnimalService animalService;
     private final AnimalsSharedUsersService animalsSharedUsersService;
 
+    private final FileService fileService;
+
+
     @Autowired
     public AnimalsController(AnimalService animalService,
-                             AnimalsSharedUsersService animalsSharedUsersService) {
+                             AnimalsSharedUsersService animalsSharedUsersService,
+                             FileService fileService) {
         this.animalService = animalService;
         this.animalsSharedUsersService = animalsSharedUsersService;
+        this.fileService = fileService;
     }
 
     @GetMapping(value = "/{animalId}", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -133,9 +139,10 @@ public class AnimalsController {
     @GetMapping(value = "/findAllOwn", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Page<AnimalResponse>> getOwnAnimals(Pageable pageable,
                                                               @RequestHeader(name = "clinicId", required = false) Long clinicId,
-                                                              @RequestHeader(name = "Authorization", required = false) String token) {
+                                                              @RequestHeader(name = "Authorization", required = false) String token,
+                                                              @RequestParam(name = "liveness", defaultValue = "ALL") Liveness liveness) {
 
-        return ResponseEntity.ok(animalService.getOwnAnimals(pageable, getUser(token, clinicId)));
+        return ResponseEntity.ok(animalService.getOwnAnimals(pageable, getUser(token, clinicId), liveness));
     }
 
     @PostMapping(value = "/changeShareState", produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -229,6 +236,7 @@ public class AnimalsController {
 
         return ResponseEntity.ok().build();
     }
+
 
     @Target({ ElementType.METHOD, ElementType.ANNOTATION_TYPE, ElementType.TYPE })
     @Retention(RetentionPolicy.RUNTIME)

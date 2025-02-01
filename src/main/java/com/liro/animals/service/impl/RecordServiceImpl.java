@@ -5,7 +5,6 @@ import com.liro.animals.dto.RecordDTO;
 import com.liro.animals.dto.UserDTO;
 import com.liro.animals.dto.mappers.RecordMapper;
 import com.liro.animals.dto.responses.RecordResponse;
-import com.liro.animals.exceptions.NotFoundException;
 import com.liro.animals.exceptions.ResourceNotFoundException;
 import com.liro.animals.model.dbentities.Animal;
 import com.liro.animals.model.dbentities.RecordType;
@@ -125,7 +124,7 @@ public class RecordServiceImpl implements RecordService {
         recordDTOs.forEach(recordDto -> {
 
             Animal animal = animalRepository.findById(recordDto.getAnimalId())
-                    .orElseThrow(() -> new NotFoundException("animal not found"));
+                    .orElseThrow(() -> new ResourceNotFoundException("animal not found"));
 
             Record record = recordMapper.recordDtoToRecord(recordDto);
             record.setAnimal(animal);
